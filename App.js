@@ -3,8 +3,8 @@ import { SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import WebSite from './components/website';
-import Login from './components/login';
+import WebSite from './component/website';
+import Login from './component/login';
 
 const Stack = createStackNavigator();
 
