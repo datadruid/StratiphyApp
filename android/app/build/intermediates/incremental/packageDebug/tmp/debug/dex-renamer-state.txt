@@ -1,4 +1,4 @@
-#Thu Oct 01 18:27:32 BST 2020
-base.0=/Users/devin/WebstormProjects/StratiphyApp/android/app/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+#Thu Oct 01 23:03:39 BST 2020
+base.0=/Users/devin/StratiphyApp/android/app/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
