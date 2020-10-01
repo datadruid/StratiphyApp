@@ -3,12 +3,12 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'StratiphyApp' do
+target 'Stratiphy' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
 
-  target 'StratiphyAppTests' do
+  target 'StratiphyTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -23,10 +23,10 @@ target 'StratiphyApp' do
   end
 end
 
-target 'StratiphyApp-tvOS' do
-  # Pods for StratiphyApp-tvOS
+target 'Stratiphy-tvOS' do
+  # Pods for Stratiphy-tvOS
 
-  target 'StratiphyApp-tvOSTests' do
+  target 'Stratiphy-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
