@@ -1,0 +1,6 @@
+module Pods_Stratiphy {
+  umbrella header "Pods-Stratiphy-umbrella.h"
+
+  export *
+  module * { export * }
+}

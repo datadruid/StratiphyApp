@@ -1,0 +1,22 @@
+{
+  "name": "react-native-webview-local",
+  "version": "2.0.0",
+  "summary": "React Native WebView local component for iOS, Android to load local webresources from local app package",
+  "license": "MIT",
+  "authors": {
+    "name": "Mohsin Bagwan"
+  },
+  "homepage": "https://github.com/mosinbagban/react-native-webview-local#readme",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source": {
+    "git": "https://github.com/mosinbagban/react-native-webview-local.git"
+  },
+  "source_files": "ios/**/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}
