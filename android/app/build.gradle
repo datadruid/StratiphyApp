@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.stratiphyapp"
+        applicationId "com.stratiphy.dev"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
