@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Text, Button, Input  } from 'react-native-elements';
 import NavLink from '../components/NavLink';
+import { NavigationEvents } from 'react-navigation';
 import Spacer from '../components/Spacer';
 import CodeSpacer from '../components/CodeSpacer';
 import { Context as AuthContext } from '../context/AuthContext';
@@ -9,10 +10,11 @@ import CodeInput from 'react-native-code-input';
 
 const SigninCodeScreen = ({ navigation }) => {
     const email = navigation.getParam('email');
-    const { state, verifyCode, signin } = useContext(AuthContext);
+    const { state, verifyCode, signin, clearErrorMessage } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
+      <NavigationEvents onWillFocus={clearErrorMessage} />
        <Image style={styles.image} source={require('../img/stratiphycircle.png')} />
        <Spacer>
         <Text h1>Enter Code</Text>
@@ -40,6 +42,11 @@ const SigninCodeScreen = ({ navigation }) => {
         <Text style={styles.link}>resend email</Text>
       </Spacer>
     </TouchableOpacity>
+    {state.errorMessage ? (
+        <TouchableOpacity style={styles.nav} onPress={() => navigation.goBack(null)}>
+          <Text style={styles.link}>change email address</Text>
+      </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
