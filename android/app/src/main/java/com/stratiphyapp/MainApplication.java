@@ -1,4 +1,4 @@
-package com.stratiphyapp;
+package com.stratiphy.app;
 
 import android.app.Application;
 import android.content.Context;

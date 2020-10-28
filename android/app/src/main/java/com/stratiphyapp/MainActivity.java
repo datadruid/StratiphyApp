@@ -1,4 +1,4 @@
-package com.stratiphyapp;
+package com.stratiphy.app;
 
 import com.facebook.react.ReactActivity;
 

@@ -17,7 +17,7 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
     <View style={styles.container}>
     <Image style={styles.image} source={require('../img/stratiphycircle.png')} />
       <Spacer>
-        <Text h1>{headerText}</Text>
+        <Text h2>{headerText}</Text>
       </Spacer>
       <Spacer>
         <Text h4>{subHeaderText1}</Text>
