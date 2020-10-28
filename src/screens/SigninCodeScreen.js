@@ -9,7 +9,7 @@ import CodeInput from 'react-native-code-input';
 
 const SigninCodeScreen = ({ navigation }) => {
     const email = navigation.getParam('email');
-    const { state, verifyCode, signin, errorMessage } = useContext(AuthContext);
+    const { state, verifyCode, signin } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
@@ -32,8 +32,8 @@ const SigninCodeScreen = ({ navigation }) => {
             onFulfill={(code) => verifyCode({ code, email })}
         />
         <CodeSpacer/>
-        {errorMessage ? (
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
+        {state.errorMessage ? (
+        <Text style={styles.errorMessage}>{state.errorMessage}</Text>
       ) : null}
        <TouchableOpacity style={styles.nav} onPress={(code) => signin({ email })}>
       <Spacer>

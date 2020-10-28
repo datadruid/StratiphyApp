@@ -13,7 +13,7 @@ import StrategyListScreen from './src/screens/StrategyListScreen';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { setNavigator } from './src/navigationRef';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
-//import { FontAwesome } from 'react-native-vector-icons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const strategyListFlow = createStackNavigator({
   StrategyList: StrategyListScreen,
@@ -21,8 +21,8 @@ const strategyListFlow = createStackNavigator({
 });
 
 strategyListFlow.navigationOptions = {
-  title: 'Tracks',
-  //tabBarIcon: <FontAwesome name="th-list" size={20} />,
+  title: 'Strategies',
+  tabBarIcon: <FontAwesome name="th-list" size={20} />,
 };
 
 const switchNavigator = createSwitchNavigator({

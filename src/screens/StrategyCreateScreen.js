@@ -1,6 +1,7 @@
 import React from 'react';
 import { SafeAreaView } from 'react-navigation';
 import { View, StyleSheet, Text } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const StrategyCreateScreen = () => {
   return (
@@ -12,7 +13,8 @@ const StrategyCreateScreen = () => {
 };
 
 StrategyCreateScreen.navigationOptions = {
-  title: 'Add Strategy'
+  title: 'Add Strategy',
+  tabBarIcon: <FontAwesome name="plus" size={20} />
 };
 
 const styles = StyleSheet.create({});
