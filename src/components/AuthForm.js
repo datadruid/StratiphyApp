@@ -30,7 +30,7 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
       <Input
         label="Email"
         value={email}
-        onChangeText={setEmail}
+        onChangeText={(value) => { setEmail(value.trim()) }}
         autoCapitalize="none"
         autoCorrect={false}
       />
@@ -39,7 +39,7 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
         label="Name"
         value={name}
         onChangeText={setName}
-        autoCapitalize="none"
+        autoCapitalize="words"
         autoCorrect={false}
       />
       ) : null}
@@ -65,6 +65,7 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container:{
