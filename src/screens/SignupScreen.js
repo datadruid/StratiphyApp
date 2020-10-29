@@ -1,15 +1,16 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import { Context as AuthContext } from '../context/AuthContext';
 import AuthForm from '../components/AuthForm';
-import NavLink from '../components/NavLink';
 
 const SignupScreen = ({ navigation }) => {
   const { state, signup, clearErrorMessage } = useContext(AuthContext);
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView 
+    behavior={Platform.OS == "ios" ? "padding" : "height"}
+     style={styles.container}>
       <NavigationEvents onWillFocus={clearErrorMessage} />
       <AuthForm
         headerText="Make Better Investments"
@@ -18,13 +19,11 @@ const SignupScreen = ({ navigation }) => {
         errorMessage={state.errorMessage}
         submitButtonText="Join Now"
         showName = "showName"
+        routeName="Signin"
+        linkText="Already have an account? Sign in here!"
         onSubmit={signup}
       />
-      <NavLink
-        routeName="Signin"
-        text="Already have an account? Sign in here!"
-      />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -38,8 +37,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    marginBottom: 40,
-  },
+    marginBottom:30
+  }
 });
 
 export default SignupScreen;

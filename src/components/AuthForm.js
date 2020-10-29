@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, View, ActivityIndicator  } from 'react-native';
+import { StyleSheet, Image, View, ActivityIndicator } from 'react-native';
 import { Text, Button, Input  } from 'react-native-elements';
 import Spacer from './Spacer';
+import NavLink from '../components/NavLink';
 
-const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, onSubmit, submitButtonText, showName }) => {
+const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, onSubmit, submitButtonText, showName, linkText, routeName }) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [indicator, setIndicator] = useState(false);
@@ -55,12 +56,19 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
           }}
         />
       </Spacer>
+      <Spacer>
+        <NavLink
+          routeName={routeName}
+          text={linkText}
+        />
+      </Spacer>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container:{
+    flex:1,
     justifyContent : "center",
     alignItems: 'center',
   },

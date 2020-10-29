@@ -60,6 +60,7 @@ const verifyCode = dispatch => async ({ code, email }) => {
       type: 'add_error',
       payload: err.response.data.error
     });
+    throw new Error(err);
   }
 };
 
@@ -88,6 +89,7 @@ const signin = dispatch => async ({ email }) => {
       type: 'add_error',
       payload: 'Something went wrong with sign up'
     });
+    throw new Error(err);
   }
 };
 
