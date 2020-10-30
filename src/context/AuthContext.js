@@ -37,7 +37,7 @@ const tryLocalSignin = dispatch => async () => {
   }
 };
 
-const verifyCode = dispatch => async ({ code, email }) => {
+const verifyCode = dispatch => async ({ code, email, auth_id }) => {
   try {
     if (!code) {
       dispatch({
@@ -47,7 +47,7 @@ const verifyCode = dispatch => async ({ code, email }) => {
       return;
     }
 
-    const response = await authApi.post('/verifycode', { email, code });
+    const response = await authApi.post('/verifycode', { email, code, auth_id });
     await AsyncStorage.setItem(REFESH_TOKEN_KEY, response.data.refresh_token);
     await AsyncStorage.setItem(TOKEN_KEY, response.data.id_token);
     dispatch({
@@ -80,7 +80,7 @@ const signin = dispatch => async ({ email }) => {
       running = true;
       const response = await authApi.post('/signin', { email });
       running = false;
-      navigate('CodeScreen', { email });
+      navigate('CodeScreen', { email, auth_id: response.data._id });
     }
     
   } catch (err) {
@@ -115,7 +115,7 @@ const signup = dispatch => async ({ email, name }) => {
       const response = await authApi.post('/signin', { email });
       await AsyncStorage.setItem(FULL_NAME_KEY, name);
       running = false;
-      navigate('CodeScreen', { email });
+      navigate('CodeScreen', { email, auth_id: response.data._id });
     }
   } catch (err) {
     running = false;
