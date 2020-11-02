@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Stratiphy</string>
+    <string name="facebook_app_id">234583627832421</string>
+    <string name="fb_login_protocol_scheme">fb234583627832421</string>
 </resources>

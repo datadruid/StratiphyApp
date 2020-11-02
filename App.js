@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import AccountScreen from './src/screens/AccountScreen';
+import AccountLinkScreen from './src/screens/AccountLinkScreen'
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import CodeScreen from './src/screens/SigninCodeScreen';
@@ -32,6 +33,16 @@ strategyListFlow.navigationOptions = {
   tabBarIcon: <FontAwesome name="th-list" size={20} />,
 };
 
+const accountFlow = createStackNavigator({
+  Account: AccountScreen,
+  AccountLink: AccountLinkScreen,
+});
+
+accountFlow.navigationOptions = {
+    title: 'Account',
+    tabBarIcon: <FontAwesome name="gear" size={20} />
+};
+
 const switchNavigator = createSwitchNavigator({
   ResolveAuth: ResolveAuthScreen,
   loginFlow: createStackNavigator({
@@ -42,7 +53,7 @@ const switchNavigator = createSwitchNavigator({
   mainFlow: createBottomTabNavigator({
     strategyListFlow,
     StrategyCreate: StrategyCreateScreen,
-    Account: AccountScreen,
+    accountFlow,
   }),
 });
 

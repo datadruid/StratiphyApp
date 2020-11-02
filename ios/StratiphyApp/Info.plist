@@ -57,5 +57,18 @@
 	<array>
 		<string>FontAwesome.ttf</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+	<key>CFBundleURLSchemes</key>
+	<array>
+		<string>fb234583627832421</string>
+	</array>
+	</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>234583627832421</string>
+	<key>FacebookDisplayName</key>
+	<string>Stratiphy</string>
 </dict>
 </plist>
