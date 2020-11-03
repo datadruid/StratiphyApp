@@ -6,14 +6,14 @@ import { NavigationEvents } from 'react-navigation';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {GoogleSignin} from 'react-native-google-signin';
-import { GoogleSocialButton } from "react-native-social-buttons";
+import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 import NavLink from '../components/NavLink';
 
-// GoogleSignin.configure({
-//   webClientId: "1060831970790-vfh908lm2mvd0hr747qblplq1f8ebj99.apps.googleusercontent.com",
-//   offlineAccess: true
-//      });
+GoogleSignin.configure({
+  webClientId: '922326295276-oc1c7s4fi87mj8r2lcovi2g0dt5hmdj2.apps.googleusercontent.com',
+  iosClientId: '922326295276-dlepd6l8mhnfiefsglcssl2vnsd0gg8s.apps.googleusercontent.com',
+  offlineAccess: true
+     });
 
 const AccountLinkScreen = () => {
   const [email, setEmail] = useState('');
@@ -29,7 +29,7 @@ const AccountLinkScreen = () => {
       <Text>Sign in with your web account to link it to this account</Text>
       <Spacer/>
       <Spacer>
-        <GoogleSocialButton onPress={googleSignIn} />
+        <GoogleSigninButton onPress={googleSignIn} />
       </Spacer>
     <Spacer><Text style={{ fontSize: 24 }}>--- or ---</Text></Spacer>
       <Input
@@ -69,14 +69,14 @@ const AccountLinkScreen = () => {
 };
 
 const googleSignIn = async () => {
-    // try {
-    //    await GoogleSignin.hasPlayServices();
-    //    const userInfo = await GoogleSignin.signIn();
-    //       console.log('_____userinfo',userInfo)
-    //       this.setState({ userInfo });
-    // } catch (error) {
-    //     console.log(error)
-    // }
+    try {
+       await GoogleSignin.hasPlayServices();
+       const userInfo = await GoogleSignin.signIn();
+          console.log('_____userinfo',userInfo)
+          this.setState({ userInfo });
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 

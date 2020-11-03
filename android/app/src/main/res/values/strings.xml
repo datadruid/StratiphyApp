@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">Stratiphy</string>
-    <string name="facebook_app_id">234583627832421</string>
-    <string name="fb_login_protocol_scheme">fb234583627832421</string>
+    <string name="server_client_id">922326295276-lr4hvgo5sd38ra1ako90qcmev4r83n0b.apps.googleusercontent.com</string>
 </resources>
