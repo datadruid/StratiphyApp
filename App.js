@@ -4,7 +4,6 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import AccountScreen from './src/screens/AccountScreen';
-import AccountLinkScreen from './src/screens/AccountLinkScreen'
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import CodeScreen from './src/screens/SigninCodeScreen';
@@ -34,8 +33,7 @@ strategyListFlow.navigationOptions = {
 };
 
 const accountFlow = createStackNavigator({
-  Account: AccountScreen,
-  AccountLink: AccountLinkScreen,
+  Account: AccountScreen
 });
 
 accountFlow.navigationOptions = {

@@ -4,7 +4,6 @@ import { Button } from 'react-native-elements';
 import { SafeAreaView } from 'react-navigation';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
-import NavLink from '../components/NavLink';
 
 const AccountScreen = () => {
   const { signout } = useContext(AuthContext);
@@ -14,12 +13,6 @@ const AccountScreen = () => {
       <Text style={{ fontSize: 48 }}>Account</Text>
       <Spacer>
         <Button title="Sign Out" onPress={signout} />
-      </Spacer>
-      <Spacer>
-        <NavLink
-          routeName='AccountLink'
-          text='Link accounts'
-        />
       </Spacer>
       
     </SafeAreaView>

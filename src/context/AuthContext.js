@@ -2,11 +2,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import createDataContext from './createDataContext';
 import authApi from '../api/auth';
 import { navigate } from '../navigationRef';
-
-const TOKEN_KEY = 'token';
-const REFESH_TOKEN_KEY = 'refreshtoken';
-const FULL_NAME_KEY = 'fullnamekey'
-const AUTH0_ID_KEY = 'auth0idkey'
+import { getToken, setToken, removeToken, setRefreshToken, removeRefreshToken, getAuth0Token, setAuth0Token, removeAuth0Token } from '../storage/tokenStorage'
+import { getName, setName, removeName} from '../storage/userStorage'
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -29,7 +26,7 @@ const clearErrorMessage = dispatch => () => {
 };
 
 const tryLocalSignin = dispatch => async () => {
-  const token = await AsyncStorage.getItem(TOKEN_KEY);
+  const token = await getToken();
   if (token) {
     dispatch({ type: 'signin', payload: token });
     navigate('StrategyList');
@@ -38,53 +35,46 @@ const tryLocalSignin = dispatch => async () => {
   }
 };
 
-const linkAccount = dispatch => async ({ email, password }) => {
-  if (!email) {
-    dispatch({
-      type: 'add_error',
-      payload: 'You must provide an email.'
-    });
-    return;
-  }
-  if (!password) {
-    dispatch({
-      type: 'add_error',
-      payload: 'You must provide your password.'
-    });
-    return;
-  }
-  const token = await AsyncStorage.getItem(TOKEN_KEY);
-  if (token) {
-      try{
-      const response = await authApi.post('/linkuseremail', { email, password }, {headers: { Authorization: `Bearer ${token}` }});
-      console.log(response.data);
-    } catch (err){
-      dispatch({
-        type: 'add_error',
-        payload: err.response.data.error
-      });
-      console.log(err.response.data.error);
-      throw new Error(err);
-    }
-  } 
-};
-
-const updateUser = async () => {
-  const token = await AsyncStorage.getItem(TOKEN_KEY);
-  const name = await AsyncStorage.getItem(FULL_NAME_KEY, name);
-  const auth_id = await AsyncStorage.getItem(AUTH0_ID_KEY, auth_id);
+const updateEmailPasswordUser = async (email, password) => {
+  const token = await getToken();
+  const name = await getName();
+  const auth_id = await getAuth0Token(auth_id);
   if (token) {
     try {
+      console.log(email);
+      console.log(password);
+      if(password) {
+        const linkResponse = await authApi.post('/linkuseremail', { email, password }, {headers: { Authorization: `Bearer ${token}` }});
+      }
       const response = await authApi.post('/updateuser', { name, auth_id }, {headers: { Authorization: `Bearer ${token}` }});
-      await AsyncStorage.removeItem(AUTH0_ID_KEY);
-      await AsyncStorage.removeItem(FULL_NAME_KEY);
+      console.log(response);
+      //await removeAuth0Token();
+      //await removeName();
+    } catch (err){
+      console.log(err);
+    }
+  } 
+};
+
+const updateGoogleUser = async (googleCode) => {
+  const token = await getToken();
+  const name = await getName();
+  const auth_id = await getAuth0Token(auth_id);
+  if (token) {
+    try {
+      if(googleCode){
+        const linkResponse = await authApi.post('/linkusergoogle', { code: googleCode }, {headers: { Authorization: `Bearer ${token}` }});
+      }
+      const response = await authApi.post('/updateuser', { name, auth_id }, {headers: { Authorization: `Bearer ${token}` }});
+      //await removeAuth0Token();
+      //await removeName();
     } catch (err){
       throw new Error(err);
     }
   } 
 };
 
-const verifyCode = dispatch => async ({ code, email, auth_id }) => {
+const verifyCode = dispatch => async ({ code, email, password, googleCode, auth_id }) => {
   try {
     if (!code) {
       dispatch({
@@ -93,11 +83,16 @@ const verifyCode = dispatch => async ({ code, email, auth_id }) => {
       });
       return;
     }
-    const response = await authApi.post('/verifycode', { email, code });
-    await AsyncStorage.setItem(REFESH_TOKEN_KEY, response.data.refresh_token);
-    await AsyncStorage.setItem(TOKEN_KEY, response.data.id_token);
-    await AsyncStorage.setItem(AUTH0_ID_KEY, auth_id);
-    await updateUser();
+
+    let response = await authApi.post('/verifycode', { email, code });
+    await setRefreshToken(response.data.refresh_token);
+    await setToken(response.data.id_token);
+    await setAuth0Token(auth_id);
+    if(googleCode) {
+      await updateGoogleUser(googleCode);
+    } else if(email && password) {
+      await updateEmailPasswordUser(email, password);
+    }
     dispatch({
       type: 'signup',
       payload: response.data.id_token
@@ -140,6 +135,78 @@ const signin = dispatch => async ({ email }) => {
   }
 };
 
+const signinPassword = dispatch => async ({ name, email, password }) => {
+  await setName(name);
+  try {
+    if (!email) {
+      dispatch({
+        type: 'add_error',
+        payload: 'You must provide an email.'
+      });
+      return;
+    }
+    if (!name) {
+      dispatch({
+        type: 'add_error',
+        payload: 'You must provide a name.'
+      });
+      return;
+    }
+    if (!password) {
+      dispatch({
+        type: 'add_error',
+        payload: 'You must provide a password.'
+      });
+      return;
+    }
+    let running = false;
+    if(!running)
+    {
+      running = true;
+      const response = await authApi.post('/signinpassword', { email, password });
+      running = false;
+      navigate('CodeScreen', { email, password, auth_id: response.data._id });
+    }
+    
+  } catch (err) {
+    running = false;
+    dispatch({
+      type: 'add_error',
+      payload: 'Something went wrong with sign up'
+    });
+    throw new Error(err);
+  }
+};
+
+const signinGoogle = dispatch => async ({ name, code }) => {
+  await setName(name);
+  try {
+    if (!code) {
+      dispatch({
+        type: 'add_error',
+        payload: 'Google Authentication error.'
+      });
+      return;
+    }
+    let running = false;
+    if(!running)
+    {
+      running = true;
+      const response = await authApi.post('/signingoogle', { code });
+      running = false;
+      navigate('CodeScreen', { code, auth_id: response.data._id });
+    }
+    
+  } catch (err) {
+    running = false;
+    dispatch({
+      type: 'add_error',
+      payload: 'Something went wrong with sign in'
+    });
+    throw new Error(err);
+  }
+};
+
 const signup = dispatch => async ({ email, name }) => {
   try {
     if (!email) {
@@ -160,7 +227,7 @@ const signup = dispatch => async ({ email, name }) => {
     if(!running)
     {
       const response = await authApi.post('/signin', { email });
-      await AsyncStorage.setItem(FULL_NAME_KEY, name);
+      await setName(name);
       running = false;
       navigate('CodeScreen', { email, auth_id: response.data._id });
     }
@@ -174,14 +241,14 @@ const signup = dispatch => async ({ email, name }) => {
 };
 
 const signout = dispatch => async () => {
-  await AsyncStorage.removeItem(TOKEN_KEY);
-  await AsyncStorage.removeItem(REFESH_TOKEN_KEY);
+  await removeToken();
+  await removeRefreshToken();
   dispatch({ type: 'signout' });
   navigate('loginFlow');
 };
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  {signup, signin, signout, verifyCode, tryLocalSignin, linkAccount, clearErrorMessage},
+  {signup, signin, signinPassword, signinGoogle, signout, verifyCode, tryLocalSignin, clearErrorMessage},
   { token: null, errorMessage: '' }
 );

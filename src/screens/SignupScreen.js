@@ -1,12 +1,13 @@
-import React, { useContext } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import React, { useContext,useEffect } from 'react';
+import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import { Context as AuthContext } from '../context/AuthContext';
 import AuthForm from '../components/AuthForm';
 
+
 const SignupScreen = ({ navigation }) => {
   const { state, signup, clearErrorMessage } = useContext(AuthContext);
-
+  
   return (
     <KeyboardAvoidingView 
     behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -26,6 +27,8 @@ const SignupScreen = ({ navigation }) => {
     </KeyboardAvoidingView>
   );
 };
+
+
 
 SignupScreen.navigationOptions = () => {
   return {
