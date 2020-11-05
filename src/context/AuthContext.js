@@ -41,17 +41,14 @@ const updateEmailPasswordUser = async (email, password) => {
   const auth_id = await getAuth0Token(auth_id);
   if (token) {
     try {
-      console.log(email);
-      console.log(password);
       if(password) {
         const linkResponse = await authApi.post('/linkuseremail', { email, password }, {headers: { Authorization: `Bearer ${token}` }});
       }
       const response = await authApi.post('/updateuser', { name, auth_id }, {headers: { Authorization: `Bearer ${token}` }});
-      console.log(response);
       //await removeAuth0Token();
       //await removeName();
     } catch (err){
-      console.log(err);
+      throw new Error(err);
     }
   } 
 };
@@ -178,7 +175,7 @@ const signinPassword = dispatch => async ({ name, email, password }) => {
   }
 };
 
-const signinGoogle = dispatch => async ({ name, code }) => {
+const signinGoogle = dispatch => async ({ email, name, code }) => {
   await setName(name);
   try {
     if (!code) {
@@ -192,9 +189,9 @@ const signinGoogle = dispatch => async ({ name, code }) => {
     if(!running)
     {
       running = true;
-      const response = await authApi.post('/signingoogle', { code });
+      const response = await authApi.post('/signingoogle', { email, code });
       running = false;
-      navigate('CodeScreen', { code, auth_id: response.data._id });
+      navigate('CodeScreen', { email, code, auth_id: response.data._id });
     }
     
   } catch (err) {
