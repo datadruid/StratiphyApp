@@ -7,6 +7,8 @@ import {
   PieChart,
   BarChart
 } from "react-native-chart-kit";
+import { Context as StrategyContext } from '../context/StrategyContext';
+
 const screenWidth = Dimensions.get("window").width;
 const chartConfig = {
   backgroundColor: "#1F2225",
@@ -21,6 +23,7 @@ const chartConfig = {
 };
 
 const StrategyListScreen = ({ navigation }) => {
+  const { state, listStrategies, clearErrorMessage } = useContext(AuthContext);
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
       <Text style={{ fontSize: 48 }}>Strategies</Text>
