@@ -1,10 +1,9 @@
-import AsyncStorage from '@react-native-community/async-storage';
 import createDataContext from './createDataContext';
 import authApi from '../api/auth';
 import { navigate } from '../navigationRef';
 import { getToken } from '../storage/tokenStorage'
 
-const authReducer = (state, action) => {
+const strategyReducer = (state, action) => {
   switch (action.type) {
     case 'add_error':
       return {...state, errorMessage : action.payload };
@@ -25,21 +24,21 @@ const clearErrorMessage = dispatch => () => {
 };
 
 const listStrategies = dispatch => async () => {
-  const token = await getToken();
-  if (token) {
-      try{
-    const response = await authApi.get('/strategies');
-    dispatch({ type: 'list_strategies', payload: response.data });
-      } catch(err) {
-        dispatch({ type: 'add_error', payload: err.data.error });
-      }
-  } else {
-    dispatch({ type: 'add_error', payload: 'No data acess token available' });
-  }
+  // const token = await getToken();
+  // if (token) {
+  //     try{
+  //   const response = await authApi.get('/strategies');
+  //   dispatch({ type: 'list_strategies', payload: response.data });
+  //     } catch(err) {
+  //       dispatch({ type: 'add_error', payload: err.data.error });
+  //     }
+  // } else {
+  //   dispatch({ type: 'add_error', payload: 'No data acess token available' });
+  // }
 };
 
 export const { Provider, Context } = createDataContext(
-  authReducer,
+  strategyReducer,
   {listStrategies, clearErrorMessage},
   { token: null, errorMessage: '' }
 );

@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
-import { Alert, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { Alert, StyleSheet, KeyboardAvoidingView, ImageBackground } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import AuthForm from '../components/AuthForm';
-import { Context } from '../context/AuthContext';
+import { Context as AuthContext  } from '../context/AuthContext';
 
 const SigninScreen = () => {
-  const { state, signin, signinPassword, signinGoogle, clearErrorMessage } = useContext(Context);
+  const { state, signin, signinPassword, signinGoogle, clearErrorMessage } = useContext(AuthContext);
   const [weblogin, setWeblogin] = useState(false);
 
   const actionOnFocus= () => {
@@ -31,6 +31,9 @@ const SigninScreen = () => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <NavigationEvents onWillFocus={actionOnFocus} />
+      <ImageBackground
+        style={styles.backgroundcontainer}
+        source={require('../img/image-background.jpg')}>
       <AuthForm
         headerText="Sign In"
         subHeaderText1={(weblogin) ? "User your web site login." :""}
@@ -43,6 +46,7 @@ const SigninScreen = () => {
         signinGoogle={signinGoogle}
         submitButtonText="Sign In"
       />
+      </ImageBackground>
     </KeyboardAvoidingView>
   );
 };
@@ -58,6 +62,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     marginBottom: 40,
+  },
+  backgroundcontainer: {
+    flex: 1,
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+  },
+  authform:{
+    opacity: 0
   }
 });
 

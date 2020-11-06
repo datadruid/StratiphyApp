@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, Image, View, ActivityIndicator } from 'react-native';
-import { Text, Button, Input  } from 'react-native-elements';
 import { GoogleSocialButton } from "react-native-social-buttons";
 import {GoogleSignin} from 'react-native-google-signin';
 import Spacer from './Spacer';
 import NavLink from '../components/NavLink';
+import { Button, Text, Input } from '@ui-kitten/components';
+import { ThemeContext } from '../theme-context';
 
 GoogleSignin.configure({
   webClientId: '1060831970790-vfh908lm2mvd0hr747qblplq1f8ebj99.apps.googleusercontent.com',
@@ -18,6 +19,8 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [indicator, setIndicator] = useState(false);
+
+  const themeContext = React.useContext(ThemeContext);
 
   const googleSignIn = async () => {
     try {
@@ -38,19 +41,19 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
   }
 
   return (
-    <View style={styles.container}>
-    <Image style={styles.image} source={require('../img/stratiphycircle.png')} />
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Image style={styles.image} source={require('../img/stratiphyline.png')} />
       <Spacer>
-        <Text h2>{headerText}</Text>
+        <Text style={styles.text} category='s1' status='default'>{headerText}</Text>
       </Spacer>
       {subHeaderText1 ? (
       <Spacer>
-        <Text h4>{subHeaderText1}</Text>
+        <Text style={styles.text} category='s2' status='default'>{subHeaderText1}</Text>
       </Spacer>
       ) : null}
       {subHeaderText2 ? (
       <Spacer>
-        <Text h4>{subHeaderText2}</Text>
+        <Text style={styles.text} category='s2' status='default'>{subHeaderText2}</Text>
       </Spacer>
         ) : null}
       {weblogin ? (
@@ -62,7 +65,8 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
         </>
        ) : null }
       <ActivityIndicator size="large" color="blue" animating={indicator} />
-      <Input
+      <Input 
+      style={styles.input}
         label="Email"
         value={email}
         onChangeText={(value) => { setEmail(value.trim()) }}
@@ -70,7 +74,8 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
         autoCorrect={false}
       />
       {(showName || weblogin) ? (
-        <Input
+        <Input 
+        style={styles.input}
         label="Name"
         value={name}
         onChangeText={setName}
@@ -95,13 +100,12 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
         <Text style={styles.errorMessage}>{errorMessage}</Text>
       ) : null}
       <Spacer>
-        <Button
-          title={submitButtonText}
+        <Button style={{ marginVertical: 4 }}
           onPress={() => {
             setIndicator(!indicator);
             onSubmit({ email, name, password })
           }}
-        />
+        >{submitButtonText}</Button>
       </Spacer>
       <Spacer>
         <NavLink
@@ -126,9 +130,12 @@ const styles = StyleSheet.create({
     marginTop: 15
   },
   image: {
-    justifyContent : "center",
-    width: 150, 
-    height: 150
+    width: 200, 
+    height: 100
+  },
+  input:{
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderColor: 'rgba(255, 255, 255, 0.2)'
   }
 });
 

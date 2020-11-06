@@ -1,13 +1,16 @@
-import React from 'react';
+import React , { useContext, useState } from 'react';
 import { SafeAreaView } from 'react-navigation';
-import { View, StyleSheet, Text, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, Text, Dimensions, ScrollView } from 'react-native';
+import { Context as StrategyContext } from '../context/StrategyContext';
+
 import Spacer from '../components/Spacer';
 import {
   LineChart,
   PieChart,
   BarChart
 } from "react-native-chart-kit";
-import { Context as StrategyContext } from '../context/StrategyContext';
+
+
 
 const screenWidth = Dimensions.get("window").width;
 const chartConfig = {
@@ -23,7 +26,7 @@ const chartConfig = {
 };
 
 const StrategyListScreen = ({ navigation }) => {
-  const { state, listStrategies, clearErrorMessage } = useContext(AuthContext);
+  //const { state, listStrategies, clearErrorMessage } = useContext(StrategyContext);
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
       <Text style={{ fontSize: 48 }}>Strategies</Text>

@@ -10,9 +10,11 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@eva-design/eva": "^2.0.0",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@sentry/react-native": "^1.9.0",
+    "@ui-kitten/components": "^5.0.0",
     "axios": "^0.20.0",
     "jwt-decode": "^3.0.0",
     "react": "16.13.1",

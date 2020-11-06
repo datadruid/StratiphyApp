@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Text, Button, Input  } from 'react-native-elements';
-import NavLink from '../components/NavLink';
+import { View, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
+import { Text } from '@ui-kitten/components';
+
 import { NavigationEvents } from 'react-navigation';
 import Spacer from '../components/Spacer';
 import CodeSpacer from '../components/CodeSpacer';
@@ -18,17 +18,21 @@ const SigninCodeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <NavigationEvents onWillFocus={clearErrorMessage} />
-       <Image style={styles.image} source={require('../img/stratiphycircle.png')} />
+      <ImageBackground
+        style={styles.backgroundcontainer}
+        source={require('../img/image-background.jpg')}>
+      <View style={styles.formcontainer}>
+       <Image style={styles.image} source={require('../img/stratiphyline.png')} />
        <Spacer>
-        <Text h1>Enter Code</Text>
+        <Text style={styles.text} category='s1' status='default'>Enter Code</Text>
       </Spacer>
       <Spacer>
-        <Text h4 style={styles.h4}>To continue, enter the code from the email we just sent you:</Text>
+        <Text style={styles.text} category='s1' status='default'>To continue, enter the code from the email we just sent you:</Text>
       </Spacer>
       <CodeInput
             borderType='underline'
-            activeColor='black'
-            inactiveColor='black'
+            activeColor='white'
+            inactiveColor='white'
             codeLength={6}
             space={8}
             size={38}
@@ -49,7 +53,9 @@ const SigninCodeScreen = ({ navigation }) => {
         <TouchableOpacity style={styles.nav} onPress={() => navigation.goBack(null)}>
           <Text style={styles.link}>change email address</Text>
       </TouchableOpacity>
-      ) : null}
+      ) : null} 
+      </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -60,17 +66,19 @@ SigninCodeScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent : "center",
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 70,
+  },
+  formcontainer:{  
+    marginTop: 100,
+    marginBottom: 100,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   image: {
-    justifyContent : "center",
-    width: 150, 
-    height: 150
-  },
-  h4:{
-    textAlign : "center",
+    width: 200, 
+    height: 100
   },
   nav:{
       marginTop: 100
@@ -85,6 +93,14 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 15
   },
+  backgroundcontainer: {
+    flex: 1,
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+  },
+  authform:{
+    opacity: 0
+  }
 });
 
 export default SigninCodeScreen;

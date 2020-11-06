@@ -1,7 +1,12 @@
 import React from 'react';
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider } from '@ui-kitten/components';
+import { default as theme } from './src/theme.json';
+import { ThemeContext } from './src/theme-context';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+
 
 import AccountScreen from './src/screens/AccountScreen';
 import SigninScreen from './src/screens/SigninScreen';
@@ -58,13 +63,22 @@ const switchNavigator = createSwitchNavigator({
 const App = createAppContainer(switchNavigator);
 
 export default () => {
+  // const [theme, setTheme] = React.useState('light');
+
+  // const toggleTheme = () => {
+  //   const nextTheme = theme === 'light' ? 'dark' : 'light';
+  //   setTheme(nextTheme);
+  // };
+
   return (
-    <AuthProvider>
-      <App 
-      ref={(navigator) => {
-        setNavigator(navigator);
-      }}
-      />
-    </AuthProvider>
+      <AuthProvider>
+        <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
+        <App 
+        ref={(navigator) => {
+          setNavigator(navigator);
+        }}
+        />
+        </ApplicationProvider>
+      </AuthProvider>
   );
 };
