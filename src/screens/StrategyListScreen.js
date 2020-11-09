@@ -8,14 +8,14 @@ import { LineChart } from "react-native-chart-kit";
 
 
 const chartConfig = {
-  backgroundColor: "#1F2225",
-  backgroundGradientFrom: "#1F2225",
-  backgroundGradientTo: "#1F2225",
+  backgroundColor: "none",
+  backgroundGradientFrom: "none",
+  backgroundGradientTo: "none",
   decimalPlaces: 2, // optional, defaults to 2dp
   color: (opacity = 1) => `rgba(51, 255, 195, ${opacity})`,
   labelColor: (opacity = 1) => `rgba(51, 255, 195, ${opacity})`,
   style: {
-    borderRadius: 16
+    borderRadius: 0
   }
 };
 
@@ -23,30 +23,16 @@ const StrategyListScreen = ({ navigation }) => {
   const screenWidth = Dimensions.get("window").width;
   const { state, listStrategies, clearErrorMessage } = useContext(StrategyContext);
 
-  useEffect(async () => {
-    listStrategies();
+  useEffect( () => {
+     listStrategies();
   }, []);
 
-  const renderItemHeader = (headerProps, info) => (
-    <View {...headerProps}>
-      <Text category='h6'>
-        {info.item.title}
-      </Text>
-    </View>
-  );
-
-  const renderItemFooter = (footerProps, info) => (
-    <Text {...footerProps}>
-      {info.item.title}
-    </Text>
-  );
 
   const renderItem = (info) => (
-    <Card
-      style={styles.item}
-      status='basic'
-      header={headerProps => renderItemHeader(headerProps, info)}
-      footer={footerProps => renderItemFooter(footerProps, info)}>
+    <View>
+         <Text style={styles.text} category='s1' status='default'>
+      {info.item.title}
+    </Text>
       <LineChart
       data={{
         labels: ["January", "February", "March", "April", "May", "June"],
@@ -73,16 +59,16 @@ const StrategyListScreen = ({ navigation }) => {
       bezier
       style={{
         marginVertical: 8,
-        borderRadius: 10,
-        margin: 10
+        borderRadius: 0,
+        margin: 0
       }}
     />
-    </Card>
+    </View>
   );
 
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
-      <Layout>
+      <Layout style={styles.layoutcontainer}>
       <Text tyle={styles.text} category='h1' status='default'>Strategies</Text>
       <List
       style={styles.container}
@@ -102,7 +88,24 @@ StrategyListScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
-
+  layoutcontainer: {
+    height: '100%'
+  },
+  topContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  card: {
+    flex: 1,
+    margin: 2,
+  },
+  footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  footerControl: {
+    marginHorizontal: 2,
+  },
 });
 
 export default StrategyListScreen;

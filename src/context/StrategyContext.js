@@ -16,7 +16,6 @@ const strategyReducer = (state, action) => {
   }
 };
 
-
 const clearErrorMessage = dispatch => () => {
   dispatch({ type: 'clear_error_message' });
 };
@@ -25,8 +24,11 @@ const listStrategies = dispatch => async () => {
   const token = await getToken();
   if (token) {
       try{
-        //const response = await authApi.get('/strategies');
-        //console.log(response.data);
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        const response = await authApi.get('/strategies', config);
+        console.log(response.data);
         
         //dispatch({ type: 'list_strategies', payload: response.data });
         const testData = [
