@@ -16,9 +16,9 @@ const SignupScreen = ({ navigation }) => {
         source={require('../img/image-background.jpg')}>
       <NavigationEvents onWillFocus={clearErrorMessage} />
       <AuthForm style={styles.authform}
-        headerText="Investing made for everyone"
-        subHeaderText1="Set your investment preferences"
-        subHeaderText2="Test historic performance"
+        headerText="Sign Up"//"Investing made for everyone"
+        subHeaderText1=""//"Set your investment preferences"
+        subHeaderText2=""//"Test historic performance"
         errorMessage={state.errorMessage}
         submitButtonText="Join Now"
         showName = "showName"
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    marginBottom:30
+    marginBottom: 0
   },
   backgroundcontainer: {
     flex: 1,

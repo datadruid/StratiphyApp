@@ -46,16 +46,16 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
       <Spacer>
         <Text style={styles.text} category='s1' status='default'>{headerText}</Text>
       </Spacer>
+      <Spacer>
       {subHeaderText1 ? (
-      <Spacer>
         <Text style={styles.text} category='s2' status='default'>{subHeaderText1}</Text>
-      </Spacer>
       ) : null}
-      {subHeaderText2 ? (
-      <Spacer>
-        <Text style={styles.text} category='s2' status='default'>{subHeaderText2}</Text>
       </Spacer>
+      <Spacer>
+      {subHeaderText2 ? (
+        <Text style={styles.text} category='s2' status='default'>{subHeaderText2}</Text>
         ) : null}
+        </Spacer>
       {weblogin ? (
         <>
         <Spacer>
@@ -82,7 +82,7 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
         autoCapitalize="words"
         autoCorrect={false}
       />
-      ) : null}
+      ) : <Spacer />}
       {weblogin ? (
         <Input
         style={styles.input}
@@ -94,7 +94,7 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
         secureTextEntry={true}
         autoCorrect={false}
       />
-      ) : null}
+      ) : <Spacer />}
       <Spacer />
       {errorMessage ? (
         <Text style={styles.errorMessage}>{errorMessage}</Text>
@@ -136,6 +136,9 @@ const styles = StyleSheet.create({
   input:{
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     borderColor: 'rgba(255, 255, 255, 0.2)'
+  },
+  text: {
+    color: "#001C42"
   }
 });
 

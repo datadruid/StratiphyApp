@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    marginBottom: 40,
+    marginBottom: 0,
   },
   backgroundcontainer: {
     flex: 1,
