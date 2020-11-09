@@ -72,7 +72,7 @@ export default () => {
 
   return (
       <AuthProvider>
-        <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
+        <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
         <App 
         ref={(navigator) => {
           setNavigator(navigator);

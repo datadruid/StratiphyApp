@@ -8,12 +8,16 @@ const NavLink = ({ navigation, text, routeName }) => {
   return (
     <TouchableOpacity onPress={() => navigation.navigate(routeName)}>
       <Spacer>
-        <Text h2>{text}</Text>
+        <Text style={styles.text}>{text}</Text>
       </Spacer>
     </TouchableOpacity>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  text:{
+    color: 'white'
+  }
+});
 
 export default withNavigation(NavLink);
