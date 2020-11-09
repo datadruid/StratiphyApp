@@ -1,16 +1,16 @@
 import createDataContext from './createDataContext';
-import authApi from '../api/auth';
-import { navigate } from '../navigationRef';
 import { getToken } from '../storage/tokenStorage'
 
-const strategyReducer = (state, action) => {
+const API_KEY = '29c6d080dab360dd0b5d73eb6e28936e';
+
+const sharePriceReducer = (state, action) => {
   switch (action.type) {
     case 'add_error':
       return {...state, errorMessage : action.payload };
     case 'clear_error_message':
         return { ...state, errorMessage: '' };
     case 'list_strategies':
-      return { errorMessage: '', strategies: action.payload };
+      return { errorMessage: '', token: action.payload };
     default:
       return state;
   }
@@ -21,19 +21,12 @@ const clearErrorMessage = dispatch => () => {
   dispatch({ type: 'clear_error_message' });
 };
 
-const listStrategies = dispatch => async () => {
+const listPrices = dispatch => async () => {
   const token = await getToken();
   if (token) {
       try{
-        //const response = await authApi.get('/strategies');
-        //console.log(response.data);
-        
-        //dispatch({ type: 'list_strategies', payload: response.data });
-        const testData = [
-          {title: 'one'},
-          {title:'two'}
-        ];
-        dispatch({ type: 'list_strategies', payload: testData });
+    const response = await authApi.get('/strategies');
+    dispatch({ type: 'list_strategies', payload: response.data });
       } catch(err) {
         dispatch({ type: 'add_error', payload: err.data.error });
       }
@@ -43,7 +36,7 @@ const listStrategies = dispatch => async () => {
 };
 
 export const { Context, Provider } = createDataContext(
-  strategyReducer,
-  {listStrategies, clearErrorMessage},
-  { strategies: [], errorMessage: '' }
+    sharePriceReducer,
+  {listPrices, clearErrorMessage},
+  { sharePrices: [], errorMessage: '' }
 );

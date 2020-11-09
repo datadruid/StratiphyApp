@@ -16,6 +16,8 @@ import StrategyCreateScreen from './src/screens/StrategyCreateScreen';
 import StrategyDetailScreen from './src/screens/StrategyDetailScreen';
 import StrategyListScreen from './src/screens/StrategyListScreen';
 import { Provider as AuthProvider } from './src/context/AuthContext';
+import { Provider as StrategyProvider } from './src/context/StrategyContext';
+import { Provider as SharePriceProvider } from './src/context/SharePriceContext';
 import { setNavigator } from './src/navigationRef';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -72,13 +74,17 @@ export default () => {
 
   return (
       <AuthProvider>
-        <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
-        <App 
-        ref={(navigator) => {
-          setNavigator(navigator);
-        }}
-        />
-        </ApplicationProvider>
+        <StrategyProvider>
+          <SharePriceProvider>
+            <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
+                <App 
+                ref={(navigator) => {
+                  setNavigator(navigator);
+                }}
+                />
+              </ApplicationProvider>
+            </SharePriceProvider>
+        </StrategyProvider>
       </AuthProvider>
   );
 };
