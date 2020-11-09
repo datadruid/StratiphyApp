@@ -41,7 +41,7 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={styles.container}>
     <Image style={styles.image} source={require('../img/stratiphyline.png')} />
       <Spacer>
         <Text style={styles.text} category='s1' status='default'>{headerText}</Text>
@@ -64,7 +64,7 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
         <Spacer><Text style={{ fontSize: 24 }}>--- or ---</Text></Spacer>
         </>
        ) : null }
-      <ActivityIndicator size="large" color="blue" animating={indicator} />
+      <ActivityIndicator size="large" color="white" animating={indicator} />
       <Input 
       style={styles.input}
         label="Email"
@@ -122,6 +122,8 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent : "center",
     alignItems: 'center',
+    width: '80%',
+    alignSelf: 'center'
   },
   errorMessage: {
     fontSize: 16,

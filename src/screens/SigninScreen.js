@@ -34,7 +34,7 @@ const SigninScreen = () => {
       <ImageBackground
         style={styles.backgroundcontainer}
         source={require('../img/image-background.jpg')}>
-      <AuthForm
+      <AuthForm style={styles.authform}
         headerText="Sign In"
         subHeaderText1={(weblogin) ? "User your web site login." :""}
         linkText="Dont have an account? Sign up here"

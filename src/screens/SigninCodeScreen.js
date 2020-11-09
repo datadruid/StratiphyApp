@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { Text } from '@ui-kitten/components';
 
@@ -14,6 +14,7 @@ const SigninCodeScreen = ({ navigation }) => {
     const auth_id = navigation.getParam('auth_id');
     const googleCode = navigation.getParam('code');
     const { state, verifyCode, signin, clearErrorMessage } = useContext(AuthContext);
+    const inputRef = useRef(null);
 
   return (
     <View style={styles.container}>
@@ -23,13 +24,19 @@ const SigninCodeScreen = ({ navigation }) => {
         source={require('../img/image-background.jpg')}>
       <View style={styles.formcontainer}>
        <Image style={styles.image} source={require('../img/stratiphyline.png')} />
+       <Spacer/>
+       <Spacer/>
        <Spacer>
         <Text style={styles.text} category='s1' status='default'>Enter Code</Text>
       </Spacer>
-      <Spacer>
-        <Text style={styles.text} category='s1' status='default'>To continue, enter the code from the email we just sent you:</Text>
+      <Spacer/>
+      <Spacer >
+        <View style={{width: '60%'}}>
+            <Text style={styles.text} category='s1' status='default'>To continue, enter the code from the email we just sent you:</Text>
+        </View>
       </Spacer>
       <CodeInput
+            ref={inputRef }
             borderType='underline'
             activeColor='white'
             inactiveColor='white'
@@ -44,7 +51,10 @@ const SigninCodeScreen = ({ navigation }) => {
         {state.errorMessage ? (
         <Text style={styles.errorMessage}>{state.errorMessage}</Text>
       ) : null}
-       <TouchableOpacity style={styles.nav} onPress={(code) => signin({ email })}>
+       <TouchableOpacity style={styles.nav} onPress={(code) => {
+          inputRef.current.clear();
+          signin({ email });
+         }}>
       <Spacer>
         <Text style={styles.link}>resend email</Text>
       </Spacer>
@@ -71,7 +81,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   formcontainer:{  
-    marginTop: 100,
+    width: '100%',
+    marginTop: 200,
     marginBottom: 100,
     justifyContent: 'center',
     alignItems: 'center'
@@ -84,7 +95,7 @@ const styles = StyleSheet.create({
       marginTop: 100
   },
   link: {
-    color: 'blue',
+    color: 'white',
     textAlign: "center"
   },
   errorMessage: {
@@ -94,9 +105,8 @@ const styles = StyleSheet.create({
     marginTop: 15
   },
   backgroundcontainer: {
+    width: '100%',
     flex: 1,
-    paddingVertical: 24,
-    paddingHorizontal: 16,
   },
   authform:{
     opacity: 0
