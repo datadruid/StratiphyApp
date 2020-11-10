@@ -8,41 +8,18 @@ const SigninScreen = () => {
   const { state, signin, signinPassword, signinGoogle, clearErrorMessage } = useContext(AuthContext);
   const [weblogin, setWeblogin] = useState(false);
 
-  const actionOnFocus= () => {
-    () => {clearErrorMessage};
-   askAboutWebLoginAlert();
-  };
-  
-  const askAboutWebLoginAlert = () =>{
-   Alert.alert(
-     "Link your account",
-     "Do you have a web account, tap Yes to link to this mobile account.",
-     [
-       {
-         text: "No I don't",
-         onPress: () => {setWeblogin(false) },
-         style: "cancel"
-       },
-       { text: "Yes link it", onPress: () => {setWeblogin(true)}}
-     ],
-     { cancelable: false }
-   )};
-
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <NavigationEvents onWillFocus={actionOnFocus} />
       <ImageBackground
         style={styles.backgroundcontainer}
         source={require('../img/image-background.jpg')}>
       <AuthForm style={styles.authform}
         headerText="Sign In"
-        subHeaderText1={(weblogin) ? "User your web site login." :""}
-        linkText="Dont have an account? Sign up here"
-        routeName="Signup"
+        subHeaderText1="User your web site login."
         errorMessage={state.errorMessage}
-        subHeaderText1={(weblogin) ? "User your web site login." :""}
-        onSubmit={(weblogin) ? signinPassword : signin}
-        weblogin={weblogin}
+        subHeaderText1="User your web site login."
+        onSubmit={signinPassword}
+        weblogin={true}
         signinGoogle={signinGoogle}
         submitButtonText="Sign In"
       />

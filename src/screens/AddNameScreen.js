@@ -4,8 +4,9 @@ import { NavigationEvents } from 'react-navigation';
 import { Context as AuthContext } from '../context/AuthContext';
 import AuthForm from '../components/AuthForm';
 
-const SignupScreen = ({ navigation }) => {
-  const { state, signup } = useContext(AuthContext);
+const AddNameScreen = ({ navigation }) => {
+    const isApproved = navigation.getParam('isApproved');
+    const { state, addname, clearErrorMessage } = useContext(AuthContext);
 
   return (
     <KeyboardAvoidingView 
@@ -14,15 +15,16 @@ const SignupScreen = ({ navigation }) => {
        <ImageBackground
         style={styles.backgroundcontainer}
         source={require('../img/image-background.jpg')}>
+      <NavigationEvents onWillFocus={clearErrorMessage} />
       <AuthForm style={styles.authform}
+        isApproved={isApproved}
         headerText=""
-        subHeaderText1=""
-        subHeaderText2=""
+        subHeaderText1="Just so we know what to call you."
+        subHeaderText2="Please let us know your name."
         errorMessage={state.errorMessage}
         submitButtonText="Next"
-        showName = ""
-        routeName="Signin"
-        onSubmit={signup}
+        showName = "true"
+        onSubmit={addname}
       />
       </ImageBackground>
     </KeyboardAvoidingView>
@@ -31,7 +33,7 @@ const SignupScreen = ({ navigation }) => {
 
 
 
-SignupScreen.navigationOptions = () => {
+AddNameScreen.navigationOptions = () => {
   return {
     header: () => false,
   };
@@ -53,4 +55,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SignupScreen;
+export default AddNameScreen;

@@ -12,7 +12,9 @@ const SigninCodeScreen = ({ navigation }) => {
     const email = navigation.getParam('email');
     const password = navigation.getParam('password');
     const auth_id = navigation.getParam('auth_id');
-    const googleCode = navigation.getParam('code');
+    const isApproved = navigation.getParam('isApproved');
+    const hasName = navigation.getParam('hasName');
+
     const { state, verifyCode, signin, clearErrorMessage } = useContext(AuthContext);
     const inputRef = useRef(null);
 
@@ -45,7 +47,7 @@ const SigninCodeScreen = ({ navigation }) => {
             size={38}
             codeInputStyle={{ fontSize: 30, fontWeight: '400' }}
             inputPosition='left'
-            onFulfill={(code) => verifyCode({ code, email, password, googleCode, auth_id })}
+            onFulfill={(code) => verifyCode({ code, email, password, auth_id, isApproved, hasName })}
         />
         <CodeSpacer/>
         {state.errorMessage ? (
@@ -53,7 +55,7 @@ const SigninCodeScreen = ({ navigation }) => {
       ) : null}
        <TouchableOpacity style={styles.nav} onPress={(code) => {
           inputRef.current.clear();
-          signin({ email });
+          signup({ email });
          }}>
       <Spacer>
         <Text style={styles.link}>resend email</Text>

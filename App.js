@@ -12,6 +12,7 @@ import AccountScreen from './src/screens/AccountScreen';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import CodeScreen from './src/screens/SigninCodeScreen';
+import AddNameScreen from './src/screens/AddNameScreen';
 import StrategyCreateScreen from './src/screens/StrategyCreateScreen';
 import StrategyDetailScreen from './src/screens/StrategyDetailScreen';
 import StrategyListScreen from './src/screens/StrategyListScreen';
@@ -54,6 +55,7 @@ const switchNavigator = createSwitchNavigator({
     Signup: SignupScreen,
     Signin: SigninScreen,
     CodeScreen: CodeScreen,
+    AddName: AddNameScreen,
   }),
   mainFlow: createBottomTabNavigator({
     strategyListFlow,

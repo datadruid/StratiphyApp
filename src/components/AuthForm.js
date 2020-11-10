@@ -3,7 +3,6 @@ import { StyleSheet, Image, View, ActivityIndicator } from 'react-native';
 import { GoogleSocialButton } from "react-native-social-buttons";
 import {GoogleSignin} from 'react-native-google-signin';
 import Spacer from './Spacer';
-import NavLink from '../components/NavLink';
 import { Button, Text, Input } from '@ui-kitten/components';
 import { ThemeContext } from '../theme-context';
 
@@ -14,9 +13,10 @@ GoogleSignin.configure({
      });
 
 
-const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, onSubmit, submitButtonText, showName, linkText, routeName, weblogin, signinGoogle }) => {
+const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, onSubmit, isApproved, submitButtonText, showName, weblogin, signinGoogle }) => {
   const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
   const [indicator, setIndicator] = useState(false);
 
@@ -26,10 +26,11 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
     try {
        await GoogleSignin.hasPlayServices();
        const userInfo = await GoogleSignin.signIn();
-       let name = userInfo.user.name;
+       let firstName = userInfo.user.firstName;
+       let lastName = userInfo.user.lastName;
        let code = userInfo.serverAuthCode;
        let email = userInfo.user.email;
-       signinGoogle({email, name, code});
+       signinGoogle({email, firstName, lastName, code});
     } catch (error) {
         console.log(error)
     }
@@ -65,20 +66,29 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
         </>
        ) : null }
       <ActivityIndicator size="large" color="white" animating={indicator} />
+      {showName ? 
       <Input 
       style={styles.input}
+      label="First Name"
+      value={firstName}
+      onChangeText={setFirstName}
+      autoCapitalize="words"
+      autoCorrect={false}
+    />
+      : <Input 
+        style={styles.input}
         label="Email"
         value={email}
         onChangeText={(value) => { setEmail(value.trim()) }}
         autoCapitalize="none"
         autoCorrect={false}
-      />
-      {(showName || weblogin) ? (
+      />}
+      {showName ? (
         <Input 
         style={styles.input}
-        label="Name"
-        value={name}
-        onChangeText={setName}
+        label="Last Name"
+        value={lastName}
+        onChangeText={setLastName}
         autoCapitalize="words"
         autoCorrect={false}
       />
@@ -94,7 +104,7 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
         secureTextEntry={true}
         autoCorrect={false}
       />
-      ) : <Spacer />}
+      ) : null }
       <Spacer />
       {errorMessage ? (
         <Text style={styles.errorMessage}>{errorMessage}</Text>
@@ -103,15 +113,9 @@ const AuthForm = ({ headerText, subHeaderText1, subHeaderText2, errorMessage, on
         <Button style={{ marginVertical: 4 }}
           onPress={() => {
             setIndicator(!indicator);
-            onSubmit({ email, name, password })
+            onSubmit({ email, firstName, lastName, isApproved })
           }}
         >{submitButtonText}</Button>
-      </Spacer>
-      <Spacer>
-        <NavLink
-          routeName={routeName}
-          text={linkText}
-        />
       </Spacer>
     </View>
   );
@@ -140,7 +144,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.2)'
   },
   text: {
-    color: "#001C42"
+    color: "white"
   }
 });
 
