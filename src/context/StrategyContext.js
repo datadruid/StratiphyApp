@@ -28,14 +28,14 @@ const listStrategies = dispatch => async () => {
           headers: { Authorization: `Bearer ${token}` }
         };
         const response = await authApi.get('/strategies', config);
-        console.log(response.data);
+
         
-        //dispatch({ type: 'list_strategies', payload: response.data });
-        const testData = [
-          {title: 'one'},
-          {title:'two'}
-        ];
-        dispatch({ type: 'list_strategies', payload: testData });
+        dispatch({ type: 'list_strategies', payload: response.data });
+        // const testData = [
+        //   {title: 'one'},
+        //   {title:'two'}
+        // ];
+        // dispatch({ type: 'list_strategies', payload: testData });
       } catch(err) {
         dispatch({ type: 'add_error', payload: err.data.error });
       }

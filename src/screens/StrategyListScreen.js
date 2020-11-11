@@ -29,13 +29,15 @@ const StrategyListScreen = ({ navigation }) => {
 
 
   const renderItem = (info) => (
-    <View>
-         <Text style={styles.text} category='s1' status='default'>
-      {info.item.title}
-    </Text>
-      <LineChart
+    <Card style={styles.card}>
+      <View style={styles.box2}>
+        <View style={styles.box2}>
+          <Text style={styles.text} category='s1' status='default'>{info.item.strategyName}</Text>
+          <Text style={styles.text} category='s1' status='default'>{info.item.strategyDescription}</Text>
+        </View>
+        <LineChart
       data={{
-        labels: ["January", "February", "March", "April", "May", "June"],
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
         datasets: [
           {
             data: [
@@ -50,7 +52,7 @@ const StrategyListScreen = ({ navigation }) => {
                     }
         ]
       }}
-      width={screenWidth} // from react-native
+      width={350} // from react-native
       height={220}
       yAxisLabel="£"
       //yAxisSuffix="k"
@@ -58,18 +60,24 @@ const StrategyListScreen = ({ navigation }) => {
       chartConfig={chartConfig}
       bezier
       style={{
+        flex: 1,
         marginVertical: 8,
         borderRadius: 0,
         margin: 0
       }}
     />
-    </View>
+        <View style={styles.box2}>
+          <Text style={styles.text} category='s1' status='default'>{`status: ${info.item.status}`}</Text>
+          <Text style={styles.text} category='s1' status='default'>{`last run:${info.item.lastRun}`}</Text>
+        </View>
+      </View>
+    </Card>
   );
 
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
       <Layout style={styles.layoutcontainer}>
-      <Text tyle={styles.text} category='h1' status='default'>Strategies</Text>
+      <Text tyle={styles.text} category='h1' status='default'>Your Strategies</Text>
       <List
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
@@ -97,9 +105,21 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
-    margin: 2,
+    margin: 7,
+  },
+  box1:{
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  box2: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding:2
   },
   footerContainer: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
