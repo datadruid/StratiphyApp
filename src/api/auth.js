@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL:  'http://localhost:3000'//'https://datadruid.herokuapp.com'
+  baseURL:  'https://datadruid.herokuapp.com'
 });
