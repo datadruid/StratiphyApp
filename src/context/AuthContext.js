@@ -39,29 +39,30 @@ const tryLocalSignin = dispatch => async () => {
   }
 };
 
-const updateEmailPasswordUser = async (email, password) => {
+const updateEmailPasswordUser = dispatch => async (email, password, hasName) => {
   const token = await getToken();
-  const firstName = await getFirstName();
-  const lastName = await getLastName();
   const auth_id = await getAuth0Token(auth_id);
   if (token) {
     try {
       if(password) {
         const linkResponse = await authApi.post('/linkuseremail', { email, password }, {headers: { Authorization: `Bearer ${token}` }});
       }
-      const response = await authApi.post('/updateuser', { firstName, lastName, auth_id }, {headers: { Authorization: `Bearer ${token}` }});
-      //await removeAuth0Token();
-      //await removeName();
+      if(hasName){
+        navigate('StrategyList');
+      } else {
+        navigate('AddName');
+      }
     } catch (err){
-      throw new Error(err);
+      dispatch({
+        type: 'add_error',
+        payload: err.response.data.error
+      });
     }
   } 
 };
 
-const updateGoogleUser = async (googleCode) => {
+const updateGoogleUser = dispatch => async (googleCode, firstName, lastName) => {
   const token = await getToken();
-  const firstName = await getFirstName();
-  const lastName = await getLastName();
   const auth_id = await getAuth0Token(auth_id);
   if (token) {
     try {
@@ -72,12 +73,15 @@ const updateGoogleUser = async (googleCode) => {
       //await removeAuth0Token();
       //await removeName();
     } catch (err){
+      console.log(err);
       throw new Error(err);
     }
   } 
+  navigate('StrategyList');
 };
 
 const verifyCode = dispatch => async ({ code, email, auth_id, isApproved, hasName }) => {
+  const token = await getToken();
   try {
     if (!code) {
       dispatch({
@@ -90,19 +94,15 @@ const verifyCode = dispatch => async ({ code, email, auth_id, isApproved, hasNam
     await setRefreshToken(response.data.refresh_token);
     await setToken(response.data.id_token);
     await setAuth0Token(auth_id);
-    // if(googleCode) {
-    //   await updateGoogleUser(googleCode);
-    // } else if(email && password) {
-    //   await updateEmailPasswordUser(email, password);
-    // }
     dispatch({
       type: 'signup',
       payload: response.data.id_token
     });
-    if(!hasName) {
-      navigate('AddName',{ isApproved });
-    } else if (isApproved) {
-      navigate('SignIn');
+    if (isApproved) {
+      console.log('sign in');
+      navigate('Signin', { hasName });
+    } else if(!hasName) {
+      navigate('AddName');
     } else {
       navigate('StrategyList');
     }
@@ -117,7 +117,7 @@ const verifyCode = dispatch => async ({ code, email, auth_id, isApproved, hasNam
 
 };
 
-const addname = dispatch => async ({ firstName, lastName, isApproved }) => {
+const addname = dispatch => async ({ firstName, lastName }) => {
   try {
     if (!firstName) {
       dispatch({
@@ -135,12 +135,14 @@ const addname = dispatch => async ({ firstName, lastName, isApproved }) => {
     }
     await setFirstName(firstName);
     await setLastName(lastName);
-    if(isApproved){
-      navigate('Signin');
-    } else {
-      // need to add to Realm
+    const token = await getToken();
+    const auth_id = await getAuth0Token();
+    if (token) {
+        const response = await authApi.post('/updateuser', { firstName, lastName, auth_id }, {headers: { Authorization: `Bearer ${token}` }});
+        //await removeAuth0Token();
+        //await removeName();
+      } 
       navigate('StrategyList');
-    }
     
   } catch (err) {
     running = false;
@@ -152,73 +154,23 @@ const addname = dispatch => async ({ firstName, lastName, isApproved }) => {
   }
 };
 
-const signinPassword = dispatch => async ({ email, password }) => {
-  try {
-    if (!email) {
-      dispatch({
-        type: 'add_error',
-        payload: 'You must provide an email.'
-      });
-      return;
-    }
-    if (!name) {
-      dispatch({
-        type: 'add_error',
-        payload: 'You must provide a name.'
-      });
-      return;
-    }
-    if (!password) {
-      dispatch({
-        type: 'add_error',
-        payload: 'You must provide a password.'
-      });
-      return;
-    }
-    let running = false;
+const repeatemail = dispatch => async ({ email }) => {
+  let running = false;
+  try{
     if(!running)
     {
       running = true;
-      const response = await authApi.post('/signinpassword', { email, password });
+      const signinResponse = await authApi.post('/signin', { email });
+      let userInfo = signinResponse.data;
       running = false;
-      navigate('CodeScreen', { email, password, auth_id: response.data._id });
     }
-    
   } catch (err) {
     running = false;
+    console.log(err);
     dispatch({
       type: 'add_error',
       payload: 'Something went wrong with sign up'
     });
-    throw new Error(err);
-  }
-};
-
-const signinGoogle = dispatch => async ({ email, code }) => {
-  try {
-    if (!code) {
-      dispatch({
-        type: 'add_error',
-        payload: 'Google Authentication error.'
-      });
-      return;
-    }
-    let running = false;
-    if(!running)
-    {
-      running = true;
-      const response = await authApi.post('/signingoogle', { email, code });
-      running = false;
-      navigate('CodeScreen', { email, code, auth_id: response.data._id });
-    }
-    
-  } catch (err) {
-    running = false;
-    dispatch({
-      type: 'add_error',
-      payload: 'Something went wrong with sign in'
-    });
-    throw new Error(err);
   }
 };
 
@@ -237,10 +189,10 @@ const signup = dispatch => async ({ email }) => {
 
     if(!running)
     {
+      running = true;
       const signinResponse = await authApi.post('/signin', { email });
       let userInfo = signinResponse.data;
       
-      console.log('get user status');
       const userStatusResponse = await authApi.post('/userstatus', 
       { 
         email: email, 
@@ -249,9 +201,8 @@ const signup = dispatch => async ({ email }) => {
 
       if(userStatusResponse.data)
       {
-        hasName=userStatusResponse.data.hasName;
+        hasName =userStatusResponse.data.hasFirstName;
         isApproved= userStatusResponse.data.isApproved;
-
         dispatch({
           type: 'set_approved',
           payload: userStatusResponse.data.isApproved
@@ -283,6 +234,6 @@ const signout = dispatch => async () => {
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  {signup, addname, signinPassword, signinGoogle, signout, verifyCode, tryLocalSignin, clearErrorMessage},
+  {signup, repeatemail, addname, updateEmailPasswordUser, updateGoogleUser, signout, verifyCode, tryLocalSignin, clearErrorMessage},
   { token: null, errorMessage: '', isApproved : false, hasName : false }
 );

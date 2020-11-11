@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { Text } from '@ui-kitten/components';
-
+import { ThemeContext } from '../theme-context';
 import { NavigationEvents } from 'react-navigation';
 import Spacer from '../components/Spacer';
 import CodeSpacer from '../components/CodeSpacer';
@@ -10,13 +10,14 @@ import CodeInput from 'react-native-code-input';
 
 const SigninCodeScreen = ({ navigation }) => {
     const email = navigation.getParam('email');
-    const password = navigation.getParam('password');
     const auth_id = navigation.getParam('auth_id');
     const isApproved = navigation.getParam('isApproved');
     const hasName = navigation.getParam('hasName');
 
-    const { state, verifyCode, signin, clearErrorMessage } = useContext(AuthContext);
+    const { state, verifyCode, repeatemail, clearErrorMessage } = useContext(AuthContext);
     const inputRef = useRef(null);
+
+    const themeContext = React.useContext(ThemeContext);
 
   return (
     <View style={styles.container}>
@@ -47,7 +48,7 @@ const SigninCodeScreen = ({ navigation }) => {
             size={38}
             codeInputStyle={{ fontSize: 30, fontWeight: '400' }}
             inputPosition='left'
-            onFulfill={(code) => verifyCode({ code, email, password, auth_id, isApproved, hasName })}
+            onFulfill={(code) => verifyCode({ code, email, auth_id, isApproved, hasName })}
         />
         <CodeSpacer/>
         {state.errorMessage ? (
@@ -55,7 +56,7 @@ const SigninCodeScreen = ({ navigation }) => {
       ) : null}
        <TouchableOpacity style={styles.nav} onPress={(code) => {
           inputRef.current.clear();
-          signup({ email });
+          repeatemail({ email });
          }}>
       <Spacer>
         <Text style={styles.link}>resend email</Text>
