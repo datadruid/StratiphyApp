@@ -9,15 +9,16 @@ const ResolveAuthScreen = () => {
     tryLocalSignin();
   }, []);
 
-  return (
-       <ImageBackground
-        style={styles.backgroundcontainer}
-        source={require('../img/image-background.jpg')}>
-      <View style={styles.container}>
+  // return (
+  //      <ImageBackground
+  //       style={styles.backgroundcontainer}
+  //       source={require('../img/image-background.jpg')}>
+  //     <View style={styles.container}>
     
-      </View>
-      </ImageBackground>
-  );
+  //     </View>
+  //     </ImageBackground>
+  // );
+  return null;
 };
 
 
