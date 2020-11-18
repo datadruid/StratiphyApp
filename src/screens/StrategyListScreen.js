@@ -1,117 +1,95 @@
 import React , { useContext, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-navigation';
-import { StyleSheet, Dimensions, View } from 'react-native';
+import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
 import { Layout, Card, List, Text } from '@ui-kitten/components';
 import { Context as StrategyContext } from '../context/StrategyContext';
+// import * as RNLocalize from "react-native-localize";
 
-import data from "../components/chart/data.json";
-import Chart, { size } from "../components/chart/Chart";
-import Values from "../components/chart/Values";
-import Line from "../components/chart/Line";
-import Label from "../components/chart/Label";
-import { Candle } from "../components/chart/Candle";
-import Content from "../components/chart/Content";
-import Header from "../components/chart/Header";
+import { LineChart } from "react-native-chart-kit";
 
-import { PanGestureHandler, State } from "react-native-gesture-handler";
-import Animated, {
-  add,
-  diffClamp,
-  eq,
-  modulo,
-  sub,
-} from "react-native-reanimated";
-import { onGestureEvent, useValues } from "react-native-redash/lib/module/v1";
+// console.log(RNLocalize.getLocales());
+// console.log(RNLocalize.getCurrencies());
 
-const candles = data.slice(0, 20);
-const getDomain = (rows: Candle[]): [number, number] => {
-  const values = rows.map(({ high, low }) => [high, low]).flat();
-  return [Math.min(...values), Math.max(...values)];
+const chartConfig = {
+  backgroundColor: "none",
+  backgroundGradientFrom: "none",
+  backgroundGradientTo: "none",
+  decimalPlaces: 2, // optional, defaults to 2dp
+  color: (opacity = 1) => `rgba(51, 255, 195, ${opacity})`,
+  labelColor: (opacity = 1) => `rgba(51, 255, 195, ${opacity})`,
+  style: {
+    borderRadius: 0
+  }
 };
-const domain = getDomain(candles);
 
 const StrategyListScreen = ({ navigation }) => {
-  //const screenWidth = Dimensions.get("window").width;
-  //const { state, listStrategies, clearErrorMessage } = useContext(StrategyContext);
+  const screenWidth = Dimensions.get("window").width;
+  const { state, listStrategies, clearErrorMessage } = useContext(StrategyContext);
 
-  // useEffect( () => {
-  //    listStrategies();
-  // }, []);
+  useEffect( () => {
+     listStrategies();
+  }, []);
 
-    const [x, y, state] = useValues(0, 0, State.UNDETERMINED);
-    const gestureHandler = onGestureEvent({
-      x,
-      y,
-      state,
-    });
-    const caliber = size / candles.length;
-    const translateY = diffClamp(y, 0, size);
-    const translateX = add(sub(x, modulo(x, caliber)), caliber / 2);
-    const opacity = eq(state, State.ACTIVE);
 
-  // const renderItem = (info) => (
-  //   <Card style={styles.card}>
-  //     <View style={styles.box2}>
-  //       <View style={styles.box2}>
-  //         <Text style={styles.text} category='s1' status='default'>{info.item.strategyName}</Text>
-  //         <Text style={styles.text} category='s1' status='default'>{info.item.strategyDescription}</Text>
-  //       </View>
-        
-  //       <View style={styles.box2}>
-  //         <Text style={styles.text} category='s1' status='default'>{`status: ${info.item.status}`}</Text>
-  //         <Text style={styles.text} category='s1' status='default'>{`last run:${info.item.lastRun}`}</Text>
-  //       </View>
-  //     </View>
-  //   </Card>
-  // );
+  const renderItem = (info) => (
+    <Card style={styles.card}
+    onPress={() => navigation.navigate('StrategyDetail', {item: info.item})}>
+      <View style={styles.box2}>
+        <View style={styles.box2}>
+          <Text style={styles.text} category='s1' status='default'>{info.item.strategyName}</Text>
+          <Text style={styles.text} category='s1' status='default'>{info.item.strategyDescription}</Text>
+        </View>
+        <LineChart
+      data={{
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        datasets: [
+          {
+            data: [
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10
+            ],color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`
+            ,strokeWidth: "2"
+                    }
+        ]
+      }}
+      width={350} // from react-native
+      height={220}
+      yAxisLabel="£"
+      //yAxisSuffix="k"
+      yAxisInterval={1} // optional, defaults to 1
+      chartConfig={chartConfig}
+      bezier
+      style={{
+        flex: 1,
+        marginVertical: 8,
+        borderRadius: 0,
+        margin: 0
+      }}
+    />
+        <View style={styles.box2}>
+          <Text style={styles.text} category='s1' status='default'>{`status: ${info.item.status}`}</Text>
+          <Text style={styles.text} category='s1' status='default'>{`last run:${info.item.lastRun}`}</Text>
+        </View>
+      </View>
+    </Card>
+  );
 
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
       <Layout style={styles.layoutcontainer}>
       <Text tyle={styles.text} category='h1' status='default'>Your Strategies</Text>
-      <View>
-      <Header />
-        <Animated.View style={{ opacity }} pointerEvents="none">
-          <Values {...{ candles, translateX, caliber }} />
-        </Animated.View>
-      </View>
-      <View>
-        <Chart {...{ candles, domain }} />
-          
-        <PanGestureHandler minDist={0} {...gestureHandler}>
-          <Animated.View style={StyleSheet.absoluteFill}>
-            <Animated.View
-              style={{
-                transform: [{ translateY }],
-                opacity,
-                ...StyleSheet.absoluteFillObject,
-              }}
-            >
-              <Line x={size} y={0} />
-            </Animated.View>
-            <Animated.View
-              style={{
-                transform: [{ translateX }],
-                opacity,
-                ...StyleSheet.absoluteFillObject,
-              }}
-            >
-              <Line x={0} y={size} />
-            </Animated.View>
-            {/* <Label y={translateY} {...{ size, domain, opacity }} /> */}
-          </Animated.View>
-        </PanGestureHandler>
+          <List
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
+          data={state.strategies}
+          renderItem={renderItem}
+        />
             
-
-      </View>
-      {/* <List
-      style={styles.container}
-      contentContainerStyle={styles.contentContainer}
-      data={state.strategies}
-      renderItem={renderItem}
-    /> */}
-        
-  </Layout>
+      </Layout>
     </SafeAreaView>
   );
 };
@@ -122,10 +100,6 @@ StrategyListScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "black",
-  },
   layoutcontainer: {
     height: '100%'
   },
