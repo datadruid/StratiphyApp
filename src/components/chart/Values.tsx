@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
+import { Layout, Text, StyleService, useStyleSheet } from '@ui-kitten/components';
 import Animated, {
   call,
   divide,
@@ -7,23 +8,21 @@ import Animated, {
   onChange,
   useCode,
 } from "react-native-reanimated";
-import * as Haptics from "expo-haptics";
+import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 import moment from "moment";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Candle } from "./Candle";
 import Row from "./Row";
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "black",
+const themedStyles = StyleService.create({
+  layout: {
+    
   },
   table: {
     flexDirection: "row",
     padding: 16,
   },
   date: {
-    color: "white",
     textAlign: "center",
     fontSize: 20,
     fontWeight: "500",
@@ -48,6 +47,11 @@ const formatValue = (value: number) => {
   return `$ ${formatInt(int)}.${formattedDec}`;
 };
 
+const hapticOptions = {
+  enableVibrateFallback: true,
+  ignoreAndroidSystemSettings: false
+};
+
 interface HeaderProps {
   translateX: Animated.Node<number>;
   caliber: number;
@@ -56,12 +60,13 @@ interface HeaderProps {
 
 export default ({ translateX, caliber, candles }: HeaderProps) => {
   const [{ date, open, close, high, low }, setCandle] = useState(candles[0]);
+  const styles = useStyleSheet(themedStyles);
   useCode(
     () =>
       onChange(
         translateX,
         call([floor(divide(translateX, caliber))], ([index]) => {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          ReactNativeHapticFeedback.trigger("impactLight", hapticOptions);
           setCandle(candles[index]);
         })
       ),
@@ -70,7 +75,7 @@ export default ({ translateX, caliber, candles }: HeaderProps) => {
   const diff = `${((close - open) * 100) / open}`;
   const change = close - open < 0 ? diff.substring(0, 5) : diff.substring(0, 4);
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.layout}>
       <View style={styles.table}>
         <View style={styles.column}>
           <Row label="Open" value={formatValue(open)} />
@@ -91,6 +96,6 @@ export default ({ translateX, caliber, candles }: HeaderProps) => {
       <Text style={styles.date}>
         {moment(date).format("h:mm MMM Do, YYYY")}
       </Text>
-    </SafeAreaView>
+    </View>
   );
 };

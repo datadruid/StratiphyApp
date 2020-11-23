@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Layout, Text } from '@ui-kitten/components';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const styles = StyleSheet.create({
@@ -13,11 +14,9 @@ const styles = StyleSheet.create({
   },
   tabActive: {
     borderBottomWidth: 1,
-    borderColor: "white",
     paddingBottom: 8,
   },
   tabLabelActive: {
-    color: "white",
     fontSize: 20,
   },
   tab: {
@@ -35,7 +34,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginHorizontal: 16,
     alignItems: "center",
-    backgroundColor: "#222324",
     borderRadius: 8,
     padding: 16,
   },
@@ -54,7 +52,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   value: {
-    color: "white",
     fontSize: 16,
   },
   button: {
@@ -75,15 +72,16 @@ interface ButtonProps {
 }
 
 const Button = ({ color, backgroundColor, label }: ButtonProps) => (
-  <View style={[styles.button, { backgroundColor }]}>
+  <Layout style={[styles.button, { backgroundColor }]}>
     <Text style={[styles.label, { color }]}>{label}</Text>
-  </View>
+  </Layout>
 );
 
 export default () => {
   return (
+    <Layout>
     <SafeAreaView style={styles.container}>
-      <View>
+      <Layout>
         <View style={styles.tabs}>
           <View style={styles.tabActive}>
             <Text style={styles.tabLabelActive}>Orders</Text>
@@ -95,15 +93,16 @@ export default () => {
         <View style={styles.content}>
           <Text style={styles.noOrders}>You have no orders</Text>
         </View>
-      </View>
-      <View style={styles.actions}>
+      </Layout>
+      <Layout style={styles.actions}>
         <View style={styles.values}>
           <Text style={styles.value}>0 BTC</Text>
           <Text style={styles.value}>0.00 USD</Text>
         </View>
         <Button label="Buy" backgroundColor="#4AFA9A" color="#222324" />
         <Button label="Sell" backgroundColor="#E33F64" color="white" />
-      </View>
+      </Layout>
     </SafeAreaView>
+    </Layout>
   );
 };

@@ -11,12 +11,12 @@ import { LineChart } from "react-native-chart-kit";
 // console.log(RNLocalize.getCurrencies());
 
 const chartConfig = {
-  backgroundColor: "none",
-  backgroundGradientFrom: "none",
-  backgroundGradientTo: "none",
+  backgroundColor: "",
+  backgroundGradientFrom: "",
+  backgroundGradientTo: "",
   decimalPlaces: 2, // optional, defaults to 2dp
-  color: (opacity = 1) => `rgba(51, 255, 195, ${opacity})`,
-  labelColor: (opacity = 1) => `rgba(51, 255, 195, ${opacity})`,
+  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+  labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
   style: {
     borderRadius: 0
   }
@@ -50,12 +50,60 @@ const StrategyListScreen = ({ navigation }) => {
               Math.random() * 10,
               Math.random() * 10,
               Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
               Math.random() * 10
-            ],color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`
+            ],color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`
             ,strokeWidth: "2"
                     }
         ]
       }}
+      withDots ={false}
+      withShadow={false}
+      withInnerLines={false}
       width={350} // from react-native
       height={220}
       yAxisLabel="£"

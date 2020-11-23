@@ -1,4 +1,5 @@
 import React from 'react';
+import { Appearance } from 'react-native'
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider } from '@ui-kitten/components';
 import { default as theme } from './src/theme.json';
@@ -11,6 +12,7 @@ import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import CodeScreen from './src/screens/SigninCodeScreen';
 import AddNameScreen from './src/screens/AddNameScreen';
+import TickerDetail from './src/screens/TickerDetailScreen';
 import StrategyCreateScreen from './src/screens/StrategyCreateScreen';
 import StrategyDetailScreen from './src/screens/StrategyDetailScreen';
 import StrategyListScreen from './src/screens/StrategyListScreen';
@@ -39,13 +41,20 @@ strategyListFlow.navigationOptions = {
 };
 
 const accountFlow = createStackNavigator({
-  Account: AccountScreen
+  Account: AccountScreen,
+  TickerDetail: TickerDetail
 });
 
 accountFlow.navigationOptions = {
     title: 'Account',
     tabBarIcon: <FontAwesome name="gear" size={20} />
 };
+
+const tab = createBottomTabNavigator({
+  strategyListFlow,
+  StrategyCreate: StrategyCreateScreen,
+  accountFlow,
+});
 
 const switchNavigator = createSwitchNavigator({
   ResolveAuth: ResolveAuthScreen,
@@ -55,28 +64,23 @@ const switchNavigator = createSwitchNavigator({
     CodeScreen: CodeScreen,
     AddName: AddNameScreen,
   }),
-  mainFlow: createBottomTabNavigator({
-    strategyListFlow,
-    StrategyCreate: StrategyCreateScreen,
-    accountFlow,
-  }),
+  mainFlow: tab,
 });
 
 const App = createAppContainer(switchNavigator);
 
 export default () => {
-  // const [theme, setTheme] = React.useState('light');
+  let themeSetting = { ...eva.light, ...theme };
+  if(Appearance.getColorScheme() === 'dark'){
+    themeSetting = { ...eva.dark, ...theme }
+  }
 
-  // const toggleTheme = () => {
-  //   const nextTheme = theme === 'light' ? 'dark' : 'light';
-  //   setTheme(nextTheme);
-  // };
 
   return (
       <AuthProvider>
         <StrategyProvider>
           <SharePriceProvider>
-            <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
+            <ApplicationProvider {...eva} theme={themeSetting}>
                 <App 
                 ref={(navigator) => {
                   setNavigator(navigator);

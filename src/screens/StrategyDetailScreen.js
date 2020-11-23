@@ -5,6 +5,19 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Slider from '@react-native-community/slider';
 import TagInput from 'react-native-tags-input';
 import Spacer from '../components/Spacer';
+import { LineChart } from "react-native-chart-kit";
+
+const chartConfig = {
+  backgroundColor: "",
+  backgroundGradientFrom: "",
+  backgroundGradientTo: "",
+  decimalPlaces: 2, // optional, defaults to 2dp
+  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+  labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+  style: {
+    borderRadius: 0
+  }
+};
 
 const StrategyDetailScreen = ({ navigation }) => {
   const item = navigation.getParam('item');
@@ -36,6 +49,87 @@ const StrategyDetailScreen = ({ navigation }) => {
         <Spacer />
         <Text style={styles.text} category='h5' status='default'>{item.strategyName}</Text>
         <ScrollView >
+          <View style={styles.chartcontainer}>
+          <LineChart
+      data={{
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        datasets: [
+          {
+            data: [
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10,
+              Math.random() * 10
+            ],color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`
+            ,strokeWidth: "2"
+                    }
+        ]
+      }}
+      withDots ={false}
+      withShadow={false}
+      withInnerLines={false}
+      width={350} // from react-native
+      height={220}
+      yAxisLabel="£"
+      //yAxisSuffix="k"
+      yAxisInterval={1} // optional, defaults to 1
+      chartConfig={chartConfig}
+      bezier
+      style={{
+        flex: 1,
+        marginVertical: 8,
+        borderRadius: 0,
+        margin: 0
+      }}
+    />
+          </View>
           <Spacer />
           <Text style={styles.text} status='default'>{item.strategyDescription}</Text>
           <Divider style={styles.shortdivider} />
@@ -334,6 +428,9 @@ const styles = StyleSheet.create({
   checkboxgroup: {
     paddingVertical: 5
 
+  },
+  chartcontainer:{
+    paddingHorizontal: 20
   },
   text: {
     paddingLeft: 20

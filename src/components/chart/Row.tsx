@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
+import { Layout, Text } from '@ui-kitten/components';
 
 const styles = StyleSheet.create({
   container: {
@@ -10,7 +11,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "grey",
   },
-  value: {
+  text: {
     fontSize: 20,
     fontVariant: ["tabular-nums"],
   },
@@ -24,9 +25,9 @@ interface RowProps {
 
 export default ({ label, value, color }: RowProps) => {
   return (
-    <View style={styles.container}>
+    <Layout style={styles.container}>
       <Text style={styles.label}>{label}</Text>
-      <Text style={[styles.value, { color: color || "white" }]}>{value}</Text>
-    </View>
+      <Text style={styles.text}>{value}</Text>
+    </Layout>
   );
 };

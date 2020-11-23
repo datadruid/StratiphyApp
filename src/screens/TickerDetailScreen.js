@@ -46,7 +46,7 @@ const TickerDetalScreen = ({ navigation }) => {
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
       <Layout style={styles.layoutcontainer}>
-      <Text tyle={styles.text} category='h1' status='default'>Your Strategies</Text>
+      <Text tyle={styles.text} category='h4' status='default'>ABC.L</Text>
       <View>
       <Header />
         <Animated.View style={{ opacity }} pointerEvents="none">

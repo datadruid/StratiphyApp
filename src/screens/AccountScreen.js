@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-navigation';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
 
-const AccountScreen = () => {
+const AccountScreen = ({navigation}) => {
   const { signout } = useContext(AuthContext);
 
   return (
@@ -13,6 +13,9 @@ const AccountScreen = () => {
       <Text style={{ fontSize: 48 }}>Account</Text>
       <Spacer>
         <Button title="Sign Out" onPress={signout} />
+      </Spacer>
+      <Spacer>
+        <Button title="Candle chart" onPress={() => navigation.navigate('TickerDetail')} />
       </Spacer>
       
     </SafeAreaView>
