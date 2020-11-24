@@ -23,7 +23,7 @@ export default ({ candles, domain }: ChartProps) => {
       {candles.map((candle, index) => (
         <Candle
           key={candle.date}
-          {...{ candle, index, width, scaleY, scaleBody }}
+          {...{ candle, index, width, scaleY, scaleBody, size }}
         />
       ))}
     </Svg>

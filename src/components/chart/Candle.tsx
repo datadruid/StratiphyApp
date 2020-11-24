@@ -19,9 +19,10 @@ interface CandleProps {
   width: number;
   scaleY: ScaleLinear<number, number>;
   scaleBody: ScaleLinear<number, number>;
+  size: number;
 }
 
-export default ({ candle, index, width, scaleY, scaleBody }: CandleProps) => {
+export default ({ candle, index, width, scaleY, scaleBody, size }: CandleProps) => {
   const { close, open, high, low } = candle;
   const fill = close > open ? "#4AFA9A" : "#E33F64";
   const x = index * width;
@@ -29,6 +30,15 @@ export default ({ candle, index, width, scaleY, scaleBody }: CandleProps) => {
   const min = Math.min(open, close);
   return (
     <>
+    <Rect
+            x={x + MARGIN}
+            y={size-(scaleBody(max - min)/2)}
+            width={width - MARGIN * 2}
+            height={scaleBody(max - min)/2}
+            strokeWidth="2"
+            fill="#C0C0C0"
+            opacity={0.25}
+          />
       <Line
         x1={x + width / 2}
         y1={scaleY(low)}
@@ -44,6 +54,7 @@ export default ({ candle, index, width, scaleY, scaleBody }: CandleProps) => {
         height={scaleBody(max - min)}
         {...{ fill }}
       />
+      
     </>
   );
 };
