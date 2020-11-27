@@ -30,7 +30,10 @@ const StrategyListScreen = ({ navigation }) => {
      listStrategies();
   }, []);
 
-
+  const listener = navigation.addListener('didFocus', () => {
+    listStrategies();
+  });
+  
   const renderItem = (info) => (
     <Card style={styles.card}
     onPress={() => navigation.navigate('StrategyDetail', {item: info.item})}>
@@ -39,7 +42,7 @@ const StrategyListScreen = ({ navigation }) => {
           <Text style={styles.text} category='s1' status='default'>{info.item.strategyName}</Text>
           <Text style={styles.text} category='s1' status='default'>{info.item.strategyDescription}</Text>
         </View>
-        <LineChart
+        {/* <LineChart
       data={{
         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
         datasets: [
@@ -117,7 +120,7 @@ const StrategyListScreen = ({ navigation }) => {
         borderRadius: 0,
         margin: 0
       }}
-    />
+    /> */}
         <View style={styles.box2}>
           <Text style={styles.text} category='s1' status='default'>{`status: ${info.item.status}`}</Text>
           <Text style={styles.text} category='s1' status='default'>{`last run:${info.item.lastRun}`}</Text>

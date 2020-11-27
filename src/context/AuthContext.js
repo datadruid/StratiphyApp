@@ -31,6 +31,7 @@ const clearErrorMessage = dispatch => () => {
 
 const tryLocalSignin = dispatch => async () => {
   const token = await getToken();
+  console.log(token);
   if (token) {
     dispatch({ type: 'signin', payload: token });
     navigate('StrategyList');

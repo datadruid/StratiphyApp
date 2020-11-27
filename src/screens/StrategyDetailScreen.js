@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import { ScrollView, View, StyleSheet, SafeAreaView } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { ScrollView, View, StyleSheet, SafeAreaView, FlatList } from 'react-native';
 import { Layout, Input, Card, List, Text, Button, ButtonGroup, Toggle, RadioGroup, Radio, CheckBox, Datepicker, Divider } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Slider from '@react-native-community/slider';
 import TagInput from 'react-native-tags-input';
 import Spacer from '../components/Spacer';
 import { LineChart } from "react-native-chart-kit";
+import StrategyType from '../components/strategy/StrategyType';
+import TimeHorizon from '../components/strategy/TimeHorizon';
+import DateType from '../components/strategy/DateType';
+import EmailUpdates from '../components/strategy/EmailUpdates';
+import Regions from '../components/strategy/Regions';
+import { Context as StrategyContext } from '../context/StrategyContext';
 
 const chartConfig = {
   backgroundColor: "",
@@ -21,6 +27,14 @@ const chartConfig = {
 
 const StrategyDetailScreen = ({ navigation }) => {
   const item = navigation.getParam('item');
+  const { state, getStrategy, clearErrorMessage } = useContext(StrategyContext);
+
+
+  useEffect( () => {
+    getStrategy(item.strategyID);
+ }, []);
+
+
   const [intags, setIntags] = useState({
     tag: '',
     tagsArray: ['All']
@@ -47,152 +61,39 @@ const StrategyDetailScreen = ({ navigation }) => {
     <SafeAreaView forceInset={{ top: 'always' }}>
       <Layout style={styles.layoutcontainer}>
         <Spacer />
-        <Text style={styles.text} category='h5' status='default'>{item.strategyName}</Text>
+        <Text style={styles.text} category='h5' status='default'>{state.strategy?.strategyName.selectedValue}</Text>
         <ScrollView >
-          <View style={styles.chartcontainer}>
-          <LineChart
-      data={{
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-        datasets: [
-          {
-            data: [
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10
-            ],color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`
-            ,strokeWidth: "2"
-                    }
-        ]
-      }}
-      withDots ={false}
-      withShadow={false}
-      withInnerLines={false}
-      width={350} // from react-native
-      height={220}
-      yAxisLabel="£"
-      //yAxisSuffix="k"
-      yAxisInterval={1} // optional, defaults to 1
-      chartConfig={chartConfig}
-      bezier
-      style={{
-        flex: 1,
-        marginVertical: 8,
-        borderRadius: 0,
-        margin: 0
-      }}
-    />
-          </View>
           <Spacer />
-          <Text style={styles.text} status='default'>{item.strategyDescription}</Text>
+          <Text style={styles.text} status='default'>{state.strategy?.strategyDescription.selectedValue}</Text>
           <Divider style={styles.shortdivider} />
           <Spacer />
 
-          <View style={styles.settingheadercontainer}>
-            <Text style={styles.settingtitletext} category='h6' status='default'>Strategy type</Text>
-            <Icon style={styles.icon} size={18} name='info-circle' />
-          </View>
-          <Divider style={styles.longdivider} />
-          <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>Momentum</Text>
-            <Icon style={styles.icon} size={20} name='chevron-right' />
-          </View>
-          <Divider style={styles.longdivider} />
+          <StrategyType strategyTypeSelection={state.strategy?.strategyTypeSelection}/>
 
-          <Spacer />
-          <View style={styles.settingheadercontainer}>
-            <Text style={styles.settingtitletext} category='h6' status='default'>Simulation Timing</Text>
-            <Icon style={styles.icon} size={18} name='info-circle' />
-          </View>
+          {(state.strategy) && 
+              state.strategy?.strategyTypes.map(item => {
+                  return (
+                    <TimeHorizon strategyType={item}/>
+                  );
+                })}       
 
-          <Divider style={styles.longdivider} />
-          <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>Time Horizon</Text>
-            <RadioGroup
-            // selectedIndex={selectedIndex}
-            // onChange={index => setSelectedIndex(index)}
-            >
-              <Radio>Short term</Radio>
-              <Radio>Medium term</Radio>
-              <Radio>Long term</Radio>
-            </RadioGroup>
-          </View>
-          <Divider style={styles.longdivider} />
-
-          <Spacer />
+        <Spacer />
           <View style={styles.settingheadercontainer}>
             <Text style={styles.settingtitletext} category='h6' status='default'>Timings</Text>
-          <Icon style={styles.icon} size={18} name='info-circle'/>
-        </View>
+            <Icon style={styles.icon} size={18} name='info-circle'/>
+          </View>
           
-          <Divider style={styles.longdivider} />
-          <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>Backtesting start date</Text>
-            <Datepicker
-            //date={date}
-            //onSelect={nextDate => setDate(nextDate)}
-            />
-          </View>
+          <DateType backtestingStart={state.strategy?.backtestingStart}/>
+
           <Divider style={styles.shortdivider} />
-          <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>Email updates</Text>
-            <RadioGroup
-            // selectedIndex={selectedIndex}
-            // onChange={index => setSelectedIndex(index)}
-            >
-              <Radio>Never</Radio>
-              <Radio>Daily</Radio>
-              <Radio>Weekly</Radio>
-            </RadioGroup>
-          </View>
+
+          <EmailUpdates emailUpdatesSetting={state.strategy?.emailUpdatesSetting}/>
+
           <Divider style={styles.longdivider} />
+
+          <Regions regions={state.strategy?.regions}/>
+          
+          {/* 
           <Spacer />
           <View style={styles.settingheadercontainer}>
             <Text style={styles.settingtitletext} category='h6' status='default'>Regions</Text>
@@ -379,10 +280,7 @@ const StrategyDetailScreen = ({ navigation }) => {
                 tags={outtics}
               />
             </View>
-          </View>
-          <Divider style={styles.longdivider} />
-          <Spacer />
-          <Divider style={styles.longdivider} />
+          </View> */}
 
 
         </ScrollView>
@@ -427,7 +325,6 @@ const styles = StyleSheet.create({
   },
   checkboxgroup: {
     paddingVertical: 5
-
   },
   chartcontainer:{
     paddingHorizontal: 20
@@ -458,7 +355,7 @@ const styles = StyleSheet.create({
 });
 
 StrategyDetailScreen.navigationOptions = {
-  title: 'Strategy Detail'
+  title: 'Strategy'
 };
 
 export default StrategyDetailScreen;
