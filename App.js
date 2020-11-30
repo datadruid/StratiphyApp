@@ -70,7 +70,7 @@ const switchNavigator = createSwitchNavigator({
 const App = createAppContainer(switchNavigator);
 
 export default () => {
-  let themeSetting = { ...eva.light, ...theme };
+  let themeSetting = { ...eva.dark, ...theme };
   // if(Appearance.getColorScheme() === 'dark'){
   //   themeSetting = { ...eva.dark, ...theme }
   // }

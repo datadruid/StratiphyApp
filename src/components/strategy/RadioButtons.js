@@ -1,20 +1,31 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Divider, List, RadioGroup, Radio, Layout } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Spacer from '../../components/Spacer';
-import RadioButtons from '../../components/strategy/RadioButtons'
 
-const EmailUpdates = ({ strategy }) => {
+const RadioButtons = ({ options, selectedId }) => {
+    const [selectedIndex, setSelectedIndex] = React.useState(selectedId);
+
     return (
         <>
-          <View style={styles.settingcontainer}>
-              <Text style={styles.settingtext} category='p1' status='default'>Email updates</Text>
-              <View style={styles.container}>
-                <RadioButtons options={strategy.options.emailUpdatesOptions} selectedId={strategy.options.emailUpdatesOptions.find(x=> x.label.toLowerCase() === strategy.globalSpecifications.emailUpdatesSetting.toLowerCase()).id}/>
-              </View> 
-            </View>
-          <Divider style={styles.longdivider} />
+              {options.map(option => {
+                return (
+                    <View key={option.id} style={styles.buttonContainer}>
+
+                    <Text style={styles.buttonlabel}>{option.label}</Text>
+                    <TouchableOpacity
+                                            style={styles.circle}
+                                            onPress={() => {
+                                            setSelectedIndex(option.id);
+                                            console.log(option.id);
+                                            }}
+                                        >
+                                            {selectedIndex === option.id && <View style={styles.checkedCircle} />}
+                                        </TouchableOpacity>
+                    </View>
+                )
+                })}
     </>
     );
   };
@@ -97,4 +108,4 @@ const EmailUpdates = ({ strategy }) => {
     },
   });
   
-  export default EmailUpdates;
+  export default RadioButtons;

@@ -138,7 +138,9 @@ const styles = StyleSheet.create({
   },
   input:{
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderColor: 'rgba(255, 255, 255, 0.2)'
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    tintColor: 'white',
+    color: "white"
   },
   text: {
     color: "white"

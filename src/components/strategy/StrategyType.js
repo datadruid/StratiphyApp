@@ -3,28 +3,28 @@ import { View, StyleSheet } from 'react-native';
 import { Text, Divider, List, Layout } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
-const StrategyType = ({ strategyTypeSelection }) => {
-
+const StrategyType = ({ strategy }) => {
+ 
   const renderItem = (strategyType) => (
     <Layout style={styles.settingcontainer}>
-      
-      <Text style={styles.settingtext} category='p1' status='default'>{strategyType.item.text}</Text>
+      <Text style={styles.settingtext} category='p1' status='default'>{strategy.options.strategyTypeOptions.find(x=> x.id === strategyType.item.typeName).text}</Text>
       <Icon style={styles.icon} size={20} name='minus' />
     </Layout>
   );
   return (
       <>
     <View style={styles.settingheadercontainer}>
-        <Text style={styles.settingtitletext} category='h6' status='default'>{strategyTypeSelection?.title}</Text>
+        <Text style={styles.settingtitletext} category='h6' status='default'>Strategy type</Text>
         <Icon style={styles.icon} size={18} name='info-circle' />
     </View>
     <Divider style={styles.longdivider} />
     
     <List
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-          data={strategyTypeSelection?.values}
-          renderItem={renderItem}
+        scrollEnabled={false}
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+        data={strategy.strategyTypes.filter(x=> x.setting !== 'none')}
+        renderItem={renderItem}
         />
      <Layout style={styles.settingcontainer}>  
       <Text style={styles.settingtext} category='p1' status='default'></Text>

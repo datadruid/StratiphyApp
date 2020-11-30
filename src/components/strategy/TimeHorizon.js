@@ -3,40 +3,24 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Divider, List, RadioGroup, Radio, Layout } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Spacer from '../../components/Spacer';
+import RadioButtons from '../../components/strategy/RadioButtons'
 
-const TimeHorizon = ({ strategyType }) => {
-    const [selectedIndex, setSelectedIndex] = React.useState(-1);
-    
-    if(strategyType?.selectedValue && selectedIndex === -1) {
-        setSelectedIndex(strategyType?.selectedValue);
-    }
-  
-    
+const TimeHorizon = ({ strategy }) => {
+
     return (
         <>
-          <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>{strategyType?.title} {strategyType?.subtitle}</Text>
-              <View style={styles.container}>
-              {(strategyType) && 
-              strategyType?.values.map(item => {
+              {strategy.strategyTypes.filter(x=> x.setting !== 'none').map(item => {
                   return (
-                    <View key={item.id} style={styles.buttonContainer}>
-                      <Text style={styles.buttonlabel}>{item.label}</Text>
-                      <TouchableOpacity
-                        style={styles.circle}
-                        onPress={() => {
-                          setSelectedIndex(item.id);
-                          console.log(item.id);
-                        }}
-                      >
-                        {selectedIndex === item.id && <View style={styles.checkedCircle} />}
-                      </TouchableOpacity>
+                    <View style={styles.settingcontainer}>
+                      <Text style={styles.settingtext} category='p1' status='default'>{strategy.options.strategyTypeOptions.find(x=> x.id === item.typeName).text} settings</Text>
+                      <View style={styles.container}>
+                        <RadioButtons options={strategy.options.basicStrategySettingOptions} selectedId={strategy.options.basicStrategySettingOptions.find(x => x.periods === item.specifications.periods && x.periodicities === item.specifications.periodicities && x.weightings === item.specifications.weightings).id}/>
+                      </View> 
                     </View>
                   );
                 })}
-                </View>
-          </View>
-          <Divider style={styles.longdivider} />
+
+          
     </>
     );
   };

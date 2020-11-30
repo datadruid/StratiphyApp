@@ -61,37 +61,35 @@ const StrategyDetailScreen = ({ navigation }) => {
     <SafeAreaView forceInset={{ top: 'always' }}>
       <Layout style={styles.layoutcontainer}>
         <Spacer />
-        <Text style={styles.text} category='h5' status='default'>{state.strategy?.strategyName.selectedValue}</Text>
+        <Text style={styles.text} category='h5' status='default'>{item.strategyName}</Text>
         <ScrollView >
-          <Spacer />
-          <Text style={styles.text} status='default'>{state.strategy?.strategyDescription.selectedValue}</Text>
+         <Spacer />
+          <Text style={styles.text} status='default'>{item.strategyDescription}</Text>
           <Divider style={styles.shortdivider} />
           <Spacer />
-
-          <StrategyType strategyTypeSelection={state.strategy?.strategyTypeSelection}/>
-
-          {(state.strategy) && 
-              state.strategy?.strategyTypes.map(item => {
-                  return (
-                    <TimeHorizon strategyType={item}/>
-                  );
-                })}       
+ 
+          <StrategyType strategy={item}/>
 
         <Spacer />
           <View style={styles.settingheadercontainer}>
             <Text style={styles.settingtitletext} category='h6' status='default'>Timings</Text>
             <Icon style={styles.icon} size={18} name='info-circle'/>
           </View>
-          
-          <DateType backtestingStart={state.strategy?.backtestingStart}/>
+
+          <Divider style={styles.shortdivider} />
+          <Spacer />
+
+          <TimeHorizon strategy={item}/>
+           
+          <DateType backtestingStart={item.globalSpecifications.backtestingStart}/>
 
           <Divider style={styles.shortdivider} />
 
-          <EmailUpdates emailUpdatesSetting={state.strategy?.emailUpdatesSetting}/>
+          <EmailUpdates strategy={item}/>
 
           <Divider style={styles.longdivider} />
 
-          <Regions regions={state.strategy?.regions}/>
+          {/* <Regions regions={state.strategy?.regions}/>  */}
           
           {/* 
           <Spacer />
