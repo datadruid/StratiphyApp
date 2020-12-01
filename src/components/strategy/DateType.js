@@ -6,10 +6,10 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 const DateType = ({ backtestingStart }) => {
     const [date, setDate] = React.useState();
-    
-    if(backtestingStart?.selectedValue && !date)
+
+    if(backtestingStart && !date)
     {
-        setDate(Date.parse(backtestingStart?.selectedValue));
+        setDate(Date.parse(backtestingStart));
     }
 
 

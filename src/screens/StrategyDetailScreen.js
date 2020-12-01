@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import { ScrollView, View, StyleSheet, SafeAreaView, FlatList } from 'react-native';
 import { Layout, Input, Card, List, Text, Button, ButtonGroup, Toggle, RadioGroup, Radio, CheckBox, Datepicker, Divider } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import Slider from '@react-native-community/slider';
 import TagInput from 'react-native-tags-input';
 import Spacer from '../components/Spacer';
 import { LineChart } from "react-native-chart-kit";
@@ -11,6 +10,8 @@ import TimeHorizon from '../components/strategy/TimeHorizon';
 import DateType from '../components/strategy/DateType';
 import EmailUpdates from '../components/strategy/EmailUpdates';
 import Regions from '../components/strategy/Regions';
+import Classes from '../components/strategy/Classes';
+import MarketCaps from '../components/strategy/MarketCaps';
 import { Context as StrategyContext } from '../context/StrategyContext';
 
 const chartConfig = {
@@ -87,143 +88,13 @@ const StrategyDetailScreen = ({ navigation }) => {
 
           <EmailUpdates strategy={item}/>
 
-          <Divider style={styles.longdivider} />
+          <Regions strategy={item}/> 
 
-          {/* <Regions regions={state.strategy?.regions}/>  */}
+          <Classes strategy={item}/> 
+       
+          <MarketCaps strategy={item}/> 
           
-          {/* 
-          <Spacer />
-          <View style={styles.settingheadercontainer}>
-            <Text style={styles.settingtitletext} category='h6' status='default'>Regions</Text>
-          <Icon style={styles.icon} size={18} name='info-circle'/>
-        </View>
           
-          <Divider style={styles.longdivider} />
-          <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>Select regions</Text>
-            <View >
-              <CheckBox style={styles.checkboxgroup}
-              // checked={checked}
-              // onChange={nextChecked => setChecked(nextChecked)}
-              >United Kindom
-                </CheckBox>
-              <CheckBox style={styles.checkboxgroup}
-              // checked={checked}
-              // onChange={nextChecked => setChecked(nextChecked)}
-              >Europe
-                </CheckBox>
-              <CheckBox style={styles.checkboxgroup}
-              // checked={checked}
-              // onChange={nextChecked => setChecked(nextChecked)}
-              >North America
-                </CheckBox>
-              <CheckBox style={styles.checkboxgroup}
-              // checked={checked}
-              // onChange={nextChecked => setChecked(nextChecked)}
-              >South America
-                </CheckBox>
-              <CheckBox style={styles.checkboxgroup}
-              // checked={checked}
-              // onChange={nextChecked => setChecked(nextChecked)}
-              >Middle East
-                </CheckBox>
-              <CheckBox style={styles.checkboxgroup}
-              // checked={checked}
-              // onChange={nextChecked => setChecked(nextChecked)}
-              >Asia
-                </CheckBox>
-              <CheckBox style={styles.checkboxgroup}
-              // checked={checked}
-              // onChange={nextChecked => setChecked(nextChecked)}
-              >Australia
-                </CheckBox>
-              <CheckBox style={styles.checkboxgroup}
-              // checked={checked}
-              // onChange={nextChecked => setChecked(nextChecked)}
-              >Africa
-                </CheckBox>
-            </View>
-
-          </View>
-          <Divider style={styles.longdivider} />
-          <Spacer />
-          <View style={styles.settingheadercontainer}>
-            <Text style={styles.settingtitletext} category='h6' status='default'>Asset Classes</Text>
-          <Icon style={styles.icon} size={18} name='info-circle'/>
-        </View>
-          
-          <Divider style={styles.longdivider} />
-          <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>Select classes</Text>
-            <View>
-              <View style={styles.settingcontainer}>
-                <Text tyle={styles.settingtext} category='label' status='default'>Stocks</Text>
-                <Slider
-                  style={styles.slider}
-                  minimumValue={0}
-                  maximumValue={100}
-                  minimumTrackTintColor="#FFFFFF"
-                  maximumTrackTintColor="#000000"
-                  value={33}
-                />
-                <Text tyle={styles.settingtext} category='label' status='default'>33%</Text>
-              </View>
-              <View style={styles.settingcontainer}>
-                <Text tyle={styles.settingtext} category='label' status='default'>Bonds</Text>
-                <Slider
-                  style={styles.slider}
-                  minimumValue={0}
-                  maximumValue={100}
-                  minimumTrackTintColor="#FFFFFF"
-                  maximumTrackTintColor="#000000"
-                  value={33}
-                />
-                <Text tyle={styles.settingtext} category='label' status='default'>33%</Text>
-              </View>
-              <View style={styles.settingcontainer}>
-                <Text tyle={styles.settingtext} category='label' status='default'>Funds</Text>
-                <Slider
-                  style={styles.slider}
-                  minimumValue={0}
-                  maximumValue={100}
-                  minimumTrackTintColor="#FFFFFF"
-                  maximumTrackTintColor="#000000"
-                  value={33}
-                />
-                <Text tyle={styles.settingtext} category='label' status='default'>33%</Text>
-              </View>
-            </View>
-          </View>
-
-          <Divider style={styles.longdivider} />
-          <Spacer />
-          <View style={styles.settingheadercontainer}>
-            <Text style={styles.settingtitletext} category='h6' status='default'>Market Caps</Text>
-          <Icon style={styles.icon} size={18} name='info-circle'/>
-        </View>
-          <Divider style={styles.longdivider} />
-          <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>Select Caps</Text>
-            <View style={styles.multicontainer}>
-              <View style={styles.settingcontainer}>
-                <Text tyle={styles.settingtext} category='label' status='default'>Small Cap</Text>
-                <Toggle />
-              </View>
-              <View style={styles.settingcontainer}>
-                <Text tyle={styles.settingtext} category='label' status='default'>Mid Cap</Text>
-                <Toggle />
-              </View>
-              <View style={styles.settingcontainer}>
-                <Text tyle={styles.settingtext} category='label' status='default'>Large Cap</Text>
-                <Toggle />
-              </View>
-              <View style={styles.settingcontainer}>
-                <Text tyle={styles.settingtext} category='label' status='default'>Supras Cap</Text>
-                <Toggle />
-              </View>
-            </View>
-          </View>
-          <Divider style={styles.longdivider} />
 
           <Spacer />
           <View style={styles.settingheadercontainer}>
@@ -278,7 +149,7 @@ const StrategyDetailScreen = ({ navigation }) => {
                 tags={outtics}
               />
             </View>
-          </View> */}
+          </View> 
 
 
         </ScrollView>
@@ -346,9 +217,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     color: 'white',
-  },
-  slider: {
-    width: 200,
   }
 });
 

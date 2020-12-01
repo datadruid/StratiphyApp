@@ -18,6 +18,9 @@
 		2DCD954D1E0B4F2C00145EB5 /* StratiphyAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* StratiphyAppTests.m */; };
 		5140298EE89EB56009A4FCC6 /* libPods-StratiphyApp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33256255C2F05B877F5DB2A7 /* libPods-StratiphyApp-tvOSTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9791D9A92576490B00436741 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9791D9A82576490B00436741 /* NotificationService.swift */; };
+		9791D9AD2576490B00436741 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9791D9A62576490B00436741 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B24BA1598416525758D8942A /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F45C8933C51226CB7E8D47BA /* libPods-OneSignalNotificationServiceExtension.a */; };
 		C127DC7561192DC9F8B55B74 /* libPods-StratiphyApp-StratiphyAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA6A9A22A144CEF276E4970 /* libPods-StratiphyApp-StratiphyAppTests.a */; };
 		D25332954988C652426F272A /* libPods-StratiphyApp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4A889CA8894B98F734B07F6 /* libPods-StratiphyApp-tvOS.a */; };
 		FB661443EAF46BEF3722A4D8 /* libPods-StratiphyApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23135AAA3EE1FE26B79C479E /* libPods-StratiphyApp.a */; };
@@ -38,7 +41,28 @@
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
 			remoteInfo = "StratiphyApp-tvOS";
 		};
+		9791D9AB2576490B00436741 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9791D9A52576490B00436741;
+			remoteInfo = OneSignalNotificationServiceExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9791D9B12576490B00436741 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9791D9AD2576490B00436741 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -46,6 +70,7 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* StratiphyAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StratiphyAppTests.m; sourceTree = "<group>"; };
 		03ED0BCD255054C3005C4299 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = File.swift; path = StratiphyApp/File.swift; sourceTree = "<group>"; };
+		0523B687F77E2CCE0D5C8520 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		0EA6A9A22A144CEF276E4970 /* libPods-StratiphyApp-StratiphyAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StratiphyApp-StratiphyAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* StratiphyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StratiphyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = StratiphyApp/AppDelegate.h; sourceTree = "<group>"; };
@@ -59,15 +84,22 @@
 		2D02E47B1E0B4A5D006451C7 /* StratiphyApp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "StratiphyApp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* StratiphyApp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "StratiphyApp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		33256255C2F05B877F5DB2A7 /* libPods-StratiphyApp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StratiphyApp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5AFB71BD233F5E36EB4A6486 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCED4DD2F30058C95502A7E /* Pods-StratiphyApp-StratiphyAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StratiphyApp-StratiphyAppTests.release.xcconfig"; path = "Target Support Files/Pods-StratiphyApp-StratiphyAppTests/Pods-StratiphyApp-StratiphyAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		637F079C98E0F52EF919A0B5 /* Pods-StratiphyApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StratiphyApp.release.xcconfig"; path = "Target Support Files/Pods-StratiphyApp/Pods-StratiphyApp.release.xcconfig"; sourceTree = "<group>"; };
 		73E8D1F1C0994C008635BB40 /* Pods-StratiphyApp-StratiphyAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StratiphyApp-StratiphyAppTests.debug.xcconfig"; path = "Target Support Files/Pods-StratiphyApp-StratiphyAppTests/Pods-StratiphyApp-StratiphyAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = StratiphyApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9505D92D97767E1BB95D6FE7 /* Pods-StratiphyApp-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StratiphyApp-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-StratiphyApp-tvOSTests/Pods-StratiphyApp-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		9791D9A12576486100436741 /* StratiphyApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = StratiphyApp.entitlements; path = StratiphyApp/StratiphyApp.entitlements; sourceTree = "<group>"; };
+		9791D9A62576490B00436741 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		9791D9A82576490B00436741 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		9791D9AA2576490B00436741 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		97BD14FA25764C7F00387741 /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
 		C97EFC84F67199C1B58C96DD /* Pods-StratiphyApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StratiphyApp.debug.xcconfig"; path = "Target Support Files/Pods-StratiphyApp/Pods-StratiphyApp.debug.xcconfig"; sourceTree = "<group>"; };
 		ECB19ECFC90C66EA5294D1B1 /* Pods-StratiphyApp-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StratiphyApp-tvOS.release.xcconfig"; path = "Target Support Files/Pods-StratiphyApp-tvOS/Pods-StratiphyApp-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		F45C8933C51226CB7E8D47BA /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4A889CA8894B98F734B07F6 /* libPods-StratiphyApp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StratiphyApp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -104,6 +136,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9791D9A32576490B00436741 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B24BA1598416525758D8942A /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -127,6 +167,7 @@
 		13B07FAE1A68108700A75B9A /* StratiphyApp */ = {
 			isa = PBXGroup;
 			children = (
+				9791D9A12576486100436741 /* StratiphyApp.entitlements */,
 				03ED0BCD255054C3005C4299 /* File.swift */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -148,6 +189,7 @@
 				0EA6A9A22A144CEF276E4970 /* libPods-StratiphyApp-StratiphyAppTests.a */,
 				F4A889CA8894B98F734B07F6 /* libPods-StratiphyApp-tvOS.a */,
 				33256255C2F05B877F5DB2A7 /* libPods-StratiphyApp-tvOSTests.a */,
+				F45C8933C51226CB7E8D47BA /* libPods-OneSignalNotificationServiceExtension.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -163,6 +205,8 @@
 				ECB19ECFC90C66EA5294D1B1 /* Pods-StratiphyApp-tvOS.release.xcconfig */,
 				14038AFB0D3958F3445B4AE8 /* Pods-StratiphyApp-tvOSTests.debug.xcconfig */,
 				9505D92D97767E1BB95D6FE7 /* Pods-StratiphyApp-tvOSTests.release.xcconfig */,
+				5AFB71BD233F5E36EB4A6486 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				0523B687F77E2CCE0D5C8520 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -180,6 +224,7 @@
 				13B07FAE1A68108700A75B9A /* StratiphyApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* StratiphyAppTests */,
+				9791D9A72576490B00436741 /* OneSignalNotificationServiceExtension */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				56EAB54883C30FAEC1798E68 /* Pods */,
@@ -196,8 +241,19 @@
 				00E356EE1AD99517003FC87E /* StratiphyAppTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* StratiphyApp-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* StratiphyApp-tvOSTests.xctest */,
+				9791D9A62576490B00436741 /* OneSignalNotificationServiceExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9791D9A72576490B00436741 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				97BD14FA25764C7F00387741 /* OneSignalNotificationServiceExtension.entitlements */,
+				9791D9A82576490B00436741 /* NotificationService.swift */,
+				9791D9AA2576490B00436741 /* Info.plist */,
+			);
+			path = OneSignalNotificationServiceExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,10 +291,12 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				3C3F123FCAF668D09E105A92 /* [CP] Copy Pods Resources */,
 				D868B355DA0040D6BFB14FA2 /* Upload Debug Symbols to Sentry */,
+				9791D9B12576490B00436741 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				9791D9AC2576490B00436741 /* PBXTargetDependency */,
 			);
 			name = StratiphyApp;
 			productName = StratiphyApp;
@@ -284,12 +342,31 @@
 			productReference = 2D02E4901E0B4A5D006451C7 /* StratiphyApp-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		9791D9A52576490B00436741 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9791D9AE2576490B00436741 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
+			buildPhases = (
+				576B70BE0316DF5D3F0599FC /* [CP] Check Pods Manifest.lock */,
+				9791D9A22576490B00436741 /* Sources */,
+				9791D9A32576490B00436741 /* Frameworks */,
+				9791D9A42576490B00436741 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OneSignalNotificationServiceExtension;
+			productName = OneSignalNotificationServiceExtension;
+			productReference = 9791D9A62576490B00436741 /* OneSignalNotificationServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1220;
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -312,6 +389,11 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 2D02E47A1E0B4A5D006451C7;
 					};
+					9791D9A52576490B00436741 = {
+						CreatedOnToolsVersion = 12.2;
+						DevelopmentTeam = GWFF5G72A9;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "StratiphyApp" */;
@@ -331,6 +413,7 @@
 				00E356ED1AD99517003FC87E /* StratiphyAppTests */,
 				2D02E47A1E0B4A5D006451C7 /* StratiphyApp-tvOS */,
 				2D02E48F1E0B4A5D006451C7 /* StratiphyApp-tvOSTests */,
+				9791D9A52576490B00436741 /* OneSignalNotificationServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -361,6 +444,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		2D02E48E1E0B4A5D006451C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9791D9A42576490B00436741 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -448,6 +538,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StratiphyApp/Pods-StratiphyApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		576B70BE0316DF5D3F0599FC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		5982FAF9E448A0A9349B3978 /* [CP] Copy Pods Resources */ = {
@@ -680,6 +792,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9791D9A22576490B00436741 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9791D9A92576490B00436741 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -693,6 +813,11 @@
 			target = 2D02E47A1E0B4A5D006451C7 /* StratiphyApp-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
+		9791D9AC2576490B00436741 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9791D9A52576490B00436741 /* OneSignalNotificationServiceExtension */;
+			targetProxy = 9791D9AB2576490B00436741 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -700,7 +825,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 73E8D1F1C0994C008635BB40 /* Pods-StratiphyApp-StratiphyAppTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -724,7 +849,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5DCED4DD2F30058C95502A7E /* Pods-StratiphyApp-StratiphyAppTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = StratiphyAppTests/Info.plist;
@@ -745,8 +870,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C97EFC84F67199C1B58C96DD /* Pods-StratiphyApp.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = StratiphyApp/StratiphyApp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = StratiphyApp/Info.plist;
@@ -756,7 +883,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.stratiphy.dev;
 				PRODUCT_NAME = StratiphyApp;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -768,8 +895,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 637F079C98E0F52EF919A0B5 /* Pods-StratiphyApp.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = StratiphyApp/StratiphyApp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = StratiphyApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -778,7 +907,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.stratiphy.dev;
 				PRODUCT_NAME = StratiphyApp;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1014,6 +1143,63 @@
 			};
 			name = Release;
 		};
+		9791D9AF2576490B00436741 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5AFB71BD233F5E36EB4A6486 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stratiphy.dev.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9791D9B02576490B00436741 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0523B687F77E2CCE0D5C8520 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stratiphy.dev.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1058,6 +1244,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9791D9AE2576490B00436741 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9791D9AF2576490B00436741 /* Debug */,
+				9791D9B02576490B00436741 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

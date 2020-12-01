@@ -5,21 +5,33 @@ import CheckBox from '@react-native-community/checkbox';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Spacer from '../../components/Spacer';
 
-const Regions = ({ regions }) => {
-    const [checkedArray, setcheckedArray] = useState([]);
+const Regions = ({ strategy }) => {
+    const [checkedArray, setcheckedArray] = useState(strategy.regions);
+
     
-    if(regions?.selectedValue && checkedArray === []) {
-        setcheckedArray(emailUpdatesSetting?.values);
+    const setToggleCheckBox = (selected, item) =>
+    {
+      var items = checkedArray;
+      if(selected) {
+        items.push(item.id);
+      } else {
+        items.pop(items.indexOf(item.id), 1);
+      }
+      setcheckedArray(items);
     }
-    
-    console.log(checkedArray);
+
     return (
         <>
+        <Spacer />
+        <View style={styles.settingheadercontainer}>
+            <Text style={styles.settingtitletext} category='h6' status='default'>Regions</Text>
+          <Icon style={styles.icon} size={18} name='info-circle'/>
+        </View>
+        <Divider style={styles.shortdivider} />
           <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>{regions?.title} {regions?.subtitle}</Text>
+            <Text style={styles.settingtext} category='p1' status='default'>Regions</Text>
               <View style={styles.container}>
-              {(regions) && 
-              regions?.values.map(item => {
+              {strategy.options.regionsOptions.map(item => {
                 //console.log('did radios');
                   return (
                     <View key={item.id} style={styles.buttonContainer}>
@@ -27,10 +39,10 @@ const Regions = ({ regions }) => {
                       <CheckBox style={styles.circle}
                         lineWidth={1}
                             boxType='square'
-                            onCheckColor='black'
+                            onCheckColor='white'
                             onTintColor='#aaaaaa'
-                            value={true}
-                            // onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                            value={checkedArray.includes(item.id)}
+                            onValueChange={(selected) => setToggleCheckBox(selected, item)}
                             />
     
                     </View>

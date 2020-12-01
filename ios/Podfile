@@ -23,6 +23,10 @@ target 'StratiphyApp' do
   end
 end
 
+target 'OneSignalNotificationServiceExtension' do
+  pod 'OneSignal', '>= 2.9.3', '< 3.0'
+end
+
 target 'StratiphyApp-tvOS' do
   # Pods for StratiphyApp-tvOS
 
