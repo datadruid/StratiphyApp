@@ -14,7 +14,7 @@ const Classes = ({ strategy }) => {
     {
       let remains = 100-value;
       let balance = 0;
-      console.log(remains);
+
       switch(master)
       {
         case 'stocks':

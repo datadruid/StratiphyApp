@@ -92,7 +92,7 @@ const StrategyDetailScreen = ({ navigation }) => {
 
           <Classes strategy={item}/> 
        
-          <MarketCaps strategy={item}/> 
+          <MarketCaps strategy={item}/>  
           
           
 

@@ -5,14 +5,10 @@ import { Text, Divider, Datepicker, Layout } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 const DateType = ({ backtestingStart }) => {
-    const [date, setDate] = React.useState();
-
-    if(backtestingStart && !date)
-    {
-        setDate(Date.parse(backtestingStart));
-    }
-
-
+    var split = backtestingStart.split('/');
+    var convDate = new Date(split[2], split[1] - 1, split[0]);
+    const [date, setDate] = React.useState(convDate);
+  
   return (
       <>
         <Divider style={styles.longdivider} />
