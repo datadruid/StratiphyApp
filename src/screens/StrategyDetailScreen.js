@@ -12,6 +12,8 @@ import EmailUpdates from '../components/strategy/EmailUpdates';
 import Regions from '../components/strategy/Regions';
 import Classes from '../components/strategy/Classes';
 import MarketCaps from '../components/strategy/MarketCaps';
+import Sectors from '../components/strategy/Sectors';
+import Tickers from '../components/strategy/Tickers';
 import { Context as StrategyContext } from '../context/StrategyContext';
 
 const chartConfig = {
@@ -34,29 +36,6 @@ const StrategyDetailScreen = ({ navigation }) => {
   useEffect( () => {
     getStrategy(item.strategyID);
  }, []);
-
-
-  const [intags, setIntags] = useState({
-    tag: '',
-    tagsArray: ['All']
-  });
-  const [outtags, setOuttags] = useState({
-    tag: '',
-    tagsArray: ['Utilities']
-  });
-  const [intics, setIntics] = useState({
-    tag: '',
-    tagsArray: ['FTSE 100']
-  });
-  const [outtics, setOuttics] = useState({
-    tag: '',
-    tagsArray: ['III.L', 'TW.L', 'BT.A.L']
-  });
-
-  updateTagState = (state) => {
-    //console.log(state);
-    //setTags()
-  };
 
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
@@ -94,63 +73,10 @@ const StrategyDetailScreen = ({ navigation }) => {
        
           <MarketCaps strategy={item}/>  
           
-          
+          <Sectors strategy={item}/> 
 
-          <Spacer />
-          <View style={styles.settingheadercontainer}>
-            <Text style={styles.settingtitletext} category='h6' status='default'>Sectors</Text>
-          <Icon style={styles.icon} size={18} name='info-circle'/>
-        </View>
-          
-          <Divider style={styles.longdivider} />
-          <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>Include Sectors</Text>
-            <View style={styles.multicontainer}>
-              <TagInput style={{ borderBottomColor: 'white' }}
-                updateState={this.updateTagState}
-                tags={intags}
-              />
-            </View>
-          </View>
-          <Divider style={styles.shortdivider} />
-          <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>Excude Sectors</Text>
-            <View style={styles.multicontainer}>
-              <TagInput style={{ borderBottomColor: 'white' }}
-                updateState={this.updateTagState}
-                tags={outtags}
-              />
-            </View>
-          </View>
-          <Divider style={styles.longdivider} />
-          <Spacer />
-
-          <View style={styles.settingheadercontainer}>
-            <Text style={styles.settingtitletext} category='h6' status='default'>Tickers</Text>
-          <Icon style={styles.icon} size={18} name='info-circle'/>
-        </View>
-          
-          <Divider style={styles.longdivider} />
-          <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>Tickers to include</Text>
-            <View style={styles.multicontainer}>
-              <TagInput style={{ borderBottomColor: 'white' }}
-                updateState={this.updateTagState}
-                tags={intics}
-              />
-            </View>
-          </View>
-          <Divider style={styles.shortdivider} />
-          <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>Tickers to exclude</Text>
-            <View style={styles.multicontainer}>
-              <TagInput style={{ borderBottomColor: 'white' }}
-                updateState={this.updateTagState}
-                tags={outtics}
-              />
-            </View>
-          </View> 
-
+          <Tickers strategy={item}/> 
+        
 
         </ScrollView>
       </Layout>

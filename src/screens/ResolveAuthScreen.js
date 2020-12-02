@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
-import { StyleSheet, View, ImageBackground } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Layout, } from '@ui-kitten/components';
 import { Context as AuthContext } from '../context/AuthContext';
 
 const ResolveAuthScreen = () => {
@@ -9,15 +10,9 @@ const ResolveAuthScreen = () => {
     tryLocalSignin();
   }, []);
 
-  // return (
-  //      <ImageBackground
-  //       style={styles.backgroundcontainer}
-  //       source={require('../img/image-background.jpg')}>
-  //     <View style={styles.container}>
-    
-  //     </View>
-  //     </ImageBackground>
-  // );
+  return (
+       <Layout style={styles.container}/>
+  );
   return null;
 };
 
@@ -34,7 +29,8 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent : "center",
     alignItems: 'center',
-    width: '80%',
+    width: '100%',
+    height:'100%',
     alignSelf: 'center'
   },
   backgroundcontainer: {

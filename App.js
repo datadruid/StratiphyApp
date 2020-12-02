@@ -30,7 +30,6 @@ Sentry.init({
   dsn: 'https://8b8d52af187c45849d564265bc43b353@o468449.ingest.sentry.io/5496302', 
 });
 
-
 const strategyListFlow = createStackNavigator({
   StrategyList: StrategyListScreen,
   StrategyDetail: StrategyDetailScreen,

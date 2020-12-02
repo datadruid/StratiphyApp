@@ -6,21 +6,19 @@ import Spacer from '../../components/Spacer';
 import RadioButtons from '../../components/strategy/RadioButtons'
 
 const TimeHorizon = ({ strategy }) => {
-
+  var types = strategy.strategyTypes.filter(x=> x.setting !== 'none');
     return (
         <>
-              {strategy.strategyTypes.filter(x=> x.setting !== 'none').map(item => {
-                  return (
-                    <View style={styles.settingcontainer}>
-                      <Text style={styles.settingtext} category='p1' status='default'>{strategy.options.strategyTypeOptions.find(x=> x.id === item.typeName).text} settings</Text>
-                      <View style={styles.container}>
-                        <RadioButtons options={strategy.options.basicStrategySettingOptions} selectedId={strategy.options.basicStrategySettingOptions.find(x => x.periods === item.specifications.periods && x.periodicities === item.specifications.periodicities && x.weightings === item.specifications.weightings).id}/>
-                      </View> 
-                    </View>
-                  );
-                })}
-
-          
+        {types.map(item => {
+            return (
+              <View style={styles.settingcontainer}>
+                <Text style={styles.settingtext} category='p1' status='default'>{strategy.options.strategyTypeOptions.find(x=> x.id === item.typeName).text} settings</Text>
+                <View style={styles.container}>
+                  <RadioButtons options={strategy.options.basicStrategySettingOptions} selectedId={strategy.options.basicStrategySettingOptions.find(x => x.periods === item.specifications.periods && x.periodicities === item.specifications.periodicities && x.weightings === item.specifications.weightings).id}/>
+                </View> 
+              </View>
+            );
+          })} 
     </>
     );
   };

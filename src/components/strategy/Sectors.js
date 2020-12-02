@@ -1,20 +1,53 @@
 import React, {useState} from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, Divider, List, RadioGroup, Radio, Layout } from '@ui-kitten/components';
+import { View, StyleSheet } from 'react-native';
+import { Text, Divider } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import TagInput from 'react-native-tags-input';
 import Spacer from '../../components/Spacer';
-import RadioButtons from '../../components/strategy/RadioButtons'
 
-const EmailUpdates = ({ strategy }) => {
-  const id = strategy.options.emailUpdatesOptions.find(x=> x.label.toLowerCase() === strategy.globalSpecifications.emailUpdatesSetting.toLowerCase()).id
+const Sectors = ({ strategy }) => {
+    const [intags, setIntags] = useState({
+        tag: '',
+        tagsArray: strategy.sectors.sectorsInclude.map(a => a.tag)
+      });
+      const [outtags, setOuttags] = useState({
+        tag: '',
+        tagsArray: strategy.sectors.sectorsExclude.map(a => a.tag)
+      });
+
+      updateTagState = (state) => {
+        //console.log(state);
+        //setTags()
+      };
+
     return (
         <>
+       <Spacer />
+          <View style={styles.settingheadercontainer}>
+            <Text style={styles.settingtitletext} category='h6' status='default'>Sectors</Text>
+          <Icon style={styles.icon} size={18} name='info-circle'/>
+        </View>
+          
+          <Divider style={styles.longdivider} />
           <View style={styles.settingcontainer}>
-              <Text style={styles.settingtext} category='p1' status='default'>Email updates</Text>
-              <View style={styles.container}>
-                <RadioButtons options={strategy.options.emailUpdatesOptions} selectedId={id}/>
-              </View> 
+            <Text style={styles.settingtext} category='p1' status='default'>Include Sectors</Text>
+            <View style={styles.multicontainer}>
+              <TagInput style={{ borderBottomColor: 'white' }}
+                updateState={updateTagState}
+                tags={intags}
+              />
             </View>
+          </View>
+          <Divider style={styles.shortdivider} />
+          <View style={styles.settingcontainer}>
+            <Text style={styles.settingtext} category='p1' status='default'>Excude Sectors</Text>
+            <View style={styles.multicontainer}>
+              <TagInput style={{ borderBottomColor: 'white' }}
+                updateState={updateTagState}
+                tags={outtags}
+              />
+            </View>
+          </View>
           <Divider style={styles.longdivider} />
     </>
     );
@@ -39,11 +72,6 @@ const EmailUpdates = ({ strategy }) => {
     circle: {
       height: 20,
       width: 20,
-      borderRadius: 10,
-      borderWidth: 1,
-      borderColor: '#ACACAC',
-      alignItems: 'center',
-      justifyContent: 'center',
     },
     checkedCircle: {
       width: 14,
@@ -98,4 +126,4 @@ const EmailUpdates = ({ strategy }) => {
     },
   });
   
-  export default EmailUpdates;
+  export default Sectors;

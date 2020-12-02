@@ -4,13 +4,8 @@ import { Text, Divider, List, Layout } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 const StrategyType = ({ strategy }) => {
+ const types = strategy.strategyTypes.filter(x=> x.setting !== 'none');
  
-  const renderItem = (strategyType) => (
-    <Layout style={styles.settingcontainer}>
-      <Text style={styles.settingtext} category='p1' status='default'>{strategy.options.strategyTypeOptions.find(x=> x.id === strategyType.item.typeName).text}</Text>
-      <Icon style={styles.icon} size={20} name='minus' />
-    </Layout>
-  );
   return (
       <>
     <View style={styles.settingheadercontainer}>
@@ -18,14 +13,16 @@ const StrategyType = ({ strategy }) => {
         <Icon style={styles.icon} size={18} name='info-circle' />
     </View>
     <Divider style={styles.longdivider} />
-    
-    <List
-        scrollEnabled={false}
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-        data={strategy.strategyTypes.filter(x=> x.setting !== 'none')}
-        renderItem={renderItem}
-        />
+    {
+    types.map(strategyType => {
+      return(
+        <Layout key={strategyType.typeName} style={styles.settingcontainer}>
+          <Text style={styles.settingtext} category='p1' status='default'>{strategy.options.strategyTypeOptions.find(x=> x.id === strategyType.typeName).text}</Text>
+          <Icon style={styles.icon} size={20} name='minus' />
+        </Layout>
+      );
+    })}
+
      <Layout style={styles.settingcontainer}>  
       <Text style={styles.settingtext} category='p1' status='default'></Text>
       <Icon style={styles.icon} size={20} name='plus' />

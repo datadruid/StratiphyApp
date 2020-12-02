@@ -1,14 +1,10 @@
-import React , { useContext, useEffect, useState } from 'react';
+import React , { useContext, useEffect } from 'react';
 import { SafeAreaView } from 'react-navigation';
-import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Dimensions, View } from 'react-native';
 import { Layout, Card, List, Text } from '@ui-kitten/components';
 import { Context as StrategyContext } from '../context/StrategyContext';
-// import * as RNLocalize from "react-native-localize";
 
 import { LineChart } from "react-native-chart-kit";
-
-// console.log(RNLocalize.getLocales());
-// console.log(RNLocalize.getCurrencies());
 
 const chartConfig = {
   backgroundColor: "",
@@ -26,17 +22,21 @@ const StrategyListScreen = ({ navigation }) => {
   const screenWidth = Dimensions.get("window").width;
   const { state, listStrategies, clearErrorMessage } = useContext(StrategyContext);
 
+  const openDetail = (item) => {
+    navigation.navigate('StrategyDetail', {item: item});
+  };
+
   useEffect( () => {
-     listStrategies();
+    const listener = navigation.addListener('didFocus', () => {
+      listStrategies();
+    });
+    listStrategies();
   }, []);
 
-  const listener = navigation.addListener('didFocus', () => {
-    listStrategies();
-  });
   
   const renderItem = (info) => (
     <Card style={styles.card}
-    onPress={() => navigation.navigate('StrategyDetail', {item: info.item})}>
+    onPress={() => openDetail(info.item)}>
       <View style={styles.box2}>
         <View style={styles.box2}>
           <Text style={styles.text} category='s1' status='default'>{info.item.strategyName}</Text>

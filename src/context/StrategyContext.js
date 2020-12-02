@@ -1,6 +1,5 @@
 import createDataContext from './createDataContext';
 import authApi from '../api/auth';
-import { navigate } from '../navigationRef';
 import { getToken } from '../storage/tokenStorage'
 
 const strategyReducer = (state, action) => {
