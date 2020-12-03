@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     height: 100
   },
   input:{
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
     borderColor: 'rgba(255, 255, 255, 0.2)',
     tintColor: 'rgba(1, 1, 1, 1)',
     color: "rgba(1, 1, 1, 1)"

@@ -3,28 +3,12 @@ import { SafeAreaView } from 'react-navigation';
 import { StyleSheet, Dimensions, View } from 'react-native';
 import { Layout, Card, List, Text } from '@ui-kitten/components';
 import { Context as StrategyContext } from '../context/StrategyContext';
-
-import { LineChart } from "react-native-chart-kit";
-
-const chartConfig = {
-  backgroundColor: "",
-  backgroundGradientFrom: "",
-  backgroundGradientTo: "",
-  decimalPlaces: 2, // optional, defaults to 2dp
-  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-  labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-  style: {
-    borderRadius: 0
-  }
-};
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import StrategyListItem from '../components/StrategyListItem'
 
 const StrategyListScreen = ({ navigation }) => {
   const screenWidth = Dimensions.get("window").width;
   const { state, listStrategies, clearErrorMessage } = useContext(StrategyContext);
-
-  const openDetail = (item) => {
-    navigation.navigate('StrategyDetail', {item: item});
-  };
 
   useEffect( () => {
     const listener = navigation.addListener('didFocus', () => {
@@ -32,102 +16,6 @@ const StrategyListScreen = ({ navigation }) => {
     });
     listStrategies();
   }, []);
-
-  
-  const renderItem = (info) => (
-    <Card style={styles.card}
-    onPress={() => openDetail(info.item)}>
-      <View style={styles.box2}>
-        <View style={styles.box2}>
-          <Text style={styles.text} category='s1' status='default'>{info.item.strategyName}</Text>
-          <Text style={styles.text} category='s1' status='default'>{info.item.strategyDescription}</Text>
-        </View>
-        {/* <LineChart
-      data={{
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-        datasets: [
-          {
-            data: [
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10,
-              Math.random() * 10
-            ],color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`
-            ,strokeWidth: "2"
-                    }
-        ]
-      }}
-      withDots ={false}
-      withShadow={false}
-      withInnerLines={false}
-      width={350} // from react-native
-      height={220}
-      yAxisLabel="£"
-      //yAxisSuffix="k"
-      yAxisInterval={1} // optional, defaults to 1
-      chartConfig={chartConfig}
-      bezier
-      style={{
-        flex: 1,
-        marginVertical: 8,
-        borderRadius: 0,
-        margin: 0
-      }}
-    /> */}
-        <View style={styles.box2}>
-          <Text style={styles.text} category='s1' status='default'>{`status: ${info.item.status}`}</Text>
-          <Text style={styles.text} category='s1' status='default'>{`last run:${info.item.lastRun}`}</Text>
-        </View>
-      </View>
-    </Card>
-  );
 
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
@@ -137,7 +25,7 @@ const StrategyListScreen = ({ navigation }) => {
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
           data={state.strategies}
-          renderItem={renderItem}
+          renderItem={({item}) => <StrategyListItem info={item} navigation={navigation}/>}
         />
             
       </Layout>
@@ -173,6 +61,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding:2
   },
+  box3: {
+    justifyContent: 'center',
+    textAlign:'center',
+  },
+  textright: {
+    justifyContent:'flex-end',
+    textAlign: 'right',
+  },
   footerContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -181,6 +77,11 @@ const styles = StyleSheet.create({
   footerControl: {
     marginHorizontal: 2,
   },
+  icon: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'white',
+  }
 });
 
 export default StrategyListScreen;

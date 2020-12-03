@@ -114,7 +114,7 @@ export default class App extends Component {
   
 
   render() {
-    let themeSetting = { ...eva.dark, ...theme };
+    let themeSetting = { ...eva.light, ...theme };
   // if(Appearance.getColorScheme() === 'dark'){
   //   themeSetting = { ...eva.dark, ...theme }
   // }
