@@ -38,7 +38,7 @@ const currencyFormat  = {
     backgroundGradientFrom: "#ffffff",
     backgroundGradientTo: "#ffffff",
     fillShadowGradient :linecolour,
-    fillShadowGradientOpacity: 0.5,
+    fillShadowGradientOpacity: 0.8,
     decimalPlaces: 2, // optional, defaults to 2dp #f9b10b
     color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
     labelColor: (opacity = 0) => `rgba(0, 0, 0, ${opacity})`,
