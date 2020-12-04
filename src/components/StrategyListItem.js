@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { StyleSheet, TouchableOpacity, View} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image} from 'react-native';
 import { Text, Card } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { LineChart } from 'react-native-chart-kit';
@@ -93,9 +93,21 @@ const currencyFormat  = {
           <Text style={styles.bold}>{formattedStratValue}</Text>
           <Text>Value</Text>
         </View>
- 
+        <View style={styles.imagebox}>
+          <Image style={[styles.roundimage, {left:20}]} source={{
+          uri: 'https://logo.clearbit.com/https:/www.hsbc.co.uk',
+        }}/>
+          <Image style={[styles.roundimage, {left:35}]} source={{
+          uri: 'https://logo.clearbit.com/https:/www.ocado.com',
+        }}/>
+        <Image style={[styles.roundimage, {left:50}]} source={{
+          uri: 'https://logo.clearbit.com/www.britishland.com/',
+        }}/>
+
+
+        </View>
         <View style={styles.box4}>
-          <Text style={styles.textrightbold}>{plusminus}{info.performancePct}%</Text>
+          <Text style={[styles.textrightbold, {color: linecolour }]}>{plusminus}{info.performancePct}%</Text>
           <Text style={styles.textright}>Performance</Text>
         </View>
         </View>
@@ -118,16 +130,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignSelf: 'stretch',
         justifyContent: 'space-between'
+        
       },
       box2: {
-        flex: 1,
+        flex: 3,
         flexDirection: 'column',
         alignSelf: 'stretch',
-        justifyContent: 'space-between',
+        justifyContent: 'space-between'
       },
       box3: {
         justifyContent: 'center',
-        textAlign:'center',
+        textAlign:'center'
+      },
+      box4: {
+        flex: 3,
       },
       textright: {
         justifyContent:'flex-end',
@@ -141,13 +157,27 @@ const styles = StyleSheet.create({
       footerContainer: {
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-end'
       },
       footerControl: {
         marginHorizontal: 2,
       },
       bold:{
         fontWeight: 'bold'
+      },
+      imagebox:{
+        flex: 3,
+        flexDirection: 'row',
+        justifyContent: 'center'
+      },
+      roundimage: {
+        position: 'absolute',
+        width: 30,
+        height: 30,
+        borderRadius: 30 / 2,
+        overflow: "hidden",
+        borderWidth: 1,
+        borderColor: "silver"
       }
 });
 
