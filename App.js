@@ -14,8 +14,11 @@ import CodeScreen from './src/screens/SigninCodeScreen';
 import AddNameScreen from './src/screens/AddNameScreen';
 import TickerDetail from './src/screens/TickerDetailScreen';
 import StrategyCreateScreen from './src/screens/StrategyCreateScreen';
+import StrategySettingScreen from './src/screens/StrategySettingScreen';
 import StrategyDetailScreen from './src/screens/StrategyDetailScreen';
 import StrategyListScreen from './src/screens/StrategyListScreen';
+import HomeScreen from './src/screens/HomeScreen';
+import DiscoverScreen from './src/screens/DiscoverScreen';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as StrategyProvider } from './src/context/StrategyContext';
 import { Provider as SharePriceProvider } from './src/context/SharePriceContext';
@@ -33,11 +36,30 @@ Sentry.init({
 const strategyListFlow = createStackNavigator({
   StrategyList: StrategyListScreen,
   StrategyDetail: StrategyDetailScreen,
+  StrategySetting: StrategySettingScreen,
 });
 
 strategyListFlow.navigationOptions = {
   title: 'Strategies',
-  tabBarIcon: <FontAwesome name="th-list" size={20} />,
+  tabBarIcon: <FontAwesome name="pie-chart" size={24} />,
+};
+
+const homeFlow = createStackNavigator({
+  Home : HomeScreen,
+});
+
+homeFlow.navigationOptions = {
+  title: 'Home',
+  tabBarIcon: <FontAwesome name="home" size={24} />,
+};
+
+const discoverFlow = createStackNavigator({
+  Discover : DiscoverScreen,
+});
+
+discoverFlow.navigationOptions = {
+  title: 'Discover',
+  tabBarIcon: <FontAwesome name="search" size={24} />,
 };
 
 const accountFlow = createStackNavigator({
@@ -47,12 +69,15 @@ const accountFlow = createStackNavigator({
 
 accountFlow.navigationOptions = {
     title: 'Account',
-    tabBarIcon: <FontAwesome name="gear" size={20} />
+    tabBarIcon: <FontAwesome name="user" size={24} />
+    
 };
 
 const tab = createBottomTabNavigator({
-  strategyListFlow,
+  homeFlow,
+  discoverFlow,
   StrategyCreate: StrategyCreateScreen,
+  strategyListFlow,
   accountFlow,
 });
 

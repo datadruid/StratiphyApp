@@ -39,7 +39,7 @@ const Regions = ({ strategy }) => {
                       <CheckBox style={styles.circle}
                         lineWidth={1}
                             boxType='square'
-                            onCheckColor='white'
+                            onCheckColor='black'
                             onTintColor='#aaaaaa'
                             value={checkedArray.includes(item.id)}
                             onValueChange={(selected) => setToggleCheckBox(selected, item)}
@@ -124,7 +124,7 @@ const Regions = ({ strategy }) => {
       paddingBottom: 10,
       justifyContent: 'center',
       alignItems: 'center',
-      color: 'white',
+      color: 'black',
     },
   });
   

@@ -13,8 +13,8 @@ const StrategyCreateScreen = () => {
 };
 
 StrategyCreateScreen.navigationOptions = {
-  title: 'Add Strategy',
-  tabBarIcon: <FontAwesome name="plus" size={20} />
+  title: 'New Strategy',
+  tabBarIcon: <FontAwesome name="plus-circle" size={28} />
 };
 
 const styles = StyleSheet.create({});

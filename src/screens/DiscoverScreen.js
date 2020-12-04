@@ -5,27 +5,23 @@ import { SafeAreaView } from 'react-navigation';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
 
-const AccountScreen = ({navigation}) => {
+const DiscoverScreen = ({navigation}) => {
   const { signout } = useContext(AuthContext);
 
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
-      <Text style={{ fontSize: 48 }}>Account</Text>
-      <Spacer>
-        <Button title="Sign Out" onPress={signout} />
-      </Spacer>
-      <Spacer>
-        <Button title="Candle chart" onPress={() => navigation.navigate('TickerDetail')} />
-      </Spacer>
+      <Text style={{ fontSize: 48 }}>Discover</Text>
+
+      
     </SafeAreaView>
   );
 };
 
-AccountScreen.navigationOptions = {
+DiscoverScreen.navigationOptions = {
   header: () => false,
-  title: 'Strategies'
+  title: 'Discover'
 };
 
 const styles = StyleSheet.create({});
 
-export default AccountScreen;
+export default DiscoverScreen;

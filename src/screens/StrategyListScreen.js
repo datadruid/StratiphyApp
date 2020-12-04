@@ -1,6 +1,6 @@
-import React , { useContext, useEffect } from 'react';
+import React , { useContext, useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-navigation';
-import { StyleSheet, Dimensions, View } from 'react-native';
+import { StyleSheet, Dimensions, ActivityIndicator, Modal } from 'react-native';
 import { Layout, Card, List, Text } from '@ui-kitten/components';
 import { Context as StrategyContext } from '../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -27,7 +27,7 @@ const StrategyListScreen = ({ navigation }) => {
           data={state.strategies}
           renderItem={({item}) => <StrategyListItem info={item} navigation={navigation}/>}
         />
-            
+
       </Layout>
     </SafeAreaView>
   );
