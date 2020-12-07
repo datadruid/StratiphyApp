@@ -27,7 +27,7 @@
     "jwt-decode": "^3.0.0",
     "moment": "^2.29.1",
     "react": "16.13.1",
-    "react-native": "0.63.3",
+    "react-native": "0.63.4",
     "react-native-chart-kit": "^6.6.1",
     "react-native-code-input": "^1.0.6",
     "react-native-device-info": "^7.2.1",

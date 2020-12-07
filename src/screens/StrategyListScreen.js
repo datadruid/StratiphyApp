@@ -20,7 +20,7 @@ const StrategyListScreen = ({ navigation }) => {
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
       <Layout style={styles.layoutcontainer}>
-      <Text tyle={styles.text} category='h1' status='default'>Your Strategies</Text>
+
           <List
           style={styles.container}
           contentContainerStyle={styles.contentContainer}

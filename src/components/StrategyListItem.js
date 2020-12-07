@@ -178,6 +178,9 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         borderWidth: 1,
         borderColor: "silver"
+      },
+      iconright:{
+        padding: 7
       }
 });
 
