@@ -13,11 +13,17 @@ const SigninCodeScreen = ({ navigation }) => {
     const auth_id = navigation.getParam('auth_id');
     const isApproved = navigation.getParam('isApproved');
     const hasName = navigation.getParam('hasName');
+    const [ buttonMessage, setButtonMessage ] = useState('Resend email');
 
     const { state, verifyCode, repeatemail, clearErrorMessage } = useContext(AuthContext);
     const inputRef = useRef(null);
 
     const themeContext = React.useContext(ThemeContext);
+
+    const sendAnotherEmail = (email) => {
+      setButtonMessage("Email sent. If your code has expired, tap here.");
+      repeatemail({ email });
+    }
 
   return (
     <View style={styles.container}>
@@ -56,10 +62,10 @@ const SigninCodeScreen = ({ navigation }) => {
       ) : null}
        <TouchableOpacity style={styles.nav} onPress={(code) => {
           inputRef.current.clear();
-          repeatemail({ email });
+          sendAnotherEmail({email});
          }}>
       <Spacer>
-        <Text style={styles.link}>resend email</Text>
+        <Text style={styles.link}>{buttonMessage}</Text>
       </Spacer>
     </TouchableOpacity>
     {state.errorMessage ? (
