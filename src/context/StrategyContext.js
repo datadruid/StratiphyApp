@@ -9,7 +9,11 @@ const strategyReducer = (state, action) => {
     case 'clear_error_message':
         return { ...state, errorMessage: '' };
     case 'list_strategies':
-      return { errorMessage: '', strategies: action.payload };
+      return { ...state, errorMessage: '', strategies: action.payload };
+    case 'get_instructionlist':
+        return { ...state, errorMessage: '', instructions: action.payload };
+    case 'get_instructiondetail':
+          return { ...state, errorMessage: '', instructionDetail: action.payload };
     case 'get_strategy':
       return { errorMessage: '', strategy: action.payload };
     default:
@@ -48,8 +52,44 @@ const getStrategy = dispatch => async (strategyID) => {
           headers: { Authorization: `Bearer ${token}` }
         };
         let response = await authApi.get(`/strategy/${strategyID}`, config);
-
+          
         dispatch({ type: 'get_strategy', payload: response.data });
+      } catch(err) {
+        dispatch({ type: 'add_error', payload: err.data.error });
+      }
+  } else {
+    dispatch({ type: 'add_error', payload: 'No data acess token available' });
+  }
+};
+
+const getInstructionList = dispatch => async (strategyID) => {
+  const token = await getToken();
+  if (token) {
+      try{
+        let config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        let response = await authApi.get(`/strategyinstructionlist/${strategyID}`, config);
+        //console.log(response);
+        dispatch({ type: 'get_instructionlist', payload: response.data });
+      } catch(err) {
+        dispatch({ type: 'add_error', payload: err.data.error });
+      }
+  } else {
+    dispatch({ type: 'add_error', payload: 'No data acess token available' });
+  }
+};
+
+const getInstructionDetail = dispatch => async (strategyID, date) => {
+  const token = await getToken();
+  if (token) {
+      try{
+        let config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        let response = await authApi.get(`/strategyinstructiondetail/${strategyID}/${date}`, config);
+
+        dispatch({ type: 'get_instructiondetail', payload: response.data });
       } catch(err) {
         dispatch({ type: 'add_error', payload: err.data.error });
       }
@@ -60,6 +100,6 @@ const getStrategy = dispatch => async (strategyID) => {
 
 export const { Context, Provider } = createDataContext(
   strategyReducer,
-  {listStrategies, getStrategy, clearErrorMessage},
-  { strategies: [], strategy : {}, errorMessage: '' }
+  {listStrategies, getStrategy, getInstructionList, getInstructionDetail, clearErrorMessage},
+  { strategies: [], strategy : {}, instructions : { latestActions :  { actions : [] }}, instructionDetail : [], errorMessage: '' }
 );

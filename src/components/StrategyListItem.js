@@ -5,29 +5,31 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { LineChart } from 'react-native-chart-kit';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map'
+import IconStack from './strategy/IconStack';
 
 const currencyFormat  = {
   style: "currency",
   currency: RNLocalize.getLocales()[0].languageTag
 };
 
-  const StrategyListItem = ({ navigation, info }) => {
-  const openDetail = (item) => {
-    navigation.navigate('StrategyDetail', {item: item});
-  };
-  const openSettings = (item) => {
-    navigation.navigate('StrategySetting', {item: item});
-  };
+  const StrategyListItem = ({ navigation, item }) => {
+      
+    const openDetail = (item) => {
+      navigation.navigate('StrategyDetail', {item: item});
+    };
+    const openSettings = (item) => {
+      navigation.navigate('StrategySetting', {item: item});
+    };
 
-  let formattedStratValue = 0;
-  if(info.endValue)
-  {
-    formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${info.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
-  }
+    let formattedStratValue = 0;
+    if(item.endValue)
+    {
+      formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${item.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
+    }
 
   let linecolour = 'rgb(227, 63, 100)';
   let plusminus = '-'
-  if(info.performancePct > 0)
+  if(item.performancePct > 0)
   {
     linecolour = 'rgb(74, 250, 154)';
     plusminus = '+';
@@ -51,19 +53,19 @@ const currencyFormat  = {
     <Card style={styles.card}>
       <View style={styles.box1}>
           <Icon style={styles.icon} size={18} name='superpowers'/>
-          <Text style={styles.text} category='s1' status='default'>{info.strategyName}</Text>
-          <TouchableOpacity onPress={() => openSettings(info)}>
+          <Text style={styles.text} category='s1' status='default'>{item.strategyName}</Text>
+          <TouchableOpacity onPress={() => openSettings(item)}>
             <Icon style={styles.iconright} size={18} name='ellipsis-v'/>
           </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => openDetail(info)}>
+      <TouchableOpacity onPress={() => openDetail(item)}>
       <View style={styles.box2}>
         <LineChart
       data={{
         labels: [""],
         datasets: [
           {
-            data: info.analytics,
+            data: item.analytics,
             color: () => linecolour
             ,strokeWidth: "2"
                     }
@@ -89,27 +91,15 @@ const currencyFormat  = {
       }}
     />
         <View style={styles.box1}>
-        <View style={styles.box2}>
-          <Text style={styles.bold}>{formattedStratValue}</Text>
-          <Text>Value</Text>
-        </View>
-        <View style={styles.imagebox}>
-          <Image style={[styles.roundimage, {left:20}]} source={{
-          uri: 'https://logo.clearbit.com/https:/www.hsbc.co.uk',
-        }}/>
-          <Image style={[styles.roundimage, {left:35}]} source={{
-          uri: 'https://logo.clearbit.com/https:/www.ocado.com',
-        }}/>
-        <Image style={[styles.roundimage, {left:50}]} source={{
-          uri: 'https://logo.clearbit.com/www.britishland.com/',
-        }}/>
-
-
-        </View>
-        <View style={styles.box4}>
-          <Text style={[styles.textrightbold, {color: linecolour }]}>{plusminus}{info.performancePct}%</Text>
-          <Text style={styles.textright}>Performance</Text>
-        </View>
+          <View style={styles.box2}>
+            <Text style={styles.bold}>{formattedStratValue}</Text>
+            <Text>Value</Text>
+          </View>
+          <IconStack actions={item.latestActions.actions} borderColor='white' size={24}/>
+          <View style={styles.box4}>
+            <Text style={[styles.textrightbold, {color: linecolour }]}>{plusminus}{item.performancePct}%</Text>
+            <Text style={styles.textright}>Performance</Text>
+          </View>
         </View>
       </View>
       </TouchableOpacity>
@@ -164,20 +154,6 @@ const styles = StyleSheet.create({
       },
       bold:{
         fontWeight: 'bold'
-      },
-      imagebox:{
-        flex: 3,
-        flexDirection: 'row',
-        justifyContent: 'center'
-      },
-      roundimage: {
-        position: 'absolute',
-        width: 30,
-        height: 30,
-        borderRadius: 30 / 2,
-        overflow: "hidden",
-        borderWidth: 1,
-        borderColor: "silver"
       },
       iconright:{
         padding: 7

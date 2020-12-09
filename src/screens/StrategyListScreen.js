@@ -25,7 +25,7 @@ const StrategyListScreen = ({ navigation }) => {
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
           data={state.strategies}
-          renderItem={({item}) => <StrategyListItem info={item} navigation={navigation}/>}
+          renderItem={({item}) => <StrategyListItem item={item} navigation={navigation}/>}
         />
 
       </Layout>
