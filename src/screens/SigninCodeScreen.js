@@ -14,6 +14,7 @@ const SigninCodeScreen = ({ navigation }) => {
     const isApproved = navigation.getParam('isApproved');
     const hasName = navigation.getParam('hasName');
     const [ buttonMessage, setButtonMessage ] = useState('Resend email');
+    const [ startagain, setStartagain ] = useState(false);
 
     const { state, verifyCode, repeatemail, clearErrorMessage } = useContext(AuthContext);
     const inputRef = useRef(null);
@@ -22,6 +23,7 @@ const SigninCodeScreen = ({ navigation }) => {
 
     const sendAnotherEmail = (email) => {
       setButtonMessage("Email sent. If your code has expired, tap here.");
+      setStartagain(true);
       repeatemail({ email });
     }
 
@@ -56,21 +58,20 @@ const SigninCodeScreen = ({ navigation }) => {
             inputPosition='left'
             onFulfill={(code) => verifyCode({ code, email, auth_id, isApproved, hasName })}
         />
-        <CodeSpacer/>
         {state.errorMessage ? (
         <Text style={styles.errorMessage}>{state.errorMessage}</Text>
       ) : null}
+      <Spacer/>
+      <Spacer/>
        <TouchableOpacity style={styles.nav} onPress={(code) => {
           inputRef.current.clear();
-          sendAnotherEmail({email});
+          sendAnotherEmail(email);
          }}>
-      <Spacer>
         <Text style={styles.link}>{buttonMessage}</Text>
-      </Spacer>
     </TouchableOpacity>
-    {state.errorMessage ? (
+    {startagain ? (
         <TouchableOpacity style={styles.nav} onPress={() => navigation.goBack(null)}>
-          <Text style={styles.link}>change email address</Text>
+          <Text style={styles.link}>Restart login</Text>
       </TouchableOpacity>
       ) : null} 
       </View>
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
     height: 100
   },
   nav:{
-      marginTop: 100
+      marginTop: 50
   },
   link: {
     color: 'white',
