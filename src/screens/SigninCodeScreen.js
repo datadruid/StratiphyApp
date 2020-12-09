@@ -71,7 +71,7 @@ const SigninCodeScreen = ({ navigation }) => {
     </TouchableOpacity>
     {startagain ? (
         <TouchableOpacity style={styles.nav} onPress={() => navigation.goBack(null)}>
-          <Text style={styles.link}>Restart login</Text>
+          <Text style={styles.link}>restart login</Text>
       </TouchableOpacity>
       ) : null} 
       </View>
