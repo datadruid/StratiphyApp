@@ -70,7 +70,7 @@ const SigninCodeScreen = ({ navigation }) => {
     </TouchableOpacity>
     {state.errorMessage ? (
         <TouchableOpacity style={styles.nav} onPress={() => navigation.goBack(null)}>
-          <Text style={styles.link}>change email address</Text>
+          <Text style={styles.link}>restart login</Text>
       </TouchableOpacity>
       ) : null} 
       </View>
