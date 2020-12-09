@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import { ThemeContext } from '../theme-context';
@@ -13,11 +13,19 @@ const SigninCodeScreen = ({ navigation }) => {
     const auth_id = navigation.getParam('auth_id');
     const isApproved = navigation.getParam('isApproved');
     const hasName = navigation.getParam('hasName');
+    const [ buttonMessage, setButtonMessage ] = useState('Resend email');
+    const [ startagain, setStartagain ] = useState(false);
 
     const { state, verifyCode, repeatemail, clearErrorMessage } = useContext(AuthContext);
     const inputRef = useRef(null);
 
     const themeContext = React.useContext(ThemeContext);
+
+    const sendAnotherEmail = (email) => {
+      setButtonMessage("Email sent. If your code has expired, tap here.");
+      setStartagain(true);
+      repeatemail({ email });
+    }
 
   return (
     <View style={styles.container}>
@@ -50,21 +58,20 @@ const SigninCodeScreen = ({ navigation }) => {
             inputPosition='left'
             onFulfill={(code) => verifyCode({ code, email, auth_id, isApproved, hasName })}
         />
-        <CodeSpacer/>
         {state.errorMessage ? (
         <Text style={styles.errorMessage}>{state.errorMessage}</Text>
       ) : null}
+      <Spacer/>
+      <Spacer/>
        <TouchableOpacity style={styles.nav} onPress={(code) => {
           inputRef.current.clear();
-          repeatemail({ email });
+          sendAnotherEmail(email);
          }}>
-      <Spacer>
-        <Text style={styles.link}>resend email</Text>
-      </Spacer>
+        <Text style={styles.link}>{buttonMessage}</Text>
     </TouchableOpacity>
-    {state.errorMessage ? (
+    {startagain ? (
         <TouchableOpacity style={styles.nav} onPress={() => navigation.goBack(null)}>
-          <Text style={styles.link}>change email address</Text>
+          <Text style={styles.link}>restart login</Text>
       </TouchableOpacity>
       ) : null} 
       </View>
@@ -95,7 +102,7 @@ const styles = StyleSheet.create({
     height: 100
   },
   nav:{
-      marginTop: 100
+      marginTop: 50
   },
   link: {
     color: 'white',

@@ -1,4 +1,4 @@
-import React, { useContext,useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Image, View, ActivityIndicator, KeyboardAvoidingView, ImageBackground } from 'react-native';
 import { Button, Text, Input } from '@ui-kitten/components';
 import Spacer from '../components/Spacer';
