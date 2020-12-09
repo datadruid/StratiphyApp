@@ -20,6 +20,7 @@
     "@types/d3-scale": "^3.2.1",
     "@ui-kitten/components": "^5.0.0",
     "axios": "^0.20.0",
+    "bundle": "^2.1.0",
     "currency-symbol-map": "^4.0.4",
     "d3-scale": "^3.2.3",
     "expo-constants": "^9.2.0",
