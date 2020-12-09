@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { StyleSheet, TouchableOpacity, View, Image} from 'react-native';
-import { Text, Card } from '@ui-kitten/components';
+import { Text } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { LineChart } from 'react-native-chart-kit';
 import * as RNLocalize from "react-native-localize";
@@ -40,7 +40,7 @@ const currencyFormat  = {
     backgroundGradientFrom: "#ffffff",
     backgroundGradientTo: "#ffffff",
     fillShadowGradient :linecolour,
-    fillShadowGradientOpacity: 0.8,
+    fillShadowGradientOpacity: 0.2,
     decimalPlaces: 2, // optional, defaults to 2dp #f9b10b
     color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
     labelColor: (opacity = 0) => `rgba(0, 0, 0, ${opacity})`,
@@ -50,7 +50,7 @@ const currencyFormat  = {
   };
 
   return (
-    <Card style={styles.card}>
+    <View style={styles.card}>
       <View style={styles.box1}>
           <Icon style={styles.icon} size={18} name='superpowers'/>
           <Text style={styles.text} category='s1' status='default'>{item.strategyName}</Text>
@@ -103,7 +103,7 @@ const currencyFormat  = {
         </View>
       </View>
       </TouchableOpacity>
-    </Card>
+    </View>
   );
 };
 
@@ -113,14 +113,17 @@ const styles = StyleSheet.create({
       },
       card: {
         flex: 1,
-        margin: 8,
+        marginBottom: 15,
+        backgroundColor:'white',
+        borderRadius: 12,
+        paddingVertical:20
       },
       box1:{
         flex: 1,
         flexDirection: 'row',
         alignSelf: 'stretch',
-        justifyContent: 'space-between'
-        
+        justifyContent: 'space-between',
+        marginHorizontal:20
       },
       box2: {
         flex: 3,
@@ -156,7 +159,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
       },
       iconright:{
-        padding: 7
+        padding: 7,
+        color: '#CBCBCB'
       }
 });
 

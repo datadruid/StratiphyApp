@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     flexDirection: 'column',
-    backgroundColor: '#E5E5E5',
+    backgroundColor: '#F3F4F5',
     paddingBottom: 40
   },
   hero: {
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     justifyContent: 'center',
-    backgroundColor: '#E5E5E5',
+    backgroundColor: '#F3F4F5',
     height: 75,
     padding: 20,
     top: -20
