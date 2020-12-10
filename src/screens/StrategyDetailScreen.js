@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 import { SafeAreaView } from 'react-navigation';
-import { Context as StrategyContext } from '../context/StrategyContext';
+//import { Context as StrategyContext } from '../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Instructions from '../components/strategy/Instructions';
 import Holdings from '../components/strategy/Holdings';
@@ -132,12 +132,14 @@ const StrategySettingScreen = ({ navigation }) => {
                 </Text>
                 <Icon style={styles.infoicon} size={20} name='info-circle' />
               </View>
-              <View style={styles.titleiconcontainerright}>
-              <Text style={styles.linktext}>
-                See history
-              </Text>
-              <Icon style={styles.infoicon} size={20} name='chevron-right' />
-            </View>
+              <TouchableOpacity onPress={() => navigation.navigate('StrategyInstructions', {item : item})}>
+                <View style={styles.titleiconcontainerright}>
+                  <Text style={styles.linktext}>
+                    See history
+                  </Text>
+                  <Icon style={styles.infoicon} size={20} name='chevron-right' />
+                </View>
+              </TouchableOpacity>
           </View>
           <View style={styles.instructioncontainer}>
             <Instructions actions={item.latestActions.actions} />
