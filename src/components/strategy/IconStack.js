@@ -7,7 +7,7 @@ const getRandomColor = () => {
 
 const IconStack = ({ actions, borderColor, size }) => {
     const borderRadii = size/2;
-    if (actions.some(x => x.Action !== 'Hold')) {
+    if (actions?.some(x => x.Action !== 'Hold')) {
         let totalTickers = actions.filter(x => x.Action === 'Hold').length;
         let leftby = size/1.2;
         let counter = -1;

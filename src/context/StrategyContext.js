@@ -15,7 +15,7 @@ const strategyReducer = (state, action) => {
     case 'get_instructiondetail':
           return { ...state, errorMessage: '', instructionDetail: action.payload };
     case 'get_strategy':
-      return { errorMessage: '', strategy: action.payload };
+      return { ...state, errorMessage: '', strategy: action.payload };
     default:
       return state;
   }
@@ -70,7 +70,7 @@ const getInstructionList = dispatch => async (strategyID) => {
           headers: { Authorization: `Bearer ${token}` }
         };
         let response = await authApi.get(`/strategyinstructionlist/${strategyID}`, config);
-        //console.log(response);
+        
         dispatch({ type: 'get_instructionlist', payload: response.data });
       } catch(err) {
         dispatch({ type: 'add_error', payload: err.data.error });
@@ -101,5 +101,5 @@ const getInstructionDetail = dispatch => async (strategyID, date) => {
 export const { Context, Provider } = createDataContext(
   strategyReducer,
   {listStrategies, getStrategy, getInstructionList, getInstructionDetail, clearErrorMessage},
-  { strategies: [], strategy : {}, instructions : { latestActions :  { actions : [] }}, instructionDetail : [], errorMessage: '' }
+  { strategies: [], strategy : { analytics: [0]}, instructions : [], instructionDetail : [], errorMessage: '' }
 );

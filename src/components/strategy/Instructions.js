@@ -4,8 +4,9 @@ import { Context as StrategyContext } from '../../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
+import moment from 'moment';
 
-const langTag =RNLocalize.getLocales()[0].languageTag;
+const langTag = RNLocalize.getLocales()[0].languageTag;
 const currencyFormat = {
     style: "currency",
     currency: langTag
@@ -18,17 +19,21 @@ const getRandomColor = () =>
 
 const Instructions = ({ actions }) => {
     let counter = 0;
-    if (actions.some(x => x.Action !== 'Hold')) {
+    let lastDate = '';
+    if (actions?.some(x => x.Action !== 'Hold')) {
             
         return (
             <>
                 {
                     actions.filter(x => x.Action !== 'Hold').map(item => {
                         let circlecolour = getRandomColor();
+                        let showDate = (item.Date !== lastDate);
+                        lastDate = item.Date;
                         return (
                             <>
+                            { item.Date && showDate && <Text style={styles.datetext}>{moment(Date.parse(item.Date)).format('D MMMM')}</Text>}
                                 <View style={styles.instructionitemcontainer}>
-                                    <View style={[styles.stockcircle, {backgroundColor: circlecolour}]}>
+                                    <View style={[styles.stockcircle, {backgroundColor: circlecolour}]}> 
                                         <Text style={styles.stockcircletext}>{item.Ticker}</Text>
                                     </View>
                                     <Text style={styles.actiontext}>
@@ -92,6 +97,14 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         color:'white',
         textAlign: 'center'
+    },
+    datetext: {
+        fontWeight: "600",
+        fontSize: 13,
+        color: "#8d949d",
+        lineHeight:24,
+        marginBottom:5,
+        marginTop:25
     }
 });
 

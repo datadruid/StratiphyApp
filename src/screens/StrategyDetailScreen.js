@@ -1,15 +1,15 @@
-import React, { useContext, useEffect } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 import { SafeAreaView } from 'react-navigation';
-//import { Context as StrategyContext } from '../context/StrategyContext';
+import { Context as StrategyContext } from '../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import Instructions from '../components/strategy/Instructions';
-import Holdings from '../components/strategy/Holdings';
 import { LineChart } from 'react-native-chart-kit';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
 import IconStack from '../components/strategy/IconStack';
+import StrategyTab from '../components/strategy/StrategyTab';
+import AnalysisTab from '../components/strategy/AnalysisTab';
 
 const mastercolour = '#4CD697';
 const screenwidth = Dimensions.get("window").width;
@@ -20,20 +20,22 @@ const currencyFormat = {
 
 const StrategySettingScreen = ({ navigation }) => {
   const item = navigation.getParam('item');
-  // const { state, getInstructionList, clearErrorMessage } = useContext(StrategyContext);
+  const [ isStartegyTab, setIsStartegyTab ] = useState(true);
+  const [ isAnalysisTab, setIsAnalysisTab ] = useState(false);
+  const { state, getStrategy, clearErrorMessage } = useContext(StrategyContext);
 
-  // useEffect(() => {
-  //   getInstructionList(item.strategyID);
-  // }, []);
+  useEffect( () => {
+     getStrategy(item._id);
+  }, []);
 
   let formattedStratValue = 0;
-  if (item.endValue) {
-    formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${item.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
+  if (state.strategy?.endValue) {
+    formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${state.strategy?.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
   }
 
   let linecolour = '#FFFFFF';
   let plusminus = '-'
-  if (item.performancePct > 0) {
+  if (state.strategy?.performancePct > 0) {
     plusminus = '+';
   }
 
@@ -51,6 +53,29 @@ const StrategySettingScreen = ({ navigation }) => {
     }
   };
 
+  /// change button status for analysis and strategy
+  var startegyButtonProps = {
+    buttonStyle : isStartegyTab ? styles.buttonselected : styles.button,
+    titleStyle : isStartegyTab ? styles.buttontitleselected : styles.buttontitle,
+  };
+
+  var analysisButtonProps = {
+    buttonStyle : isAnalysisTab ? styles.buttonselected : styles.button,
+    titleStyle : isAnalysisTab ? styles.buttontitleselected : styles.buttontitle,
+  };
+
+  const switchTab = (target) =>{
+    if(target === 'strategy')
+    {
+      setIsStartegyTab(true);
+      setIsAnalysisTab(false);
+    }
+    else
+    {
+      setIsStartegyTab(false);
+      setIsAnalysisTab(true);
+    }
+  };
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
       <ScrollView>
@@ -61,7 +86,7 @@ const StrategySettingScreen = ({ navigation }) => {
             </TouchableOpacity>
             <View style={styles.box1}>
               <Icon style={styles.topicon} size={25} name='superpowers' />
-              <Text style={styles.toptitletext} >{item.strategyName}</Text>
+              <Text style={styles.toptitletext} >{state.strategy?.strategyName}</Text>
               <Icon style={styles.topicon} size={20} name='star' />
 
             </View>
@@ -70,7 +95,7 @@ const StrategySettingScreen = ({ navigation }) => {
                 labels: [""],
                 datasets: [
                   {
-                    data: item.analytics,
+                    data: state.strategy?.analytics,
                     color: () => linecolour
                     , strokeWidth: "2"
                   }
@@ -102,55 +127,33 @@ const StrategySettingScreen = ({ navigation }) => {
                 <Text style={styles.toptitletext}>{formattedStratValue}</Text>
                 <Text style={styles.subtitletext}>Value</Text>
               </View>
-              <IconStack actions={item.latestActions.actions} borderColor={mastercolour} size={28}/>
+              <IconStack actions={state.strategy?.latestActions?.actions} borderColor={mastercolour} size={28}/>
               <View style={styles.box4}>
-                <Text style={[styles.toptitletext, { color: linecolour }]}>{plusminus}{item.performancePct}%</Text>
+                <Text style={[styles.toptitletext, { color: linecolour }]}>{plusminus}{state.strategy?.performancePct}%</Text>
                 <Text style={styles.subtitletext}>Performance</Text>
               </View>
             </View>
           </View>
           <View style={styles.content} >
             <View style={styles.switchpanel} >
-              <Button
+              <Button {...startegyButtonProps}
                 title='Strategy'
                 type='solid'
-                buttonStyle={styles.buttonselected}
-                titleStyle={styles.buttontitleselected} />
+                //buttonStyle={styles.buttonselected}
+                //titleStyle={styles.buttontitleselected} 
+                onPress={() => switchTab('strategy')}/>
 
-              <Button
+              <Button {...analysisButtonProps}
                 title='Analysis'
                 type='solid'
-                buttonStyle={styles.button}
-                titleStyle={styles.buttontitle} />
+                // buttonStyle={styles.button}
+                // titleStyle={styles.buttontitle} 
+                onPress={() => switchTab('analysis')}/>
             </View>
           </View>
           <View style={styles.childrencontainer}>
-            <View style={styles.titlelinkcontainer}>
-              <View style={styles.titleiconcontainer}>
-                <Text style={styles.titletext}>
-                  Instructions
-                </Text>
-                <Icon style={styles.infoicon} size={20} name='info-circle' />
-              </View>
-              <TouchableOpacity onPress={() => navigation.navigate('StrategyInstructions', {item : item})}>
-                <View style={styles.titleiconcontainerright}>
-                  <Text style={styles.linktext}>
-                    See history
-                  </Text>
-                  <Icon style={styles.infoicon} size={20} name='chevron-right' />
-                </View>
-              </TouchableOpacity>
-          </View>
-          <View style={styles.instructioncontainer}>
-            <Instructions actions={item.latestActions.actions} />
-          </View>
-          <View style={styles.titleiconcontainer}>
-            <Text style={styles.titletext}>
-              Holdings
-              </Text>
-            <Icon style={styles.infoicon} size={20} name='info-circle' />
-          </View>
-          <Holdings actions={item.latestActions.actions} />
+              {isStartegyTab && <StrategyTab strategy={state.strategy} navigation={navigation}/>}
+              {isAnalysisTab && <AnalysisTab strategy={state.strategy} navigation={navigation}/>}
         </View>
       </View>
       </ScrollView>
@@ -247,12 +250,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     color: 'white',
   },
-  infoicon: {
-    paddingLeft: 7,
-    justifyContent: 'center',
-    color: '#FFC234',
-    textAlignVertical: 'center'
-  },
   subtitletext: {
     fontSize: 16,
     fontWeight: '400',
@@ -271,12 +268,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingHorizontal: 20
   },
-  titlelinkcontainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingBottom: 15
-  },
   toptitletext: {
     fontSize: 22,
     fontWeight: '600',
@@ -289,20 +280,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600'
   },
-  titletext: {
-    fontSize: 20,
-    fontWeight: '600'
-  },
   titleiconcontainer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-  },
-  linktext: {
-    fontSize: 18,
-    fontWeight: '400',
-    color: '#FFC234'
-  },
+  }
 });
 
 export default StrategySettingScreen;

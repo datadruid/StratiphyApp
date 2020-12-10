@@ -192,6 +192,7 @@ const signup = dispatch => async ({ email }) => {
     {
       running = true;
       const signinResponse = await authApi.post('/signin', { email });
+
       let userInfo = signinResponse.data;
       
       const userStatusResponse = await authApi.post('/userstatus', 
@@ -218,7 +219,7 @@ const signup = dispatch => async ({ email }) => {
     }
   } catch (err) {
     running = false;
-    console.log(err);
+    console.log({err});
     dispatch({
       type: 'add_error',
       payload: 'Something went wrong with sign up'
