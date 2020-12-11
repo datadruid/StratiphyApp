@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign:'center',
         textAlignVertical: 'center',
-        marginTop:8
+        marginTop:8,
+        paddingBottom: 16
     },
     stockcircle: {
         justifyContent: 'center',
