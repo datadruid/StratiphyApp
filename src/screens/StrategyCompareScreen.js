@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     marginBottom: 30
   },
   backicon: {
-    paddingLeft: 25,
+    marginLeft: 25,
     paddingTop: 20,
     justifyContent: 'center',
     color: '#FFC234',

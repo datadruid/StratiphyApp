@@ -20,7 +20,7 @@ const AnalysisTab = ({ navigation, strategy }) => {
         <TouchableOpacity onPress={() => navigation.navigate('StrategyCompare', { item: strategy })}>
           <View style={styles.titleiconcontainerright}>
             <Text style={styles.linktext}>
-              Compare
+              Compare 
                   </Text>
             <Icon style={styles.infoicon} size={20} name='chevron-right' />
           </View>
@@ -83,17 +83,22 @@ marginTop: 19
     justifyContent: 'flex-end',
   },
   infoicon: {
-    paddingLeft: 7,
+    marginLeft: 7,
     justifyContent: 'center',
     color: '#FFC234',
     alignSelf: 'center'
   },
   linktext: {
     alignSelf: 'stretch',
-    textAlign: 'left',
     fontSize: 18,
     fontWeight: '400',
-    color: '#FFC234'
+    color: '#FFC234',
+    justifyContent: 'flex-end',
+  },
+  titleiconcontainerright:{
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   titlelinkcontainer: {
     flex: 1,

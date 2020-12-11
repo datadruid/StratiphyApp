@@ -86,7 +86,7 @@ const StrategySettingScreen = ({ navigation }) => {
             </TouchableOpacity>
             <View style={styles.box1}>
               <Icon style={styles.topicon} size={25} name='superpowers' />
-              <Text style={styles.toptitletext} >{state.strategy?.strategyName}</Text>
+              <Text style={styles.toptitletext} >{state.strategy?.strategyName} </Text>
               <Icon style={styles.topicon} size={20} name='star' />
 
             </View>
@@ -233,11 +233,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-  },
-  titleiconcontainerright:{
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
   },
   imagebox: {
     flex: 1,

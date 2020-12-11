@@ -17,7 +17,7 @@ const StrategyTab = ({ navigation, strategy }) => {
                 <TouchableOpacity onPress={() => navigation.navigate('StrategyInstructions', { item: strategy })}>
                     <View style={styles.titleiconcontainerright}>
                         <Text style={styles.linktext}>
-                            See history
+                            See history 
                   </Text>
                         <Icon style={styles.infoicon} size={20} name='chevron-right' />
                     </View>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     infoicon: {
-        paddingLeft: 7,
+        marginLeft: 7,
         justifyContent: 'center',
         color: '#FFC234',
         alignSelf: 'center'
@@ -65,6 +65,11 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         color: '#FFC234'
     },
+    titleiconcontainerright:{
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+      },
     titlelinkcontainer: {
         flex: 1,
         flexDirection: 'row',
