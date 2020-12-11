@@ -33,11 +33,11 @@ const Instructions = ({ actions }) => {
                                         <Text style={styles.stockcircletext}>{item.Ticker}</Text>
                                     </View>
                                     <Text style={styles.actiontext}>
-                                        <Text style={{fontWeight: '600'}}>{item.Action} </Text>
-                                        <Text style={{fontWeight: '600'}}>{getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}{item.Buy.toFixed(2)} </Text>
+                                        <Text style={{fontWeight: 'bold'}}>{item.Action} </Text>
+                                        <Text style={{fontWeight: 'bold'}}>{getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}{item.Buy.toFixed(2)} </Text>
                                         <Text>{item.Action} </Text>
                                         <Text>of </Text>
-                                        <Text style={{fontWeight: '600'}}>{item.Ticker} </Text>
+                                        <Text style={{fontWeight: 'bold'}}>{item.Ticker} </Text>
                                         <Text>stock</Text>  
                                     </Text>
                                 </View>

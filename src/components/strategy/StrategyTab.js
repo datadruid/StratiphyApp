@@ -40,7 +40,7 @@ const StrategyTab = ({ navigation, strategy }) => {
 const styles = StyleSheet.create({
     titletext: {
         fontSize: 20,
-        fontWeight: '600'
+        fontWeight: 'bold'
     },
     titleiconcontainer: {
         flex: 1,
@@ -59,6 +59,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     linktext: {
+        alignSelf: 'stretch',
+        textAlign: 'left',
         fontSize: 18,
         fontWeight: '400',
         color: '#FFC234'

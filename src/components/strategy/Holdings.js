@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     },
     tickertext: {
         fontSize: 14,
-        fontWeight: '600',
+        fontWeight: 'bold',
     },
     valuetext: {
         textAlign: 'right'

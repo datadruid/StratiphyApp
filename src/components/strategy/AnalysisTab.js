@@ -46,7 +46,7 @@ const AnalysisTab = ({ navigation, strategy }) => {
 const styles = StyleSheet.create({
   titletext: {
     fontSize: 20,
-    fontWeight: '600'
+    fontWeight: 'bold'
   },
   comparisoncontainer: {
 marginTop: 19
@@ -60,7 +60,7 @@ marginTop: 19
     backgroundColor:'white',
     color:'black',
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: 'bold',
     borderRadius:10
   },
   innerborderstyle:{
@@ -89,6 +89,8 @@ marginTop: 19
     alignSelf: 'center'
   },
   linktext: {
+    alignSelf: 'stretch',
+    textAlign: 'left',
     fontSize: 18,
     fontWeight: '400',
     color: '#FFC234'

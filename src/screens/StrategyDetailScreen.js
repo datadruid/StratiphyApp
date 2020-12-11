@@ -109,7 +109,7 @@ const StrategySettingScreen = ({ navigation }) => {
               withInnerLines={false}
               withHorizontalLabels={false}
               width={screenwidth + 5} // from react-native
-              height={338}
+              height={328}
               yAxisInterval={1} // optional, defaults to 1
               chartConfig={chartConfig}
               bezier
@@ -119,7 +119,7 @@ const StrategySettingScreen = ({ navigation }) => {
                 borderRadius: 0,
                 margin: 0,
                 paddingRight: 0,
-                top: -78
+                top: -68
               }}
             />
             <View style={styles.box1}>
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   buttontitle: {
     color: 'white',
     fontSize: 13,
-    fontWeight: '600'
+    fontWeight: 'bold'
   },
   buttonselected: {
     backgroundColor: '#FFFFFF',
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   buttontitleselected: {
     color: 'black',
     fontSize: 13,
-    fontWeight: '600'
+    fontWeight: 'bold'
   },
   centerspacer: {
     width: 4,
@@ -269,8 +269,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   toptitletext: {
+    alignSelf: 'stretch',
+    textAlign: 'left',
     fontSize: 22,
-    fontWeight: '600',
+    fontWeight: 'bold',
     color: 'white',
   },
   topicon: {
@@ -278,7 +280,7 @@ const styles = StyleSheet.create({
   },
   titletext: {
     fontSize: 20,
-    fontWeight: '600'
+    fontWeight: 'bold'
   },
   titleiconcontainer: {
     flex: 1,

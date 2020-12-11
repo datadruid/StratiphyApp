@@ -78,7 +78,9 @@ const Comparisons = ({ strategy }) => {
                                         <Text style={styles.tickertext}>
                                         {item.strategyName}
                                         </Text>
-                                        <Text style={styles.nametext}>
+                                        <Text 
+                                        style={styles.nametext}
+                                        numberOfLines={1}>
                                         {item.strategyDescription}
                                         </Text>
                                     </View>
@@ -206,15 +208,18 @@ const styles = StyleSheet.create({
     },
     tickertext: {
         fontSize: 14,
-        fontWeight: '600',
+        fontWeight: 'bold',
     },
     valuetext: {
         textAlign: 'right'
     },
     nametext: {
+        alignSelf: 'stretch',
+        textAlign: 'left',
         marginTop: 5,
         fontSize: 13,
         fontWeight: '400',
+        width: 120
     },
     percenttext:{
         textAlign: 'right'
