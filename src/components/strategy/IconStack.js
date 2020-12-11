@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-
-const getRandomColor = () => {
-    return 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
-}
+import {getAvatarColor} from '../modules/UiHelper';
 
 const IconStack = ({ actions, borderColor, size }) => {
     const borderRadii = size/2;
@@ -16,7 +13,7 @@ const IconStack = ({ actions, borderColor, size }) => {
             <View style={[styles.imagebox, {left : rightby}]}>
                 {
                     actions.filter(x => x.Action === 'Hold').map(item => {
-                        let circlecolour = getRandomColor();
+                        let circlecolour = getAvatarColor(item.Ticker);
                         counter ++;
                         return (
                         <>

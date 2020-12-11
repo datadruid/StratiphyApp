@@ -1,49 +1,49 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Context as StrategyContext } from '../../context/StrategyContext';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
-import { LineChart } from 'react-native-chart-kit';
 import {getAvatarColor} from '../modules/UiHelper';
+import { LineChart } from 'react-native-chart-kit';
+import moment from 'moment';
 
+const langTag = RNLocalize.getLocales()[0].languageTag;
 const currencyFormat = {
     style: "currency",
-    currency: RNLocalize.getLocales()[0].languageTag
+    currency: langTag
   };
 
-const Holdings = ({ actions }) => {
-    let counter = 0;
-    if (actions?.some(x => x.Action !== 'Hold')) {
-    const tickers = actions.filter(x => x.Action === 'Hold').map(function(elem){
-                            return elem.Ticker;
-                        }).join(",");
-
-    const { state, getTickerData, clearErrorMessage } = useContext(StrategyContext);  
-    
-    useEffect( () => {
-        var dt = new Date();
-        const endDate = `${dt.getFullYear()}-${(dt.getMonth())}-${dt.getDate()}T00:00:00`;
-        const startDate =`${dt.getFullYear() - 1}-${(dt.getMonth())}-${dt.getDate()}T00:00:00`;
-        getTickerData(tickers, startDate, endDate);
+const Comparisons = ({ strategy }) => {
+    const { state, getTickerData, clearErrorMessage } = useContext(StrategyContext);
+    if(state.compTickerList.length > 0)
+    {
+        useEffect( () => {
+            var dt = new Date();
+            const endDate = `${dt.getFullYear()}-${(dt.getMonth())}-${dt.getDate()}T00:00:00`;
+            const startDate =`${dt.getFullYear() - 1}-${(dt.getMonth())}-${dt.getDate()}T00:00:00`;
+            getTickerData(state.compTickerList, startDate, endDate);
         }, []);
+    }
+    const actions = [strategy];
+    let lastDate = '';
+    if (actions) {
+            
         return (
-            <View style={styles.holdingcontainer}>
+            <>
                 {
-                    actions.filter(x => x.Action === 'Hold').map(item => {
-                        let tickerData = {series : [0]};
-                        let formattedStratValue ='';
-                        if(state.tickerData.find(x=> x.ticker === item.Ticker)?.series?.length)
-                        {
-                            tickerData = state.tickerData.find(x=> x.ticker === item.Ticker);
-                            formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${tickerData.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
+                    actions.map(item => {
+                        let formattedStratValue = 0;
+                        if (item.endValue) {
+                            formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${item.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
                         }
-                        let circlecolour = getAvatarColor(item.Ticker);
                         let linecolour = 'rgb(227, 63, 100)';
+                        let plusminus = '-'
                         if (item.performancePct > 0) {
                             linecolour = 'rgb(74, 250, 154)';
+                            plusminus = '+';
                         }
 
-                        
                         const chartConfig = {
                             backgroundColor: "#ffffff",
                             backgroundGradientFrom: "#ffffff",
@@ -57,23 +57,29 @@ const Holdings = ({ actions }) => {
                               borderRadius: 0,
                             }
                           };
-                        counter++;
+
+                        let circlecolour = getAvatarColor('S');
+                        let showDate = (item.Date !== lastDate);
+                        lastDate = item.Date;
                         return (
                             <>
-                            {(counter > 1) && <View style={styles.linespacer} />}
+                            { item.Date && showDate && <Text style={styles.datetext}>{moment(Date.parse(item.Date)).format('D MMMM')}</Text>}
                             <View style={styles.itemcontainer}>
                                 <View style={[styles.stockcircle, {backgroundColor: circlecolour}]}>
-                                        <Text style={styles.stockcircletext}>{item.Ticker}</Text>
+                                        <Text style={styles.stockcircletext}>
+                                            S
+
+                                            </Text>
                                 </View>
                                 
 
                                 <View style={styles.holdingitemcontainer}>
                                     <View style={styles.stackbox}>
                                         <Text style={styles.tickertext}>
-                                        {item.Ticker}
+                                        {item.strategyName}
                                         </Text>
                                         <Text style={styles.nametext}>
-                                            Name
+                                        {item.strategyDescription}
                                         </Text>
                                     </View>
                                     <View style={styles.chartcontainer}>
@@ -82,7 +88,7 @@ const Holdings = ({ actions }) => {
                                                 labels: [""],
                                                 datasets: [
                                                 {
-                                                    data: tickerData.series,
+                                                    data: strategy.analytics,
                                                     color: () => linecolour
                                                     , strokeWidth: "2"
                                                 }
@@ -95,7 +101,7 @@ const Holdings = ({ actions }) => {
                                             withOuterLines={false}
                                             withInnerLines={false}
                                             withHorizontalLabels={false}
-                                            width={64.5} // from react-native
+                                            width={75.5} // from react-native
                                             height={45}
                                             yAxisInterval={1} // optional, defaults to 1
                                             chartConfig={chartConfig}
@@ -103,8 +109,8 @@ const Holdings = ({ actions }) => {
                                             style={{
                                                 marginVertical: 0,
                                                 borderRadius: 0,
-                                                margin: 0,
-                                                paddingRight: 16.5,
+                                                marginRight: 10,
+                                                paddingRight: 0,
                                                 top: 0,
                                             }}
                                             />
@@ -114,17 +120,19 @@ const Holdings = ({ actions }) => {
                                             {formattedStratValue}
                                         </Text>
                                         <Text style={[styles.nametext, styles.percenttext], {color: linecolour }}>
-                                         {tickerData.performancePct}%
+                                         {plusminus}{item.performancePct}%
                                         </Text>
                                     </View>
                                 </View>
-                            </View>    
+                            </View> 
+                                <View style={styles.spacerContainer} />
                             </>
+
                         );
                         
                     })}
-            </View>
 
+            </>
         )
     }
     else {
@@ -134,12 +142,13 @@ const Holdings = ({ actions }) => {
         )
     }
     counter++;
-
 };
 
 const styles = StyleSheet.create({
     itemcontainer: {
-        height: 75,
+        backgroundColor: 'white',
+        borderRadius: 12,
+        height: 78,
         flex :1,
         flexDirection: 'row',
         justifyContent: 'flex-start',
@@ -163,10 +172,15 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         height: 50
     },
-    linespacer: {
-        backgroundColor: '#DBDEE7',
-        height: 1,
-        marginHorizontal: 20
+    spacerContainer: {
+        height: 13
+    },
+    actiontext: {
+        fontWeight: '400',
+        fontSize: 16,
+        textAlign:'center',
+        textAlignVertical: 'center',
+        marginTop:8
     },
     stockcircle: {
         justifyContent: 'center',
@@ -177,10 +191,18 @@ const styles = StyleSheet.create({
         marginRight: 20
     },
     stockcircletext: {
-        fontSize: 8,
-        fontWeight: '500',
+        fontSize: 7,
+        fontWeight: '400',
         color:'white',
         textAlign: 'center'
+    },
+    datetext: {
+        fontWeight: "600",
+        fontSize: 13,
+        color: "#8d949d",
+        lineHeight:24,
+        marginBottom:5,
+        marginTop:25
     },
     tickertext: {
         fontSize: 14,
@@ -203,4 +225,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Holdings;
+export default Comparisons;

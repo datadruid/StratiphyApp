@@ -30,7 +30,7 @@ const StrategyInstructionsScreen = ({navigation}) => {
   
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
-      <ScrollView>
+      
       <View style={styles.layoutcontainer}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
               <Icon style={styles.backicon} size={40} name='long-arrow-left' />
@@ -40,7 +40,7 @@ const StrategyInstructionsScreen = ({navigation}) => {
           <Icon style={styles.infoicon} size={20} name='info-circle' />
         </View>
           <SearchBar style={styles.searchbar}
-            placeholder="Type Here..."
+            placeholder="Search"
             searchIcon={{ type: 'font-awesome', name: 'search' }}
             inputContainerStyle={styles.searchbarinputcontainer}
             containerStyle={styles.searchbarcontainer}
@@ -49,12 +49,14 @@ const StrategyInstructionsScreen = ({navigation}) => {
             value={search}
           />
         <View style={styles.content} >
+        <ScrollView>
           <View style={styles.instructioncontainer}>
             <Instructions actions={instructions} />
           </View>
+          </ScrollView>
         </View>
       </View>
-      </ScrollView>
+      
     </SafeAreaView>
   );
 };

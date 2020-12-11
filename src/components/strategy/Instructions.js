@@ -4,6 +4,7 @@ import { Context as StrategyContext } from '../../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
+import {getAvatarColor} from '../modules/UiHelper';
 import moment from 'moment';
 
 const langTag = RNLocalize.getLocales()[0].languageTag;
@@ -11,11 +12,6 @@ const currencyFormat = {
     style: "currency",
     currency: langTag
   };
-
-const getRandomColor = () =>
-{
-    return 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
-}
 
 const Instructions = ({ actions }) => {
     let counter = 0;
@@ -26,7 +22,7 @@ const Instructions = ({ actions }) => {
             <>
                 {
                     actions.filter(x => x.Action !== 'Hold').map(item => {
-                        let circlecolour = getRandomColor();
+                        let circlecolour = getAvatarColor(item.Ticker);
                         let showDate = (item.Date !== lastDate);
                         lastDate = item.Date;
                         return (

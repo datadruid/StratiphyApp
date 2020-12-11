@@ -16,6 +16,16 @@ const strategyReducer = (state, action) => {
           return { ...state, errorMessage: '', instructionDetail: action.payload };
     case 'get_strategy':
       return { ...state, errorMessage: '', strategy: action.payload };
+    case 'get_tickerdata':
+      return { ...state, errorMessage: '', tickerData: action.payload };
+    case 'get_comparisondata':
+      return { ...state, errorMessage: '', comparisonData: action.payload }
+    case 'toggle_compticker_list':
+      if (state.compTickerList.indexOf(action.payload) !== -1) {
+        return { ...state, errorMessage: '', compTickerList: state.compTickerList.filter(item => item !== action.payload) }
+      }
+      return { ...state, errorMessage: '', compTickerList: state.compTickerList.concat(action.payload) }
+      
     default:
       return state;
   }
@@ -98,8 +108,52 @@ const getInstructionDetail = dispatch => async (strategyID, date) => {
   }
 };
 
+const getTickerData = dispatch => async (startegies, fromDate, toDate) =>{
+  const token = await getToken();
+  
+  if (token) {
+      try{
+        let config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+
+        let response = await authApi.get(`/tickerperformance/${startegies}/${fromDate}/${toDate}`, config);
+        
+        dispatch({ type: 'get_tickerdata', payload: response.data });
+      } catch(err) {
+        dispatch({ type: 'add_error', payload: err.data.error });
+      }
+  } else {
+    dispatch({ type: 'add_error', payload: 'No data acess token available' });
+  }
+};
+
+const getComparisonData = dispatch => async (fromDate, toDate) =>{
+  const token = await getToken();
+  
+  if (token) {
+      try{
+        let config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+
+        let response = await authApi.get(`/ftsetickerperformance/${fromDate}/${toDate}`, config);
+
+        dispatch({ type: 'get_comparisondata', payload: response.data });
+      } catch(err) {
+        dispatch({ type: 'add_error', payload: err.data.error });
+      }
+  } else {
+    dispatch({ type: 'add_error', payload: 'No data acess token available' });
+  }
+};
+
+const toggleCompTickerList = dispatch => async (newTicker) =>{
+  dispatch({ type: 'toggle_compticker_list', payload: newTicker });
+};
+
 export const { Context, Provider } = createDataContext(
   strategyReducer,
-  {listStrategies, getStrategy, getInstructionList, getInstructionDetail, clearErrorMessage},
-  { strategies: [], strategy : { analytics: [0]}, instructions : [], instructionDetail : [], errorMessage: '' }
+  {listStrategies, getStrategy, getInstructionList, getInstructionDetail, getTickerData, getComparisonData, toggleCompTickerList, clearErrorMessage},
+  { strategies: [], strategy : { analytics: [0]}, tickerData : [], comparisonData : [], compTickerList: [], instructions : [], instructionDetail : [], errorMessage: '' }
 );
