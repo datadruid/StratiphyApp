@@ -100,7 +100,6 @@ const verifyCode = dispatch => async ({ code, email, auth_id, isApproved, hasNam
       payload: response.data.id_token
     });
     if (isApproved && !hasName) {
-      console.log('sign in');
       navigate('Signin', { hasName });
     } else if(!hasName) {
       navigate('AddName');

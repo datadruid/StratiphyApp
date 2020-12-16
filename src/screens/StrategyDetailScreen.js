@@ -1,77 +1,78 @@
-import React, {useContext, useEffect, useState} from 'react';
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image } from 'react-native';
-import { Button } from 'react-native-elements';
+import React, { useContext, useEffect, useState } from 'react';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { Button, ButtonGroup } from 'react-native-elements';
 import { SafeAreaView } from 'react-navigation';
 import { Context as StrategyContext } from '../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import { LineChart } from 'react-native-chart-kit';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
 import IconStack from '../components/strategy/IconStack';
 import StrategyTab from '../components/strategy/StrategyTab';
 import AnalysisTab from '../components/strategy/AnalysisTab';
+import StrategyDetailChart from '../components/strategy/StrategyDetailChart';
+import { getChartEndDate, getChartStartDate } from '../components/modules/UiHelper';
 
 const mastercolour = '#4CD697';
-const screenwidth = Dimensions.get("window").width;
+
 const currencyFormat = {
   style: "currency",
   currency: RNLocalize.getLocales()[0].languageTag
 };
 
 const StrategySettingScreen = ({ navigation }) => {
+  const buttons = ['1M', '3M', '6M', '1Y', 'All']
   const item = navigation.getParam('item');
-  const [ isStartegyTab, setIsStartegyTab ] = useState(true);
-  const [ isAnalysisTab, setIsAnalysisTab ] = useState(false);
-  const { state, getStrategy, clearErrorMessage } = useContext(StrategyContext);
+  const [isStartegyTab, setIsStartegyTab] = useState(true);
+  const [isAnalysisTab, setIsAnalysisTab] = useState(false);
+  const { state, getStrategy, getTickerData, getComparisonChartData, setTimePeriod, getComparisonTickerData, clearErrorMessage } = useContext(StrategyContext);
 
-  useEffect( () => {
-     getStrategy(item._id);
+  useEffect(() => {
+     getStrategy(item._id, state.timePeriod);
   }, []);
 
+  const changeTimePeriod = async (index) =>{
+    await setTimePeriod(index);
+    getStrategy(item._id, index);
+    getComparisonChartData(state.compTickerList.join(','), index);
+    let tickers = state.strategy?.latestActions?.actions.filter(x => x.Action === 'Hold').map(function(elem){
+      return elem.Ticker;
+    }).join(",");
+    if(tickers){
+      console.log('has tickers')
+      getTickerData(tickers, index);
+      getComparisonTickerData(state.compTickerList.join(','), state.timePeriod);
+    }
+  };
   let formattedStratValue = 0;
   if (state.strategy?.endValue) {
     formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${state.strategy?.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
   }
 
+  var percent = state.strategy?.performancePct;
+
   let linecolour = '#FFFFFF';
-  let plusminus = '-'
-  if (state.strategy?.performancePct > 0) {
+  let plusminus = '';
+  if (percent > 0) {
     plusminus = '+';
   }
 
-  const chartConfig = {
-    backgroundColor: mastercolour,
-    backgroundGradientFrom: mastercolour,
-    backgroundGradientTo: mastercolour,
-    fillShadowGradient: linecolour,
-    fillShadowGradientOpacity: 0.4,
-    decimalPlaces: 2, // optional, defaults to 2dp #f9b10b
-    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    labelColor: (opacity = 0) => `rgba(0, 0, 0, ${opacity})`,
-    style: {
-      borderRadius: 0
-    }
-  };
-
   /// change button status for analysis and strategy
   var startegyButtonProps = {
-    buttonStyle : isStartegyTab ? styles.buttonselected : styles.button,
-    titleStyle : isStartegyTab ? styles.buttontitleselected : styles.buttontitle,
+    buttonStyle: isStartegyTab ? styles.buttonselected : styles.button,
+    titleStyle: isStartegyTab ? styles.buttontitleselected : styles.buttontitle,
   };
 
   var analysisButtonProps = {
-    buttonStyle : isAnalysisTab ? styles.buttonselected : styles.button,
-    titleStyle : isAnalysisTab ? styles.buttontitleselected : styles.buttontitle,
+    buttonStyle: isAnalysisTab ? styles.buttonselected : styles.button,
+    titleStyle: isAnalysisTab ? styles.buttontitleselected : styles.buttontitle,
   };
 
-  const switchTab = (target) =>{
-    if(target === 'strategy')
-    {
+  const switchTab = (target) => {
+    if (target === 'strategy') {
       setIsStartegyTab(true);
       setIsAnalysisTab(false);
     }
-    else
-    {
+    else {
       setIsStartegyTab(false);
       setIsAnalysisTab(true);
     }
@@ -90,49 +91,28 @@ const StrategySettingScreen = ({ navigation }) => {
               <Icon style={styles.topicon} size={20} name='star' />
 
             </View>
-            <LineChart
-              data={{
-                labels: [""],
-                datasets: [
-                  {
-                    data: state.strategy?.analytics,
-                    color: () => linecolour
-                    , strokeWidth: "2"
-                  }
-                ]
-              }}
-              fromZero={true}
-              drawBorders={false}
-              withDots={false}
-              withShadow={true}
-              withOuterLines={false}
-              withInnerLines={false}
-              withHorizontalLabels={false}
-              width={screenwidth + 5} // from react-native
-              height={328}
-              yAxisInterval={1} // optional, defaults to 1
-              chartConfig={chartConfig}
-              bezier
-              style={{
-                flex: 1,
-                marginVertical: 0,
-                borderRadius: 0,
-                margin: 0,
-                paddingRight: 0,
-                top: -68
-              }}
-            />
+            <StrategyDetailChart mastercolour={mastercolour} datasets={state.strategy.analytics} linecolour={linecolour} isAnalysisTab={isAnalysisTab}/>
             <View style={styles.box1}>
               <View style={styles.box2}>
                 <Text style={styles.toptitletext}>{formattedStratValue}</Text>
                 <Text style={styles.subtitletext}>Value</Text>
               </View>
-              <IconStack actions={state.strategy?.latestActions?.actions} borderColor={mastercolour} size={28}/>
+              <IconStack actions={state.strategy?.latestActions?.actions} borderColor={mastercolour} size={28} />
               <View style={styles.box4}>
-                <Text style={[styles.toptitletext, { color: linecolour }]}>{plusminus}{state.strategy?.performancePct}%</Text>
+                <Text style={[styles.toptitletext, { color: linecolour }]}>{plusminus}{percent}%</Text>
                 <Text style={styles.subtitletext}>Performance</Text>
               </View>
             </View>
+            <ButtonGroup
+        onPress={index => changeTimePeriod(index)}
+        selectedIndex={state.timePeriod}
+        buttons={buttons}
+        containerStyle={styles.buttongroupcontainer}
+        selectedButtonStyle={styles.selectedbuttonstyle}
+        selectedTextStyle={styles.selectedbuttonstyle}
+        innerBorderStyle={styles.innerborderstyle}
+        textStyle={styles.textstyle}
+      />
           </View>
           <View style={styles.content} >
             <View style={styles.switchpanel} >
@@ -141,21 +121,21 @@ const StrategySettingScreen = ({ navigation }) => {
                 type='solid'
                 //buttonStyle={styles.buttonselected}
                 //titleStyle={styles.buttontitleselected} 
-                onPress={() => switchTab('strategy')}/>
+                onPress={() => switchTab('strategy')} />
 
               <Button {...analysisButtonProps}
                 title='Analysis'
                 type='solid'
                 // buttonStyle={styles.button}
                 // titleStyle={styles.buttontitle} 
-                onPress={() => switchTab('analysis')}/>
+                onPress={() => switchTab('analysis')} />
             </View>
           </View>
           <View style={styles.childrencontainer}>
-              {isStartegyTab && <StrategyTab strategy={state.strategy} navigation={navigation}/>}
-              {isAnalysisTab && <AnalysisTab strategy={state.strategy} navigation={navigation}/>}
+            {isStartegyTab && <StrategyTab strategy={state.strategy} navigation={navigation} />}
+            {isAnalysisTab && <AnalysisTab strategy={state.strategy} navigation={navigation} />}
+          </View>
         </View>
-      </View>
       </ScrollView>
     </SafeAreaView >
   );
@@ -169,7 +149,6 @@ StrategySettingScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: '100%',
     flexDirection: 'column',
     backgroundColor: '#F3F4F5',
     paddingBottom: 40
@@ -281,7 +260,31 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-  }
+  },
+  buttongroupcontainer : {
+    top: -15,
+    height: 36,
+    borderColor:'transparent',
+    backgroundColor:'transparent',
+  },
+  selectedbuttonstyle :{
+    backgroundColor:'transparent',
+    color:'white',
+    opacity:1,
+    fontSize: 14,
+    fontWeight: 'bold',
+    borderRadius:10
+  },
+  innerborderstyle:{
+    color:'transparent'
+  },
+  textstyle: {
+    color:'white',
+    opacity: 0.4,
+    fontSize: 14,
+    fontWeight: '400',
+    borderRadius:10
+  },
 });
 
 export default StrategySettingScreen;

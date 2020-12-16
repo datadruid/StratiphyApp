@@ -1,19 +1,28 @@
-import React, {useContext, useEffect, useState} from 'react';
-import { StyleSheet, TouchableOpacity, View, Image} from 'react-native';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View, Dimensions, Image} from 'react-native';
 import { Text } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { LineChart } from 'react-native-chart-kit';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map'
 import IconStack from './strategy/IconStack';
+import { getChartValueFilter } from './modules/UiHelper';
+
+const screenwidth = Dimensions.get("window").width;
 
 const currencyFormat  = {
   style: "currency",
   currency: RNLocalize.getLocales()[0].languageTag
 };
 
-  const StrategyListItem = ({ navigation, item }) => {
-      
+const StrategyListItem = ({ navigation, item }) => {
+  let delta = getChartValueFilter(4);
+  let slimList = item.analytics[0].data.map(a => a.value);
+  // [];
+  //   for (i = 0; i < item.analytics[0].data.length; i=i+delta) {
+  //     slimList.push(item.analytics[0].data[i].value);
+  //   }
+    
     const openDetail = (item) => {
       navigation.navigate('StrategyDetail', {item: item});
     };
@@ -65,7 +74,7 @@ const currencyFormat  = {
         labels: [""],
         datasets: [
           {
-            data: item.analytics,
+            data: slimList,
             color: () => linecolour
             ,strokeWidth: "2"
                     }
@@ -77,7 +86,7 @@ const currencyFormat  = {
       withOuterLines={false}
       withInnerLines={false}
       withHorizontalLabels={false}
-      width={350} // from react-native
+      width={screenwidth -35} // from react-native
       height={100}
       yAxisInterval={1} // optional, defaults to 1
       chartConfig={chartConfig}
@@ -136,7 +145,7 @@ const styles = StyleSheet.create({
         textAlign:'center'
       },
       box4: {
-        flex: 3,
+        flex: 4,
       },
       textright: {
         justifyContent:'flex-end',

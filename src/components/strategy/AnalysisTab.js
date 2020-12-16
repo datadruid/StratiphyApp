@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import { Context as StrategyContext } from '../../context/StrategyContext';
 import Comparisons from './Comparisons';
+import ComparisonTicker from './ComparisonTicker';
 
 const AnalysisTab = ({ navigation, strategy }) => {
   const buttons = ['Ratio', 'Yields', 'P&L', 'Volatility', 'VAR']
@@ -37,7 +39,8 @@ const AnalysisTab = ({ navigation, strategy }) => {
         textStyle={styles.textstyle}
       />
               <View style={styles.comparisoncontainer}>
-                <Comparisons strategy={strategy} />
+                <Comparisons navigation={navigation} strategy={strategy} />
+                <ComparisonTicker navigation={navigation}/>   
             </View>
     </>
   )

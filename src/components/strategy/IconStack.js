@@ -13,6 +13,7 @@ const IconStack = ({ actions, borderColor, size }) => {
             <View style={[styles.imagebox, {left : rightby}]}>
                 {
                     actions.filter(x => x.Action === 'Hold').map(item => {
+                        key = item.Ticker;
                         let circlecolour = getAvatarColor(item.Ticker);
                         counter ++;
                         return (

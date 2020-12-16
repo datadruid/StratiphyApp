@@ -1,10 +1,20 @@
-import React from 'react';
+import React, {useEffect, useContext} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Context as StrategyContext } from '../../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Instructions from './Instructions';
 import Holdings from './Holdings';
 
 const StrategyTab = ({ navigation, strategy }) => {
+    const { state, getTickerData, clearErrorMessage } = useContext(StrategyContext);
+    if(state.strategy?.latestActions?.actions)
+    {
+        useEffect(() => {
+            getTickerData(strategy?.latestActions?.actions.filter(x => x.Action === 'Hold').map(function(elem){
+                return elem.Ticker;
+            }).join(","), state.timePeriod);
+        }, []);
+    }
     return (
         <>
             <View style={styles.titlelinkcontainer}>

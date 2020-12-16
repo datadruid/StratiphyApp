@@ -18,7 +18,6 @@ const RadioButtons = ({ options, selectedId }) => {
                                             style={styles.circle}
                                             onPress={() => {
                                             setSelectedIndex(option.id);
-                                            console.log(option.id);
                                             }}
                                         >
                                             {selectedIndex === option.id && <View style={styles.checkedCircle} />}

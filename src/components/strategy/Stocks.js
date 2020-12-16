@@ -4,8 +4,8 @@ import { Context as StrategyContext } from '../../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
-import {getAvatarColor} from '../modules/UiHelper';
 import { LineChart } from 'react-native-chart-kit';
+import {getAvatarColor, getChartValueFilter} from '../modules/UiHelper';
 import moment from 'moment';
 
 const langTag = RNLocalize.getLocales()[0].languageTag;
@@ -15,10 +15,10 @@ const currencyFormat = {
   };
 
 const Stocks = ({ comparisons }) => {
-    const { state, toggleCompTickerList, clearErrorMessage } = useContext(StrategyContext);
-
-    const onPress = (item) => {
-            toggleCompTickerList(item);
+    const { state, toggleCompTickerList, getTickerData, clearErrorMessage } = useContext(StrategyContext);
+    const timePeriod = 3;   
+    const onPress = async (item) => {
+            await toggleCompTickerList(item);
         };
 
     if (comparisons?.length > 0) {
@@ -27,6 +27,7 @@ const Stocks = ({ comparisons }) => {
             <>
                 {
                     comparisons.map(item => {
+                        key = item.ticker;
                         let linecolour = 'rgb(227, 63, 100)';
                         if (item.performancePct > 0) {
                             linecolour = 'rgb(74, 250, 154)';
@@ -35,6 +36,13 @@ const Stocks = ({ comparisons }) => {
                         let formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${item.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
                         let isSelected = state.compTickerList.includes(item.ticker);
                         
+                        
+                        let slimList = [];
+                        let delta = getChartValueFilter(timePeriod);
+                        for (i = 0; i < item.series.length; i=i+delta) {
+                            slimList.push(item.series[i].value);
+                        }
+
                         const chartConfig = {
                             backgroundColor: "#ffffff",
                             backgroundGradientFrom: "#ffffff",
@@ -76,7 +84,7 @@ const Stocks = ({ comparisons }) => {
                                                 labels: [""],
                                                 datasets: [
                                                 {
-                                                    data: item.series,
+                                                    data: slimList,
                                                     color: () => linecolour
                                                     , strokeWidth: "2"
                                                 }

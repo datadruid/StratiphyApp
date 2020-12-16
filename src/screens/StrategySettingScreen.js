@@ -34,7 +34,7 @@ const StrategySettingScreen = ({ navigation }) => {
 
 
   useEffect( () => {
-    getStrategy(item.strategyID);
+    getStrategy(item.strategyID, 0);
  }, []);
 
   return (

@@ -5,18 +5,16 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { SearchBar } from 'react-native-elements';
 import Stocks from '../components/strategy/Stocks';
 import { Context as StrategyContext } from '../context/StrategyContext';
+import {getChartStartDate, getChartEndDate} from '../components/modules/UiHelper';
 
 const StrategyCompareScreen = ({ navigation }) => {
   const [search, setSearch] = useState('');
   const [comparisonList, setComparisonList] = useState([]);
 
-  const { state, getComparisonData, clearErrorMessage } = useContext(StrategyContext);
+  const { state, getComparisonData, getComparisonTickerData, getComparisonChartData, clearErrorMessage } = useContext(StrategyContext);
 
   useEffect(() => {
-    var dt = new Date();
-    const endDate = `${dt.getFullYear()}-${(dt.getMonth())}-${dt.getDate()}T00:00:00`;
-    const startDate = `${dt.getFullYear() - 1}-${(dt.getMonth())}-${dt.getDate()}T00:00:00`;
-    getComparisonData(startDate, endDate);
+    getComparisonData(getChartStartDate(state.timePeriod), getChartEndDate());
   }, []);
 
   if (comparisonList?.length === 0 && state.comparisonData?.length > 0 && search.length === 0) {
@@ -25,14 +23,23 @@ const StrategyCompareScreen = ({ navigation }) => {
 
   const filterResults = (text) => {
     setSearch(text);
-    setComparisonList(state.comparisonData.filter(x => x.ticker.includes(text)));
+    setComparisonList(state.comparisonData.filter(x => x.ticker.includes(text.toUpperCase())));
+  };
+
+  const closeWindow = () => {
+    const dt = new Date();
+    const chartDate = getChartEndDate();
+
+    getComparisonTickerData(state.compTickerList.join(','), state.timePeriod);
+    getComparisonChartData(state.compTickerList.join(','), state.timePeriod);
+    navigation.goBack();
   };
 
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
 
       <View style={styles.layoutcontainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => closeWindow()}>
           <Icon style={styles.backicon} size={40} name='long-arrow-left' />
         </TouchableOpacity>
         <View style={styles.titleiconcontainer}>
@@ -51,7 +58,7 @@ const StrategyCompareScreen = ({ navigation }) => {
         <View style={styles.content} >
           <ScrollView>
             <View style={styles.instructioncontainer}>
-              <Stocks comparisons={comparisonList} />
+              <Stocks navigation={navigation} comparisons={comparisonList} />
             </View>
           </ScrollView>
         </View>

@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Context as StrategyContext } from '../../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
-import {getAvatarColor} from '../modules/UiHelper';
+import {getAvatarColor, getChartValueFilter} from '../modules/UiHelper';
 import { LineChart } from 'react-native-chart-kit';
 import moment from 'moment';
 
@@ -14,36 +13,37 @@ const currencyFormat = {
     currency: langTag
   };
 
-const Comparisons = ({ strategy }) => {
-    const { state, getTickerData, clearErrorMessage } = useContext(StrategyContext);
-    if(state.compTickerList.length > 0)
-    {
-        useEffect( () => {
-            var dt = new Date();
-            const endDate = `${dt.getFullYear()}-${(dt.getMonth())}-${dt.getDate()}T00:00:00`;
-            const startDate =`${dt.getFullYear() - 1}-${(dt.getMonth())}-${dt.getDate()}T00:00:00`;
-            getTickerData(state.compTickerList, startDate, endDate);
-        }, []);
-    }
+  
+
+const Comparisons = ({ navigation, strategy }) => {
+    
     const actions = [strategy];
     let lastDate = '';
+    const timePeriod = 3;  
+    
     if (actions) {
             
         return (
             <>
                 {
                     actions.map(item => {
+                        key = item.strategyName;
                         let formattedStratValue = 0;
                         if (item.endValue) {
                             formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${item.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
                         }
                         let linecolour = 'rgb(227, 63, 100)';
-                        let plusminus = '-'
+                        let plusminus = ''
                         if (item.performancePct > 0) {
                             linecolour = 'rgb(74, 250, 154)';
                             plusminus = '+';
                         }
 
+                        let slimList = [];
+                        if (strategy.analytics?.length > 0)
+                        {
+                            slimList = strategy.analytics[0].data.map(x=> x.value);
+                        }
                         const chartConfig = {
                             backgroundColor: "#ffffff",
                             backgroundGradientFrom: "#ffffff",
@@ -57,7 +57,7 @@ const Comparisons = ({ strategy }) => {
                               borderRadius: 0,
                             }
                           };
-
+                          
                         let circlecolour = getAvatarColor('S');
                         let showDate = (item.Date !== lastDate);
                         lastDate = item.Date;
@@ -68,7 +68,6 @@ const Comparisons = ({ strategy }) => {
                                 <View style={[styles.stockcircle, {backgroundColor: circlecolour}]}>
                                         <Text style={styles.stockcircletext}>
                                             S
-
                                             </Text>
                                 </View>
                                 
@@ -90,7 +89,7 @@ const Comparisons = ({ strategy }) => {
                                                 labels: [""],
                                                 datasets: [
                                                 {
-                                                    data: strategy.analytics,
+                                                    data: slimList,
                                                     color: () => linecolour
                                                     , strokeWidth: "2"
                                                 }
@@ -132,8 +131,9 @@ const Comparisons = ({ strategy }) => {
 
                         );
                         
-                    })}
-
+                    })
+                }
+                 
             </>
         )
     }

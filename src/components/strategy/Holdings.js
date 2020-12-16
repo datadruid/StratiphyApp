@@ -4,7 +4,7 @@ import { Context as StrategyContext } from '../../context/StrategyContext';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { LineChart } from 'react-native-chart-kit';
-import {getAvatarColor} from '../modules/UiHelper';
+import {getAvatarColor, getChartStartDate, getChartEndDate, getChartValueFilter} from '../modules/UiHelper';
 
 const currencyFormat = {
     style: "currency",
@@ -12,34 +12,28 @@ const currencyFormat = {
   };
 
 const Holdings = ({ actions }) => {
+    const { state, getTickerData, clearErrorMessage } = useContext(StrategyContext); 
     let counter = 0;
     if (actions?.some(x => x.Action !== 'Hold')) {
-    const tickers = actions.filter(x => x.Action === 'Hold').map(function(elem){
-                            return elem.Ticker;
-                        }).join(",");
 
-    const { state, getTickerData, clearErrorMessage } = useContext(StrategyContext);  
-    
-    useEffect( () => {
-        var dt = new Date();
-        const endDate = `${dt.getFullYear()}-${(dt.getMonth())}-${dt.getDate()}T00:00:00`;
-        const startDate =`${dt.getFullYear() - 1}-${(dt.getMonth())}-${dt.getDate()}T00:00:00`;
-        getTickerData(tickers, startDate, endDate);
-        }, []);
         return (
             <View style={styles.holdingcontainer}>
                 {
                     actions.filter(x => x.Action === 'Hold').map(item => {
+                        key = item.ticker;
                         let tickerData = {series : [0]};
                         let formattedStratValue ='';
+                        let slimList = [];
                         if(state.tickerData.find(x=> x.ticker === item.Ticker)?.series?.length)
                         {
                             tickerData = state.tickerData.find(x=> x.ticker === item.Ticker);
+                            slimList = tickerData.series.map(x=> x.value);
                             formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${tickerData.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
                         }
+
                         let circlecolour = getAvatarColor(item.Ticker);
                         let linecolour = 'rgb(227, 63, 100)';
-                        if (item.performancePct > 0) {
+                        if (tickerData.performancePct > 0) {
                             linecolour = 'rgb(74, 250, 154)';
                         }
 
@@ -82,7 +76,7 @@ const Holdings = ({ actions }) => {
                                                 labels: [""],
                                                 datasets: [
                                                 {
-                                                    data: tickerData.series,
+                                                    data: slimList,
                                                     color: () => linecolour
                                                     , strokeWidth: "2"
                                                 }
@@ -95,7 +89,7 @@ const Holdings = ({ actions }) => {
                                             withOuterLines={false}
                                             withInnerLines={false}
                                             withHorizontalLabels={false}
-                                            width={64.5} // from react-native
+                                            width={75.5} // from react-native
                                             height={45}
                                             yAxisInterval={1} // optional, defaults to 1
                                             chartConfig={chartConfig}
@@ -113,7 +107,7 @@ const Holdings = ({ actions }) => {
                                         <Text style={[styles.tickertext, styles.valuetext]}>
                                             {formattedStratValue}
                                         </Text>
-                                        <Text style={[styles.nametext, styles.percenttext], {color: linecolour }}>
+                                        <Text style={[{color: linecolour }, styles.nametext, styles.percenttext] }>
                                          {tickerData.performancePct}%
                                         </Text>
                                     </View>
@@ -195,10 +189,11 @@ const styles = StyleSheet.create({
         fontWeight: '400',
     },
     percenttext:{
-        textAlign: 'right'
+        textAlign: 'right',
+        justifyContent: 'flex-end'
     },
     stackbox: {
-        justifyContent: 'space-evenly',
+        justifyContent: 'flex-end',
         height:40
     }
 });

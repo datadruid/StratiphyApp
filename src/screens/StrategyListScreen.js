@@ -5,6 +5,7 @@ import { Layout, Card, Text } from '@ui-kitten/components';
 import { Context as StrategyContext } from '../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import StrategyListItem from '../components/StrategyListItem'
+import { getChartEndDate, getChartStartDate } from '../components/modules/UiHelper';
 
 const StrategyListScreen = ({ navigation }) => {
   const screenWidth = Dimensions.get("window").width;

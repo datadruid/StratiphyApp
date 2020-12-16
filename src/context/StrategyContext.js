@@ -1,6 +1,6 @@
 import createDataContext from './createDataContext';
 import authApi from '../api/auth';
-import { getToken } from '../storage/tokenStorage'
+import { getToken } from '../storage/tokenStorage';
 
 const strategyReducer = (state, action) => {
   switch (action.type) {
@@ -20,12 +20,19 @@ const strategyReducer = (state, action) => {
       return { ...state, errorMessage: '', tickerData: action.payload };
     case 'get_comparisondata':
       return { ...state, errorMessage: '', comparisonData: action.payload }
+    case 'get_compchartdata':
+      return { ...state, errorMessage: '', comparisonChartData: action.payload }
+    case 'get_comptickerdata':
+      return { ...state, errorMessage: '', comparisonTickerData: action.payload };
     case 'toggle_compticker_list':
       if (state.compTickerList.indexOf(action.payload) !== -1) {
         return { ...state, errorMessage: '', compTickerList: state.compTickerList.filter(item => item !== action.payload) }
       }
       return { ...state, errorMessage: '', compTickerList: state.compTickerList.concat(action.payload) }
-      
+    case 'set_highlighted_item':
+      return {...state, errorMessage: '', highightedItem: action.payload };
+    case 'set_time_period' :
+      return {...state, errorMessage: '', timePeriod : action.payload };
     default:
       return state;
   }
@@ -42,7 +49,7 @@ const listStrategies = dispatch => async () => {
         let config = {
           headers: { Authorization: `Bearer ${token}` }
         };
-        let response = await authApi.get('/strategies', config);
+        let response = await authApi.get(`/strategies`, config);
 
         
         dispatch({ type: 'list_strategies', payload: response.data });
@@ -54,15 +61,16 @@ const listStrategies = dispatch => async () => {
   }
 };
 
-const getStrategy = dispatch => async (strategyID) => {
+const getStrategy = dispatch => async (strategyID, timePeriod) => {
   const token = await getToken();
   if (token) {
       try{
         let config = {
           headers: { Authorization: `Bearer ${token}` }
         };
-        let response = await authApi.get(`/strategy/${strategyID}`, config);
-          
+
+        let response = await authApi.get(`/strategy/${strategyID}/${timePeriod}`, config);
+
         dispatch({ type: 'get_strategy', payload: response.data });
       } catch(err) {
         dispatch({ type: 'add_error', payload: err.data.error });
@@ -108,16 +116,15 @@ const getInstructionDetail = dispatch => async (strategyID, date) => {
   }
 };
 
-const getTickerData = dispatch => async (startegies, fromDate, toDate) =>{
+const getTickerData = dispatch => async (startegies, timePeriod) =>{
   const token = await getToken();
-  
   if (token) {
       try{
         let config = {
           headers: { Authorization: `Bearer ${token}` }
         };
 
-        let response = await authApi.get(`/tickerperformance/${startegies}/${fromDate}/${toDate}`, config);
+        let response = await authApi.get(`/tickerchartdata/${startegies}/${timePeriod}`, config);
         
         dispatch({ type: 'get_tickerdata', payload: response.data });
       } catch(err) {
@@ -127,6 +134,48 @@ const getTickerData = dispatch => async (startegies, fromDate, toDate) =>{
     dispatch({ type: 'add_error', payload: 'No data acess token available' });
   }
 };
+
+const getComparisonTickerData = dispatch => async (startegies, timePeriod) =>{
+  const token = await getToken();
+  if (token) {
+      try{
+        let config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+
+        let response = await authApi.get(`/tickerchartdata/${startegies}/${timePeriod}`, config);
+        
+        dispatch({ type: 'get_comptickerdata', payload: response.data });
+      } catch(err) {
+        dispatch({ type: 'add_error', payload: err.data.error });
+      }
+  } else {
+    dispatch({ type: 'add_error', payload: 'No data acess token available' });
+  }
+};
+
+const getComparisonChartData = dispatch => async (startegies, timePeriod) =>{
+  if(startegies)
+  {
+    const token = await getToken();
+    if (token) {
+        try{
+          let config = {
+            headers: { Authorization: `Bearer ${token}` }
+          };
+
+          let response = await authApi.get(`/tickerchartdata/${startegies}/${timePeriod}`, config);
+          
+          dispatch({ type: 'get_compchartdata', payload: response.data });
+        } catch(err) {
+          dispatch({ type: 'add_error', payload: err.data.error });
+        }
+    } else {
+      dispatch({ type: 'add_error', payload: 'No data acess token available' });
+    }
+  }
+};
+
 
 const getComparisonData = dispatch => async (fromDate, toDate) =>{
   const token = await getToken();
@@ -152,8 +201,17 @@ const toggleCompTickerList = dispatch => async (newTicker) =>{
   dispatch({ type: 'toggle_compticker_list', payload: newTicker });
 };
 
+const setHighightedItem = dispatch => async (newTicker) =>{
+  dispatch({ type: 'set_highlighted_item', payload: newTicker });
+};
+
+const setTimePeriod = dispatch => async (periodIndex) =>{
+  dispatch({ type: 'set_time_period', payload: periodIndex });
+};
+
+
 export const { Context, Provider } = createDataContext(
   strategyReducer,
-  {listStrategies, getStrategy, getInstructionList, getInstructionDetail, getTickerData, getComparisonData, toggleCompTickerList, clearErrorMessage},
-  { strategies: [], strategy : { analytics: [0]}, tickerData : [], comparisonData : [], compTickerList: [], instructions : [], instructionDetail : [], errorMessage: '' }
+  {listStrategies, getStrategy, getInstructionList, getInstructionDetail, getTickerData, getComparisonTickerData, getComparisonData, getComparisonChartData, toggleCompTickerList, setHighightedItem, clearErrorMessage, setTimePeriod},
+  { strategies: [], strategy : { analytics: []}, tickerData : [], comparisonTickerData : [], comparisonData : [], comparisonChartData : [], compTickerList: [], instructions : [], instructionDetail : [], highightedItem : '', errorMessage: '', timePeriod : 2 }
 );
