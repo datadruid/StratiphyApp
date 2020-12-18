@@ -6,7 +6,7 @@ import Spacer from '../../components/Spacer';
 
 const RadioButtons = ({ options, selectedId }) => {
     const [selectedIndex, setSelectedIndex] = React.useState(selectedId);
-
+    //console.log(options[selectedIndex]);
     return (
         <>
               {options.map(option => {

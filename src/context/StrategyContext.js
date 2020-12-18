@@ -142,10 +142,13 @@ const getComparisonTickerData = dispatch => async (startegies, timePeriod) =>{
         let config = {
           headers: { Authorization: `Bearer ${token}` }
         };
-
+        if(startegies.length > 0) {
         let response = await authApi.get(`/tickerchartdata/${startegies}/${timePeriod}`, config);
-        
         dispatch({ type: 'get_comptickerdata', payload: response.data });
+        } else {
+          dispatch({ type: 'get_comptickerdata', payload: [] });
+        }
+
       } catch(err) {
         dispatch({ type: 'add_error', payload: err.data.error });
       }

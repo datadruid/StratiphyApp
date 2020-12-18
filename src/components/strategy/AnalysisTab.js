@@ -76,14 +76,13 @@ marginTop: 19
     borderRadius:10
   },
   titleiconcontainer: {
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-start'
   },
   titleiconcontainerright: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+      flex: 2,
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
   },
   infoicon: {
     marginLeft: 7,
@@ -92,16 +91,16 @@ marginTop: 19
     alignSelf: 'center'
   },
   linktext: {
-    alignSelf: 'stretch',
+    width: 120,
+    textAlign:'right',
     fontSize: 18,
     fontWeight: '400',
     color: '#FFC234',
-    justifyContent: 'flex-end',
-  },
-  titleiconcontainerright:{
-    flex: 1,
+},
+titleiconcontainerright:{
+    width: 150,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   titlelinkcontainer: {
     flex: 1,

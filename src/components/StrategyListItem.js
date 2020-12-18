@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View, Dimensions, Image} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
 import { Text } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { LineChart } from 'react-native-chart-kit';
@@ -7,6 +7,7 @@ import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map'
 import IconStack from './strategy/IconStack';
 import { getChartValueFilter } from './modules/UiHelper';
+import ItemOverlayMenu from './strategy/ItemOverlayMenu';
 
 const screenwidth = Dimensions.get("window").width;
 
@@ -25,9 +26,6 @@ const StrategyListItem = ({ navigation, item }) => {
     
     const openDetail = (item) => {
       navigation.navigate('StrategyDetail', {item: item});
-    };
-    const openSettings = (item) => {
-      navigation.navigate('StrategySetting', {item: item});
     };
 
     let formattedStratValue = 0;
@@ -63,9 +61,7 @@ const StrategyListItem = ({ navigation, item }) => {
       <View style={styles.box1}>
           <Icon style={styles.icon} size={18} name='superpowers'/>
           <Text style={styles.text} category='s1' status='default'>{item.strategyName}</Text>
-          <TouchableOpacity onPress={() => openSettings(item)}>
-            <Icon style={styles.iconright} size={18} name='ellipsis-v'/>
-          </TouchableOpacity>
+          <ItemOverlayMenu navigation={navigation} item={item}/>
       </View>
       <TouchableOpacity onPress={() => openDetail(item)}>
       <View style={styles.box2}>
@@ -167,10 +163,7 @@ const styles = StyleSheet.create({
       bold:{
         fontWeight: 'bold'
       },
-      iconright:{
-        padding: 7,
-        color: '#CBCBCB'
-      }
+      
 });
 
 export default StrategyListItem;

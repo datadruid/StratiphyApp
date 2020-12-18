@@ -28,7 +28,7 @@ const StrategyTab = ({ navigation, strategy }) => {
                     <View style={styles.titleiconcontainerright}>
                         <Text style={styles.linktext}>
                             See history 
-                  </Text>
+                        </Text>
                         <Icon style={styles.infoicon} size={20} name='chevron-right' />
                     </View>
                 </TouchableOpacity>
@@ -53,12 +53,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     titleiconcontainer: {
-        flex: 1,
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'flex-start'
     },
     titleiconcontainerright: {
-        flex: 1,
+        flex: 2,
         flexDirection: 'row',
         justifyContent: 'flex-end',
     },
@@ -69,22 +68,22 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     linktext: {
-        alignSelf: 'stretch',
-        textAlign: 'left',
+        width: 120,
+        textAlign:'right',
         fontSize: 18,
         fontWeight: '400',
-        color: '#FFC234'
+        color: '#FFC234',
     },
     titleiconcontainerright:{
-        flex: 1,
+        width: 150,
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-end'
       },
     titlelinkcontainer: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingBottom: 15
+        paddingBottom: 15,
     },
 });
 

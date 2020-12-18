@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   header: {
+    width:215,
     fontWeight: '700',
     fontSize: 36,
   },
@@ -101,7 +102,6 @@ const styles = StyleSheet.create({
     color: '#FFC234',
   },
   infoicon: {
-    paddingLeft: 7,
     justifyContent: 'center',
     color: '#FFC234',
     alignSelf: 'center'

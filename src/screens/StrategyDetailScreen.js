@@ -38,7 +38,6 @@ const StrategySettingScreen = ({ navigation }) => {
       return elem.Ticker;
     }).join(",");
     if(tickers){
-      console.log('has tickers')
       getTickerData(tickers, index);
       getComparisonTickerData(state.compTickerList.join(','), state.timePeriod);
     }
@@ -87,21 +86,21 @@ const StrategySettingScreen = ({ navigation }) => {
             </TouchableOpacity>
             <View style={styles.box1}>
               <Icon style={styles.topicon} size={25} name='superpowers' />
-              <Text style={styles.toptitletext} >{state.strategy?.strategyName} </Text>
+              <Text style={styles.toptitletext} >{state.strategy?.strategyName}</Text>
               <Icon style={styles.topicon} size={20} name='star' />
 
             </View>
             <StrategyDetailChart mastercolour={mastercolour} datasets={state.strategy.analytics} linecolour={linecolour} isAnalysisTab={isAnalysisTab}/>
             <View style={styles.box1}>
               <View style={styles.box2}>
-                <Text style={styles.toptitletext}>{formattedStratValue}</Text>
+                <Text style={styles.numbertitletext}>{formattedStratValue}</Text>
                 <Text style={styles.subtitletext}>Value</Text>
               </View>
               <IconStack actions={state.strategy?.latestActions?.actions} borderColor={mastercolour} size={28} />
-              <View style={styles.box4}>
-                <Text style={[styles.toptitletext, { color: linecolour }]}>{plusminus}{percent}%</Text>
-                <Text style={styles.subtitletext}>Performance</Text>
-              </View>
+                <View style={styles.box2}>
+                  <Text style={[styles.numbertitletext, { color: linecolour, textAlign:'right' }]}>{plusminus}{percent}%</Text>
+                  <Text style={[styles.subtitletext, { textAlign:'right' }]}>Performance</Text>
+                </View>
             </View>
             <ButtonGroup
         onPress={index => changeTimePeriod(index)}
@@ -163,7 +162,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'stretch',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
+    paddingHorizontal: 20
+  },
+  box2: {
+    flex:3,
+    justifyContent:'flex-start'
   },
   content: {
     flex: 1,
@@ -243,6 +246,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   toptitletext: {
+    flex: 1,
+    alignSelf: 'stretch',
+    textAlign: 'center',
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  numbertitletext: {
     alignSelf: 'stretch',
     textAlign: 'left',
     fontSize: 22,

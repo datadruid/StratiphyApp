@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import { Text, Divider, Toggle } from '@ui-kitten/components';
-import Slider from '@react-native-community/slider';
+import { Text, Divider } from '@ui-kitten/components';
+import CheckBox from '@react-native-community/checkbox';
 import Spacer from '../../components/Spacer';
 
 const MarketCaps = ({ strategy }) => {
@@ -10,47 +10,6 @@ const MarketCaps = ({ strategy }) => {
     const [midCap, setMidCap] = useState(strategy.marketCaps.midCap);
     const [largeCap, setLargeCap] = useState(strategy.marketCaps.largeCap);
     const [supraCap, setSupraCap] = useState(strategy.marketCaps.supraCap);
-
-
-    // const udpdateAllThree =(master, value) =>
-    // {
-    //   let remains = 100-value;
-    //   let balance = 0;
-    //   console.log(remains);
-    //   switch(master)
-    //   {
-    //     case 'stocks':
-    //       balance = Math.floor((remains - (bonds + funds))/2);
-    //       setStocks(value);
-    //       if(bonds + balance >= 0) {
-    //         setBonds(bonds + balance);
-    //       }
-    //       if(funds + balance >= 0) {
-    //         setFunds(funds + balance);
-    //       }
-    //       return;
-    //     case 'bonds':
-    //       balance = Math.floor((remains - (stocks + funds))/2);
-    //       setBonds(value);
-    //       if(stocks + balance >= 0) {
-    //         setStocks(stocks + balance);
-    //       }
-    //       if(funds + balance >= 0) {
-    //         setFunds(funds + balance);
-    //       }
-    //     return;
-    //     case 'funds':
-    //       balance = Math.floor((remains - (bonds + stocks))/2);
-    //       setFunds(value);
-    //       if(stocks + balance >= 0) {
-    //         setStocks(stocks + balance);
-    //       }
-    //       if(bonds + balance >= 0) {
-    //         setBonds(bonds + balance);
-    //       }
-    //       return;
-    //   }
-    // };
 
     return (
         <>
@@ -65,19 +24,47 @@ const MarketCaps = ({ strategy }) => {
             <View style={styles.multicontainer}>
               <View style={styles.settingcontainer}>
                 <Text tyle={styles.settingtext} category='label' status='default'>Small Cap</Text>
-                <Toggle checked={smallCap} onChange={(isChecked) => setSmallCap(isChecked)}/>
+                <CheckBox style={styles.circle}
+                        lineWidth={1}
+                            boxType='square'
+                            onCheckColor='black'
+                            onTintColor='#aaaaaa'
+                            value={smallCap}
+                            onValueChange={(selected) => setSmallCap(selected)}
+                            />
               </View>
               <View style={styles.settingcontainer}>
                 <Text tyle={styles.settingtext} category='label' status='default'>Mid Cap</Text>
-                <Toggle checked={midCap} onChange={(isChecked) => setMidCap(isChecked)}/>
+                <CheckBox style={styles.circle}
+                        lineWidth={1}
+                            boxType='square'
+                            onCheckColor='black'
+                            onTintColor='#aaaaaa'
+                            value={midCap}
+                            onValueChange={(selected) => setMidCap(selected)}
+                            />
               </View>
               <View style={styles.settingcontainer}>
                 <Text tyle={styles.settingtext} category='label' status='default'>Large Cap</Text>
-                <Toggle checked={largeCap} onChange={(isChecked) => setLargeCap(isChecked)}/>
+                <CheckBox style={styles.circle}
+                        lineWidth={1}
+                            boxType='square'
+                            onCheckColor='black'
+                            onTintColor='#aaaaaa'
+                            value={largeCap}
+                            onValueChange={(selected) => setLargeCap(selected)}
+                            />
               </View>
               <View style={styles.settingcontainer}>
                 <Text tyle={styles.settingtext} category='label' status='default'>Supras Cap</Text>
-                <Toggle checked={supraCap} onChange={(isChecked) => setSupraCap(isChecked)}/>
+                <CheckBox style={styles.circle}
+                        lineWidth={1}
+                            boxType='square'
+                            onCheckColor='black'
+                            onTintColor='#aaaaaa'
+                            value={supraCap}
+                            onValueChange={(selected) => setSupraCap(selected)}
+                            />
               </View>
             </View>
           </View>
@@ -105,6 +92,7 @@ const MarketCaps = ({ strategy }) => {
     circle: {
       height: 20,
       width: 20,
+      marginLeft: 10
     },
     checkedCircle: {
       width: 14,

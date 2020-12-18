@@ -24,6 +24,7 @@ import DiscoverScreen from './src/screens/DiscoverScreen';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as StrategyProvider } from './src/context/StrategyContext';
 import { Provider as SharePriceProvider } from './src/context/SharePriceContext';
+import { Provider as StrategyUpdateProvider } from './src/context/StrategyUpdateContext';
 import { setNavigator } from './src/navigationRef';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -31,8 +32,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as Sentry from '@sentry/react-native';
 import OneSignal from 'react-native-onesignal';
 
-Sentry.init({ 
-  dsn: 'https://8b8d52af187c45849d564265bc43b353@o468449.ingest.sentry.io/5496302', 
+Sentry.init({
+  dsn: 'https://8b8d52af187c45849d564265bc43b353@o468449.ingest.sentry.io/5496302',
 });
 
 const strategyListFlow = createStackNavigator({
@@ -49,7 +50,7 @@ strategyListFlow.navigationOptions = {
 };
 
 const homeFlow = createStackNavigator({
-  Home : HomeScreen,
+  Home: HomeScreen,
 });
 
 homeFlow.navigationOptions = {
@@ -58,7 +59,7 @@ homeFlow.navigationOptions = {
 };
 
 const discoverFlow = createStackNavigator({
-  Discover : DiscoverScreen,
+  Discover: DiscoverScreen,
 });
 
 discoverFlow.navigationOptions = {
@@ -72,9 +73,9 @@ const accountFlow = createStackNavigator({
 });
 
 accountFlow.navigationOptions = {
-    title: 'Account',
-    tabBarIcon: <FontAwesome name="user" size={24} />
-    
+  title: 'Account',
+  tabBarIcon: <FontAwesome name="user" size={24} />
+
 };
 
 const tab = createBottomTabNavigator({
@@ -98,7 +99,7 @@ const switchNavigator = createSwitchNavigator({
 
 const AppContainer = createAppContainer(switchNavigator);
 
-function myiOSPromptCallback(permission){
+function myiOSPromptCallback(permission) {
   // do something with permission value
 }
 
@@ -108,17 +109,17 @@ export default class App extends Component {
     super(properties);
     //Remove this method to stop OneSignal Debugging 
     OneSignal.setLogLevel(6, 0);
-    
+
     // Replace 'YOUR_ONESIGNAL_APP_ID' with your OneSignal App ID.
-    OneSignal.init("98fe799f-bce9-48a8-9f3b-82ad1699ee88", {kOSSettingsKeyAutoPrompt : false, kOSSettingsKeyInAppLaunchURL: false, kOSSettingsKeyInFocusDisplayOption:2});
+    OneSignal.init("98fe799f-bce9-48a8-9f3b-82ad1699ee88", { kOSSettingsKeyAutoPrompt: false, kOSSettingsKeyInAppLaunchURL: false, kOSSettingsKeyInFocusDisplayOption: 2 });
     OneSignal.inFocusDisplaying(2); // Controls what should happen if a notification is received while the app is open. 2 means that the notification will go directly to the device's notification center.
-    
+
     // The promptForPushNotifications function code will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step below)
     OneSignal.promptForPushNotificationsWithUserResponse(myiOSPromptCallback);
-  
-     OneSignal.addEventListener('received', this.onReceived);
-     OneSignal.addEventListener('opened', this.onOpened);
-     OneSignal.addEventListener('ids', this.onIds);
+
+    OneSignal.addEventListener('received', this.onReceived);
+    OneSignal.addEventListener('opened', this.onOpened);
+    OneSignal.addEventListener('ids', this.onIds);
   }
   componentWillUnmount() {
     OneSignal.removeEventListener('received', this.onReceived);
@@ -140,27 +141,29 @@ export default class App extends Component {
   onIds(device) {
     console.log('Device info: ', device);
   }
-  
+
 
   render() {
     let themeSetting = { ...eva.light, ...theme };
-  // if(Appearance.getColorScheme() === 'dark'){
-  //   themeSetting = { ...eva.dark, ...theme }
-  // }
-        return (
-            <AuthProvider>
-              <StrategyProvider>
-                <SharePriceProvider>
-                  <ApplicationProvider {...eva} theme={themeSetting}>
-                      <AppContainer 
-                      ref={(navigator) => {
-                        setNavigator(navigator);
-                      }}
-                      />
-                    </ApplicationProvider>
-                  </SharePriceProvider>
-              </StrategyProvider>
-            </AuthProvider>
-        );
-              }
+    // if(Appearance.getColorScheme() === 'dark'){
+    //   themeSetting = { ...eva.dark, ...theme }
+    // }
+    return (
+      <AuthProvider>
+        <StrategyUpdateProvider>
+          <StrategyProvider>
+            <SharePriceProvider>
+              <ApplicationProvider {...eva} theme={themeSetting}>
+                <AppContainer
+                  ref={(navigator) => {
+                    setNavigator(navigator);
+                  }}
+                />
+              </ApplicationProvider>
+            </SharePriceProvider>
+          </StrategyProvider>
+        </StrategyUpdateProvider>
+      </AuthProvider>
+    );
+  }
 };

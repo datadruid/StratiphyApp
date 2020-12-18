@@ -1,15 +1,16 @@
 import React, {useEffect} from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, Divider, List, RadioGroup, Radio, Layout } from '@ui-kitten/components';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import Spacer from '../../components/Spacer';
+import { Text } from '@ui-kitten/components';
 import RadioButtons from '../../components/strategy/RadioButtons'
+import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
 
 const TimeHorizon = ({ strategy }) => {
+
   var types = strategy.strategyTypes.filter(x=> x.setting !== 'none');
     return (
         <>
         {types.map(item => {
+
             return (
               <View style={styles.settingcontainer}>
                 <Text style={styles.settingtext} category='p1' status='default'>{strategy.options.strategyTypeOptions.find(x=> x.id === item.typeName).text} settings</Text>

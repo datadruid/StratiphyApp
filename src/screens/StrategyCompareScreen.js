@@ -17,6 +17,7 @@ const StrategyCompareScreen = ({ navigation }) => {
     getComparisonData(getChartStartDate(state.timePeriod), getChartEndDate());
   }, []);
 
+
   if (comparisonList?.length === 0 && state.comparisonData?.length > 0 && search.length === 0) {
     setComparisonList(state.comparisonData);
   }
@@ -82,8 +83,11 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   header: {
+    width:170,
     fontWeight: '700',
     fontSize: 36,
+    alignSelf: 'stretch',
+    textAlign: 'left',
   },
   content: {
     flex: 1,
@@ -95,11 +99,12 @@ const styles = StyleSheet.create({
     padding: 20
   },
   titleiconcontainer: {
+    flex:0,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     paddingBottom: 20,
     paddingHorizontal: 20,
-    marginBottom: 30
+    marginBottom: 30,
   },
   backicon: {
     marginLeft: 25,
@@ -108,7 +113,6 @@ const styles = StyleSheet.create({
     color: '#FFC234',
   },
   infoicon: {
-    paddingLeft: 7,
     justifyContent: 'center',
     color: '#FFC234',
     alignSelf: 'center'

@@ -16,7 +16,7 @@ const currencyFormat = {
 
 const ComparisonTicker = ({navigation}) => {
     const { state, setHighightedItem, clearErrorMessage } = useContext(StrategyContext);
-    const timePeriod = 3;  
+
     const onPress = async (item) => {
         setHighightedItem(item);
     };

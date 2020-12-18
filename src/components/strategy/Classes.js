@@ -67,8 +67,8 @@ const Classes = ({ strategy }) => {
                   style={styles.slider}
                   minimumValue={0}
                   maximumValue={100}
-                  minimumTrackTintColor="#FFFFFF"
-                  maximumTrackTintColor="#000000"
+                  minimumTrackTintColor="#000000"
+                  maximumTrackTintColor="#F2F2F2"
                   value={stocks}
                   onValueChange={value => {
                     udpdateAllThree('stocks', Math.ceil(value));
@@ -82,8 +82,8 @@ const Classes = ({ strategy }) => {
                   style={styles.slider}
                   minimumValue={0}
                   maximumValue={100}
-                  minimumTrackTintColor="#FFFFFF"
-                  maximumTrackTintColor="#000000"
+                  minimumTrackTintColor="#000000"
+                  maximumTrackTintColor="#F2F2F2"
                   value={bonds}
                   onValueChange={value => 
                     {
@@ -98,8 +98,8 @@ const Classes = ({ strategy }) => {
                   style={styles.slider}
                   minimumValue={0}
                   maximumValue={100}
-                  minimumTrackTintColor="#FFFFFF"
-                  maximumTrackTintColor="#000000"
+                  minimumTrackTintColor="#000000"
+                  maximumTrackTintColor="#F2F2F2"
                   value={funds}
                   onValueChange={value => 
                     {

@@ -1,5 +1,5 @@
 
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Divider, Datepicker, Layout } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 const DateType = ({ backtestingStart }) => {
     var split = backtestingStart.split('/');
     var convDate = new Date(split[2], split[1] - 1, split[0]);
-    const [date, setDate] = React.useState(convDate);
+    const [date, setDate] =useState(convDate);
   
   return (
       <>

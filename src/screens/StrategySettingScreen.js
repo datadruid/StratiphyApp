@@ -1,10 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { ScrollView, View, StyleSheet, SafeAreaView, FlatList } from 'react-native';
-import { Layout, Input, Card, List, Text, Button, ButtonGroup, Toggle, RadioGroup, Radio, CheckBox, Datepicker, Divider } from '@ui-kitten/components';
+import { ScrollView, View, StyleSheet, SafeAreaView } from 'react-native';
+import { Layout, Input, Text, Divider } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import TagInput from 'react-native-tags-input';
 import Spacer from '../components/Spacer';
-import { LineChart } from "react-native-chart-kit";
 import StrategyType from '../components/strategy/StrategyType';
 import TimeHorizon from '../components/strategy/TimeHorizon';
 import DateType from '../components/strategy/DateType';
@@ -14,7 +13,7 @@ import Classes from '../components/strategy/Classes';
 import MarketCaps from '../components/strategy/MarketCaps';
 import Sectors from '../components/strategy/Sectors';
 import Tickers from '../components/strategy/Tickers';
-import { Context as StrategyContext } from '../context/StrategyContext';
+import { Context as UpdateContext } from '../context/StrategyUpdateContext';
 
 const chartConfig = {
   backgroundColor: "",
@@ -30,25 +29,36 @@ const chartConfig = {
 
 const StrategySettingScreen = ({ navigation }) => {
   const item = navigation.getParam('item');
-  const { state, getStrategy, clearErrorMessage } = useContext(StrategyContext);
+  const { state, setStartegy, updateName, updateDescription } = useContext(UpdateContext);
 
+    useEffect(() => {
+      setStartegy(item);
+  }, []); 
 
-  useEffect( () => {
-    getStrategy(item.strategyID, 0);
- }, []);
-
+  if(state.strategy.UserID)
+  {
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
       <Layout style={styles.layoutcontainer}>
-        <Spacer />
-        <Text style={styles.text} category='h5' status='default'>{item.strategyName}</Text>
         <ScrollView >
+          <Spacer />
+          <Input 
+            style={styles.input}
+            value={state.strategy.strategyName}
+            label='Name:'
+            onChangeText={nextValue => updateName(nextValue)}
+          />
          <Spacer />
-          <Text style={styles.text} status='default'>{item.strategyDescription}</Text>
+         <Input 
+          style={styles.input}
+          value={state.strategy.strategyDescription}
+          label='Description:'
+          onChangeText={nextValue => updateDescription(nextValue)}
+        />
           <Divider style={styles.shortdivider} />
           <Spacer />
  
-          <StrategyType strategy={item}/>
+          <StrategyType strategy={state.strategy}/>
 
         <Spacer />
           <View style={styles.settingheadercontainer}>
@@ -59,29 +69,38 @@ const StrategySettingScreen = ({ navigation }) => {
           <Divider style={styles.shortdivider} />
           <Spacer />
 
-          <TimeHorizon strategy={item}/>
+          <TimeHorizon strategy={state.strategy}/>
            
-          <DateType backtestingStart={item.globalSpecifications.backtestingStart}/>
+          <DateType backtestingStart={state.strategy.globalSpecifications.backtestingStart}/>
 
           <Divider style={styles.shortdivider} />
 
-          <EmailUpdates strategy={item}/>
+          <EmailUpdates strategy={state.strategy}/>
 
-          <Regions strategy={item}/> 
+          <Regions strategy={state.strategy}/> 
 
-          <Classes strategy={item}/> 
+          <Classes strategy={state.strategy}/> 
        
-          <MarketCaps strategy={item}/>  
+          <MarketCaps strategy={state.strategy}/>  
           
-          <Sectors strategy={item}/> 
+          <Sectors strategy={state.strategy}/> 
 
-          <Tickers strategy={item}/> 
+          <Tickers strategy={state.strategy}/> 
         
 
         </ScrollView>
       </Layout>
     </SafeAreaView>
   );
+        }
+        else{
+          return (
+          <SafeAreaView forceInset={{ top: 'always' }}>
+          <Layout style={styles.layoutcontainer}>
+          </Layout>
+        </SafeAreaView>
+          );
+        }
 };
 
 
@@ -143,6 +162,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     color: 'white',
+  },
+  input:{
+    marginHorizontal: 20
   }
 });
 

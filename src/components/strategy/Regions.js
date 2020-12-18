@@ -8,7 +8,6 @@ import Spacer from '../../components/Spacer';
 const Regions = ({ strategy }) => {
     const [checkedArray, setcheckedArray] = useState(strategy.regions);
 
-    
     const setToggleCheckBox = (selected, item) =>
     {
       var items = checkedArray;
@@ -32,7 +31,6 @@ const Regions = ({ strategy }) => {
             <Text style={styles.settingtext} category='p1' status='default'>Regions</Text>
               <View style={styles.container}>
               {strategy.options.regionsOptions.map(item => {
-                //console.log('did radios');
                   return (
                     <View key={item.id} style={styles.buttonContainer}>
                       <Text style={styles.buttonlabel}>{item.label}</Text>
