@@ -1,18 +1,31 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Divider, List, RadioGroup, Radio, Layout } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Spacer from '../../components/Spacer';
 import RadioButtons from '../../components/strategy/RadioButtons'
+import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
 
 const EmailUpdates = ({ strategy }) => {
-  const id = strategy.options.emailUpdatesOptions.find(x=> x.label.toLowerCase() === strategy.globalSpecifications.emailUpdatesSetting.toLowerCase()).id
+  const { state, updateGlobalSpecifications } = useContext(UpdateContext);
+  const id = strategy.options.emailUpdatesOptions.find(x=> x.label.toLowerCase() === strategy.globalSpecifications.emailUpdatesSetting.toLowerCase()).id;
+  const updateChanged = (parentItem, option) => {
+    let specs = {
+      backtestingStart : parentItem.backtestingStart,
+      benchmarkName : parentItem.benchmarkName,
+      emailUpdatesSetting : option.label.toLowerCase(),
+      updateFrequency : parentItem.updateFrequency
+    };
+    updateGlobalSpecifications(specs);
+    
+  };
+
     return (
         <>
           <View style={styles.settingcontainer}>
               <Text style={styles.settingtext} category='p1' status='default'>Email updates</Text>
               <View style={styles.container}>
-                <RadioButtons options={strategy.options.emailUpdatesOptions} selectedId={id}/>
+                <RadioButtons options={strategy.options.emailUpdatesOptions} selectedId={id} selectedAction={updateChanged} parentItem={strategy.globalSpecifications}/>
               </View> 
             </View>
           <Divider style={styles.longdivider} />

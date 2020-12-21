@@ -1,14 +1,29 @@
 
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Divider, Datepicker, Layout } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
+import moment from 'moment';
 
-const DateType = ({ backtestingStart }) => {
+const DateType = ({ globalSpecifications, backtestingStart }) => {
+  const { state, updateGlobalSpecifications } = useContext(UpdateContext);
     var split = backtestingStart.split('/');
     var convDate = new Date(split[2], split[1] - 1, split[0]);
-    const [date, setDate] =useState(convDate);
+    var minDate = new Date(2018,0,1,0,0,0,0);
+    const [date, setDate] = useState(convDate);
   
+    const dateChanged = (newDate) => {
+      setDate(newDate);
+      let specs = {
+        backtestingStart : moment(newDate).format('DD/MM/YYYY'),
+        benchmarkName : globalSpecifications.benchmarkName,
+        emailUpdatesSetting : globalSpecifications.emailUpdatesSetting,
+        updateFrequency : globalSpecifications.updateFrequency
+      };
+      updateGlobalSpecifications(specs);
+    };
+
   return (
       <>
         <Divider style={styles.longdivider} />
@@ -16,7 +31,8 @@ const DateType = ({ backtestingStart }) => {
             <Text style={styles.settingtext} category='p1' status='default'>Backtesting start date</Text>
             <Datepicker
                 date={date}
-                onSelect={nextDate => setDate(nextDate)}
+                onSelect={nextDate => dateChanged(nextDate)}
+                min={minDate}
             />
           </View>
       </>

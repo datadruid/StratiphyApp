@@ -19,7 +19,7 @@ const StrategyDetailChart = ({ datasets, mastercolour, linecolour, isAnalysisTab
               let dataset = {
                           data: slimList,
                           color: () => linecolour
-                          ,strokeWidth: "2"
+                          ,strokeWidth: "3"
                         };
 
             chartset.push(dataset);
@@ -30,7 +30,7 @@ const StrategyDetailChart = ({ datasets, mastercolour, linecolour, isAnalysisTab
     {
       state.comparisonChartData.forEach((chart) => {
         let circlecolour = state.highightedItem.includes(chart.ticker) ? '#3B87FA' : getAvatarColor(chart.ticker);
-        let linewidth = state.highightedItem.includes(chart.ticker) ? '3' : '2';
+        let linewidth = 3;//state.highightedItem.includes(chart.ticker) ? '3' : '2';
         let slimList = chart.series.map(a => a.value);
 
         let dataset = {

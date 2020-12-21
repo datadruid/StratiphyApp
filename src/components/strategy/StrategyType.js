@@ -47,10 +47,10 @@ const StrategyType = ({ strategy }) => {
     setUpdated(true);
   };
   return (
-    <>
+    <View styles={styles.container}>
       <View style={styles.settingheadercontainer}>
         <Text style={styles.settingtitletext} category='h6' status='default'>Strategy type</Text>
-        <Icon style={styles.icon} size={18} name='info-circle' />
+        <Icon style={[styles.icon, {color: '#FFC234'}]} size={18} name='info-circle' />
       </View>
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
         <View>
@@ -82,31 +82,35 @@ const StrategyType = ({ strategy }) => {
           );
         })}
 
-      <Layout style={styles.settingcontainer}>
+      <View style={styles.settingcontainer}>
         <Text style={styles.settingtext} category='p1' status='default'></Text>
         <TouchableOpacity style={styles.touch} onPress={() => toggleOverlay()}>
           <Icon style={styles.icon} size={20} name='plus' />
         </TouchableOpacity>
-      </Layout>
+      </View>
       <Divider style={styles.longdivider} />
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container:{
+    borderRadius: 12,
+    backgroundColor: 'white'
+  },
   settingcontainer: {
     flex: 1,
     paddingTop: 5,
     paddingHorizontal: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   settingheadercontainer: {
     flex: 1,
     paddingRight: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   settingtext: {
     paddingTop: 10,

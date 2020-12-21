@@ -1,15 +1,25 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
 import { Text, Divider } from '@ui-kitten/components';
 import CheckBox from '@react-native-community/checkbox';
 import Spacer from '../../components/Spacer';
 
 const MarketCaps = ({ strategy }) => {
-    const [smallCap, setSmallCap] = useState(strategy.marketCaps.smallCap);
-    const [midCap, setMidCap] = useState(strategy.marketCaps.midCap);
-    const [largeCap, setLargeCap] = useState(strategy.marketCaps.largeCap);
-    const [supraCap, setSupraCap] = useState(strategy.marketCaps.supraCap);
+  const { state, updateMarketCaps } = useContext(UpdateContext);
+
+    const setCaps = (smallCap, midCap, largeCap, supraCap) =>
+    {
+      let caps = {
+        smallCap: smallCap,
+        midCap : midCap,
+        largeCap : largeCap,
+        supraCap: supraCap
+      }
+      updateMarketCaps(caps);
+      
+    };
 
     return (
         <>
@@ -29,8 +39,10 @@ const MarketCaps = ({ strategy }) => {
                             boxType='square'
                             onCheckColor='black'
                             onTintColor='#aaaaaa'
-                            value={smallCap}
-                            onValueChange={(selected) => setSmallCap(selected)}
+                            value={strategy.marketCaps.smallCap}
+                            onValueChange={(selected) => {
+                              setCaps(selected, strategy.marketCaps.midCap, strategy.marketCaps.largeCap, strategy.marketCaps.supraCap);
+                            }}
                             />
               </View>
               <View style={styles.settingcontainer}>
@@ -40,8 +52,10 @@ const MarketCaps = ({ strategy }) => {
                             boxType='square'
                             onCheckColor='black'
                             onTintColor='#aaaaaa'
-                            value={midCap}
-                            onValueChange={(selected) => setMidCap(selected)}
+                            value={strategy.marketCaps.midCap}
+                            onValueChange={(selected) => {
+                              setCaps(strategy.marketCaps.midCap, selected, strategy.marketCaps.largeCap, strategy.marketCaps.supraCap);
+                            }}
                             />
               </View>
               <View style={styles.settingcontainer}>
@@ -51,8 +65,10 @@ const MarketCaps = ({ strategy }) => {
                             boxType='square'
                             onCheckColor='black'
                             onTintColor='#aaaaaa'
-                            value={largeCap}
-                            onValueChange={(selected) => setLargeCap(selected)}
+                            value={strategy.marketCaps.largeCap}
+                            onValueChange={(selected) => {
+                              setCaps(strategy.marketCaps.midCap, strategy.marketCaps.midCap, selected, strategy.marketCaps.supraCap);
+                            }}
                             />
               </View>
               <View style={styles.settingcontainer}>
@@ -62,8 +78,10 @@ const MarketCaps = ({ strategy }) => {
                             boxType='square'
                             onCheckColor='black'
                             onTintColor='#aaaaaa'
-                            value={supraCap}
-                            onValueChange={(selected) => setSupraCap(selected)}
+                            value={strategy.marketCaps.supraCap}
+                            onValueChange={(selected) => {
+                              setCaps(strategy.marketCaps.midCap, strategy.marketCaps.midCap, strategy.marketCaps.largeCap, selected);
+                            }}
                             />
               </View>
             </View>
@@ -103,7 +121,7 @@ const MarketCaps = ({ strategy }) => {
     settingcontainer: {
       flex: 1,
       paddingTop: 5,
-      paddingHorizontal: 20,
+      paddingHorizontal: 10,
       flexDirection: 'row',
       justifyContent: 'space-between'
     },
@@ -143,7 +161,7 @@ const MarketCaps = ({ strategy }) => {
       paddingBottom: 10,
       justifyContent: 'center',
       alignItems: 'center',
-      color: 'white',
+      color: '#FFC234'
     },
   slider: {
     width: 180,

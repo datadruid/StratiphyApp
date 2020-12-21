@@ -80,6 +80,24 @@ const getStrategy = dispatch => async (strategyID, timePeriod) => {
   }
 };
 
+const uploadStartegy = dispatch => async (strategy) => {
+  const token = await getToken();
+  if (token) {
+    try{
+      let config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+      let response = await authApi.post(`/uploadstrategy/`, {strategy}, config);
+      console.log(response);
+      //dispatch({ type: 'get_instructionlist', payload: response.data });
+    } catch(err) {
+      dispatch({ type: 'add_error', payload: err.data.error });
+    }
+} else {
+  dispatch({ type: 'add_error', payload: 'No data acess token available' });
+}
+};
+
 const getInstructionList = dispatch => async (strategyID) => {
   const token = await getToken();
   if (token) {
@@ -167,8 +185,9 @@ const getComparisonChartData = dispatch => async (startegies, timePeriod) =>{
             headers: { Authorization: `Bearer ${token}` }
           };
 
+          console.log(`/tickerchartdata/${startegies}/${timePeriod}`);
           let response = await authApi.get(`/tickerchartdata/${startegies}/${timePeriod}`, config);
-          
+          console.log(response.data);
           dispatch({ type: 'get_compchartdata', payload: response.data });
         } catch(err) {
           dispatch({ type: 'add_error', payload: err.data.error });
@@ -215,6 +234,10 @@ const setTimePeriod = dispatch => async (periodIndex) =>{
 
 export const { Context, Provider } = createDataContext(
   strategyReducer,
-  {listStrategies, getStrategy, getInstructionList, getInstructionDetail, getTickerData, getComparisonTickerData, getComparisonData, getComparisonChartData, toggleCompTickerList, setHighightedItem, clearErrorMessage, setTimePeriod},
-  { strategies: [], strategy : { analytics: []}, tickerData : [], comparisonTickerData : [], comparisonData : [], comparisonChartData : [], compTickerList: [], instructions : [], instructionDetail : [], highightedItem : '', errorMessage: '', timePeriod : 2 }
+  {listStrategies, getStrategy, getInstructionList, getInstructionDetail, getTickerData, 
+    getComparisonTickerData, getComparisonData, getComparisonChartData, toggleCompTickerList, 
+    setHighightedItem, clearErrorMessage, setTimePeriod, uploadStartegy},
+  { strategies: [], strategy : { analytics: []}, tickerData : [], comparisonTickerData : [], 
+  comparisonData : [], comparisonChartData : [], compTickerList: [], instructions : [], 
+  instructionDetail : [], highightedItem : '', errorMessage: '', timePeriod : 2 }
 );

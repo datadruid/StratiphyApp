@@ -4,9 +4,14 @@ import { Text, Divider, List, RadioGroup, Radio, Layout } from '@ui-kitten/compo
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Spacer from '../../components/Spacer';
 
-const RadioButtons = ({ options, selectedId }) => {
+const RadioButtons = ({ options, selectedId, selectedAction, parentItem }) => {
     const [selectedIndex, setSelectedIndex] = React.useState(selectedId);
-    //console.log(options[selectedIndex]);
+
+    const optionselected = (option) => {
+      setSelectedIndex(option.id);
+      selectedAction(parentItem, option);
+    };
+
     return (
         <>
               {options.map(option => {
@@ -17,7 +22,7 @@ const RadioButtons = ({ options, selectedId }) => {
                     <TouchableOpacity
                                             style={styles.circle}
                                             onPress={() => {
-                                            setSelectedIndex(option.id);
+                                              optionselected(option);
                                             }}
                                         >
                                             {selectedIndex === option.id && <View style={styles.checkedCircle} />}

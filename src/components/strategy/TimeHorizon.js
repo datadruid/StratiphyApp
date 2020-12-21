@@ -1,12 +1,27 @@
-import React, {useEffect} from 'react';
+import React, {useContext} from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import RadioButtons from '../../components/strategy/RadioButtons'
 import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
 
 const TimeHorizon = ({ strategy }) => {
-
+  const { state, updateStrategyTypes } = useContext(UpdateContext);
   var types = strategy.strategyTypes.filter(x=> x.setting !== 'none');
+
+  const optionselected = (parent, option) => {
+    let index = state.strategy.strategyTypes.findIndex(x => x.typeName === parent.typeName);
+    let updatedType = {
+      setting: parent.setting,
+      specifications: {
+        periodicities: option.periodicities,
+        periods: option.periods,
+        weightings: option.weightings
+      },
+      typeName: parent.typeName
+    }
+    updateStrategyTypes(index, updatedType);
+  };
+
     return (
         <>
         {types.map(item => {
@@ -15,7 +30,7 @@ const TimeHorizon = ({ strategy }) => {
               <View style={styles.settingcontainer}>
                 <Text style={styles.settingtext} category='p1' status='default'>{strategy.options.strategyTypeOptions.find(x=> x.id === item.typeName).text} settings</Text>
                 <View style={styles.container}>
-                  <RadioButtons options={strategy.options.basicStrategySettingOptions} selectedId={strategy.options.basicStrategySettingOptions.find(x => x.periods === item.specifications.periods && x.periodicities === item.specifications.periodicities && x.weightings === item.specifications.weightings).id}/>
+                  <RadioButtons options={strategy.options.basicStrategySettingOptions} selectedId={strategy.options.basicStrategySettingOptions.find(x => x.periods === item.specifications.periods && x.periodicities === item.specifications.periodicities && x.weightings === item.specifications.weightings).id} selectedAction={optionselected} parentItem={item}/>
                 </View> 
               </View>
             );

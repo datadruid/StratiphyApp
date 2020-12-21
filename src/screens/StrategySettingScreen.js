@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { ScrollView, View, StyleSheet, SafeAreaView } from 'react-native';
-import { Layout, Input, Text, Divider } from '@ui-kitten/components';
+import { ScrollView, View, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import { Button, Input, Overlay } from 'react-native-elements';
+import { Layout, Text, Divider } from '@ui-kitten/components';
+import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import TagInput from 'react-native-tags-input';
 import Spacer from '../components/Spacer';
 import StrategyType from '../components/strategy/StrategyType';
 import TimeHorizon from '../components/strategy/TimeHorizon';
@@ -14,6 +15,7 @@ import MarketCaps from '../components/strategy/MarketCaps';
 import Sectors from '../components/strategy/Sectors';
 import Tickers from '../components/strategy/Tickers';
 import { Context as UpdateContext } from '../context/StrategyUpdateContext';
+import { Context as StrategyContext } from '../context/StrategyContext';
 
 const chartConfig = {
   backgroundColor: "",
@@ -29,21 +31,48 @@ const chartConfig = {
 
 const StrategySettingScreen = ({ navigation }) => {
   const item = navigation.getParam('item');
-  const { state, setStartegy, updateName, updateDescription } = useContext(UpdateContext);
-
+  const [visible, setVisible] = useState(false);
+  const { state, setStrategy, updateName, updateDescription } = useContext(UpdateContext);
+  const { uploadStartegy } = useContext(StrategyContext);
     useEffect(() => {
-      setStartegy(item);
+      setStrategy(item);
   }, []); 
+
+  const closeWindow = () => {
+    navigation.goBack();
+  };
+
+  const openPreview = () => {
+    setVisible(true);
+  };
+
+  const closePreview = () => {
+    setVisible(false);
+  };
+
+  const saveStrategy = () => {
+    uploadStartegy(state.strategy);
+    setVisible(false);
+  };
 
   if(state.strategy.UserID)
   {
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
-      <Layout style={styles.layoutcontainer}>
+      <View style={styles.layoutcontainer}>
+      <TouchableOpacity onPress={() => closeWindow()}>
+          <Icon style={styles.backicon} size={40} name='long-arrow-left' />
+        </TouchableOpacity>
+        <View style={styles.titleiconcontainer}>
+          <Text style={styles.header}>Edit Strategy</Text>
+          <Icon style={styles.infoicon} size={20} name='info-circle' />
+        </View>
+        <View style={styles.content} >
         <ScrollView >
           <Spacer />
           <Input 
             style={styles.input}
+            inputContainerStyle ={styles.inputcontainer}
             value={state.strategy.strategyName}
             label='Name:'
             onChangeText={nextValue => updateName(nextValue)}
@@ -51,6 +80,7 @@ const StrategySettingScreen = ({ navigation }) => {
          <Spacer />
          <Input 
           style={styles.input}
+          inputContainerStyle ={styles.inputcontainer}
           value={state.strategy.strategyDescription}
           label='Description:'
           onChangeText={nextValue => updateDescription(nextValue)}
@@ -63,7 +93,7 @@ const StrategySettingScreen = ({ navigation }) => {
         <Spacer />
           <View style={styles.settingheadercontainer}>
             <Text style={styles.settingtitletext} category='h6' status='default'>Timings</Text>
-            <Icon style={styles.icon} size={18} name='info-circle'/>
+            <Icon style={[styles.icon, {color: '#FFC234'}]} size={18} name='info-circle'/>
           </View>
 
           <Divider style={styles.shortdivider} />
@@ -71,7 +101,7 @@ const StrategySettingScreen = ({ navigation }) => {
 
           <TimeHorizon strategy={state.strategy}/>
            
-          <DateType backtestingStart={state.strategy.globalSpecifications.backtestingStart}/>
+          <DateType globalSpecifications={state.strategy.globalSpecifications} backtestingStart={state.strategy.globalSpecifications.backtestingStart}/>
 
           <Divider style={styles.shortdivider} />
 
@@ -87,9 +117,29 @@ const StrategySettingScreen = ({ navigation }) => {
 
           <Tickers strategy={state.strategy}/> 
         
+          <Modal fullScreen={false}
+          style={styles.overlay} isVisible={visible} onBackdropPress={closePreview}>
+            <View style={styles.overlaycontent}>
+            <View style={styles.buttoncontainer}>
+      <Button buttonStyle={styles.whitebutton}
+          onPress={saveStrategy}
+          titleStyle={styles.whitebuttontitle}
+          title='Proceed with strategy'
+          type='solid'/>
+        </View>
+            </View>
+          </Modal>
 
         </ScrollView>
-      </Layout>
+        </View>
+        <View style={styles.buttoncontainer}>
+      <Button buttonStyle={styles.button}
+          onPress={openPreview}
+          titleStyle={styles.buttontitle}
+          title='Preview Performance'
+          type='solid'/>
+        </View>
+      </View>
     </SafeAreaView>
   );
         }
@@ -103,11 +153,45 @@ const StrategySettingScreen = ({ navigation }) => {
         }
 };
 
-
-
 const styles = StyleSheet.create({
   layoutcontainer: {
-    height: '100%'
+    height: '100%',
+    backgroundColor: 'white'
+  },
+  overlay: {
+    marginHorizontal:0,
+    marginTop: 95,
+    marginBottom: 0
+  },
+  content: {
+    flex: 1,
+    flexDirection: 'row',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    justifyContent: 'center',
+    backgroundColor: '#F3F4F5',
+  },
+  overlaycontent: {
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    justifyContent: 'center',
+    backgroundColor: '#4CD697',
+    margin:0,
+    padding:0,
+    height:'100%',
+  },
+  titleiconcontainer: {
+    flex:0,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+  },
+  backicon: {
+    marginLeft: 25,
+    paddingTop: 20,
+    justifyContent: 'center',
+    color: '#FFC234',
   },
   multicontainer: {
     flex: 1,
@@ -156,6 +240,13 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     paddingLeft: 15
   },
+  header: {
+    width:240,
+    fontWeight: '700',
+    fontSize: 36,
+    alignSelf: 'stretch',
+    textAlign: 'left',
+  },
   icon: {
     paddingTop: 10,
     paddingBottom: 10,
@@ -163,12 +254,47 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     color: 'white',
   },
+  infoicon: {
+    justifyContent: 'center',
+    color: '#FFC234',
+    alignSelf: 'center'
+  },
   input:{
-    marginHorizontal: 20
+    backgroundColor: 'white',
+    borderRadius: 12,
+    paddingHorizontal: 5,
+    
+  },
+  inputcontainer:{
+    borderBottomWidth:0
+  },
+  buttoncontainer: {
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  button: {
+    backgroundColor: '#FFC234',
+    borderRadius: 12,
+    margin: 5
+  },
+  whitebutton: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    margin: 5
+  },
+  buttontitle: {
+    marginHorizontal: 20,
+    fontWeight: 'bold'
+  },
+  whitebuttontitle: {
+    marginHorizontal: 20,
+    color: '#FFC234',
+    fontWeight: 'bold'
   }
 });
 
 StrategySettingScreen.navigationOptions = {
+  header: () => false,
   title: 'Strategy'
 };
 

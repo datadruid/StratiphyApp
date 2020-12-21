@@ -72,7 +72,7 @@ const StrategyListItem = ({ navigation, item }) => {
           {
             data: slimList,
             color: () => linecolour
-            ,strokeWidth: "2"
+            ,strokeWidth: "3"
                     }
         ]
       }}

@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { Text, Divider } from '@ui-kitten/components';
 import Slider from '@react-native-community/slider';
 import Spacer from '../../components/Spacer';
+import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
 
 const Classes = ({ strategy }) => {
+  const { state, updateAssetClassAllocations } = useContext(UpdateContext);
     const [stocks, setStocks] = useState(parseInt(strategy.assetClassAllocations.stocks));
     const [bonds, setBonds] = useState(parseInt(strategy.assetClassAllocations.bonds));
     const [funds, setFunds] = useState(parseInt(strategy.assetClassAllocations.funds));
@@ -23,31 +25,38 @@ const Classes = ({ strategy }) => {
           if(bonds + balance >= 0) {
             setBonds(bonds + balance);
           }
-          if(funds + balance >= 0) {
-            setFunds(funds + balance);
+          if(100 - (stocks + bonds) >= 0) {
+            setFunds(100 - (stocks + bonds));
           }
-          return;
+          break;
         case 'bonds':
           balance = Math.floor((remains - (stocks + funds))/2);
           setBonds(value);
           if(stocks + balance >= 0) {
             setStocks(stocks + balance);
           }
-          if(funds + balance >= 0) {
-            setFunds(funds + balance);
+          if(100 - (stocks + bonds) >= 0) {
+            setFunds(100 - (stocks + bonds));
           }
-        return;
+          break;
         case 'funds':
           balance = Math.floor((remains - (bonds + stocks))/2);
           setFunds(value);
           if(stocks + balance >= 0) {
             setStocks(stocks + balance);
           }
-          if(bonds + balance >= 0) {
-            setBonds(bonds + balance);
+          if(100 - (stocks + funds) >= 0) {
+            setBonds(100 - (stocks + funds));
           }
-          return;
+          break;
       }
+
+      let classes =  {
+        stocks: stocks,
+        bonds: bonds,
+        funds: funds
+      }
+      updateAssetClassAllocations(classes);
     };
 
     return (
@@ -60,7 +69,7 @@ const Classes = ({ strategy }) => {
         <Divider style={styles.shortdivider} />
           <View style={styles.settingcontainer}>
             <Text style={styles.settingtext} category='p1' status='default'>Select classes</Text>
-            <View>
+            <View style={styles.slidercontainer}>
               <View style={styles.settingcontainer}>
                 <Text tyle={styles.settingtext} category='label' status='default'>Stocks</Text>
                 <Slider
@@ -68,7 +77,7 @@ const Classes = ({ strategy }) => {
                   minimumValue={0}
                   maximumValue={100}
                   minimumTrackTintColor="#000000"
-                  maximumTrackTintColor="#F2F2F2"
+                  maximumTrackTintColor="#FFFFFF"
                   value={stocks}
                   onValueChange={value => {
                     udpdateAllThree('stocks', Math.ceil(value));
@@ -83,7 +92,7 @@ const Classes = ({ strategy }) => {
                   minimumValue={0}
                   maximumValue={100}
                   minimumTrackTintColor="#000000"
-                  maximumTrackTintColor="#F2F2F2"
+                  maximumTrackTintColor="#FFFFFF"
                   value={bonds}
                   onValueChange={value => 
                     {
@@ -99,7 +108,7 @@ const Classes = ({ strategy }) => {
                   minimumValue={0}
                   maximumValue={100}
                   minimumTrackTintColor="#000000"
-                  maximumTrackTintColor="#F2F2F2"
+                  maximumTrackTintColor="#FFFFFF"
                   value={funds}
                   onValueChange={value => 
                     {
@@ -140,6 +149,9 @@ const Classes = ({ strategy }) => {
       height: 14,
       borderRadius: 7,
       backgroundColor: 'black',
+    },
+    slidercontainer: {
+marginTop: 8
     },
     settingcontainer: {
       flex: 1,
@@ -184,10 +196,10 @@ const Classes = ({ strategy }) => {
       paddingBottom: 10,
       justifyContent: 'center',
       alignItems: 'center',
-      color: 'white',
+      color: '#FFC234'
     },
   slider: {
-    width: 180,
+    width: 150,
   }
   });
   

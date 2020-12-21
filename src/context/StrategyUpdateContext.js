@@ -5,27 +5,71 @@ const strategyUpdateReducer = (state, action) => {
         case 'set_strategy' : 
             return { ...state, strategy : action.payload };
         case 'set_name':
-            return { ...state, strategyName: action.payload };
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    strategyName: action.payload }
+                };
         case 'set_description':
-            return { ...state, strategyDescription: action.payload };
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    strategyDescription: action.payload }
+                };
         case 'set_lastrun':
-            return { ...state, lastRun: action.payload };
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    lastRun: action.payload }
+                };
         case 'set_userid':
-            return { ...state, UserID: action.payload };
+            return  { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    UserID: action.payload }
+                };
         case 'set_email':
-            return { ...state, email: action.payload };
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    email: action.payload }
+                };
         case 'set_dateadded':
-            return { ...state, dateAdded: action.payload };
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    dateAdded: action.payload }
+                };
         case 'set_datemodified':
-            return { ...state, dateModified: action.payload };
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    lastRun: action.payload }
+                };
         case 'set_status':
-            return { ...state, status: action.payload };
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    status: action.payload }
+                };
         case 'set_sectors':
-            return { ...state, sectors: action.payload };
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    sectors: action.payload }
+                };
         case 'set_meta':
-            return { ...state, strategyMeta: action.payload };
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    strategyMeta: action.payload }
+                };
         case 'set_regions':
-            return { ...state, regions: action.payload };
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                 regions: action.payload }
+                };
         case 'set_strategytypes':
             return {
                 ...state,
@@ -39,19 +83,36 @@ const strategyUpdateReducer = (state, action) => {
                 }
             }
         case 'set_assetclassallocations':
-            return { ...state, assetClassAllocations: action.payload };
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    assetClassAllocations: action.payload }
+                };
         case 'set_marketcaps':
-            return { ...state, marketCaps: action.payload };
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    marketCaps: action.payload }
+                };
         case 'set_tickers':
-            return { ...state, tickers: action.payload };
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    tickers: action.payload }
+                };
         case 'set_globalspecifications':
-            return { ...state, globalSpecifications: action.payload };
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                globalSpecifications : action.payload 
+                }
+            };
         default:
             return state;
     }
 };
 
-const setStartegy =  dispatch => async (strategy) => {
+const setStrategy =  dispatch => async (strategy) => {
     dispatch({ type: 'set_strategy', payload: strategy });
 };
 
@@ -123,7 +184,7 @@ const updateGlobalSpecifications = dispatch => async (globalSpecifications) => {
 export const { Context, Provider } = createDataContext(
     strategyUpdateReducer,
     {
-        setStartegy, updateName, updateDescription, updateLastRun,
+        setStrategy, updateName, updateDescription, updateLastRun,
         updateUserId, updateEmail, updateDateAdded, updateDateModified,
         updateStatus, updateSectors, updateMeta, updateRegions,
         updateStrategyTypes, updateAssetClassAllocations, updateMarketCaps,

@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Divider } from '@ui-kitten/components';
+import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
 import CheckBox from '@react-native-community/checkbox';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Spacer from '../../components/Spacer';
 
 const Regions = ({ strategy }) => {
+  const { state, updateRegions } = useContext(UpdateContext);
     const [checkedArray, setcheckedArray] = useState(strategy.regions);
 
     const setToggleCheckBox = (selected, item) =>
@@ -14,9 +16,10 @@ const Regions = ({ strategy }) => {
       if(selected) {
         items.push(item.id);
       } else {
-        items.pop(items.indexOf(item.id), 1);
+        items.splice(items.indexOf(item.id), 1);
       }
       setcheckedArray(items);
+      updateRegions(items);
     }
 
     return (
@@ -24,7 +27,7 @@ const Regions = ({ strategy }) => {
         <Spacer />
         <View style={styles.settingheadercontainer}>
             <Text style={styles.settingtitletext} category='h6' status='default'>Regions</Text>
-          <Icon style={styles.icon} size={18} name='info-circle'/>
+          <Icon style={[styles.icon, {color: '#FFC234'}]} size={18} name='info-circle'/>
         </View>
         <Divider style={styles.shortdivider} />
           <View style={styles.settingcontainer}>
@@ -42,7 +45,6 @@ const Regions = ({ strategy }) => {
                             value={checkedArray.includes(item.id)}
                             onValueChange={(selected) => setToggleCheckBox(selected, item)}
                             />
-    
                     </View>
                   );
                 })}
@@ -122,7 +124,7 @@ const Regions = ({ strategy }) => {
       paddingBottom: 10,
       justifyContent: 'center',
       alignItems: 'center',
-      color: 'black',
+    color: '#FFC234'
     },
   });
   
