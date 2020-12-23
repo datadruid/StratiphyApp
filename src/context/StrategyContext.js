@@ -1,6 +1,7 @@
 import createDataContext from './createDataContext';
 import authApi from '../api/auth';
 import { getToken } from '../storage/tokenStorage';
+import { getIndexRange, getChartStartDate, getChartAxisLabels} from '../components/modules/UiHelper';
 
 const strategyReducer = (state, action) => {
   switch (action.type) {
@@ -30,9 +31,11 @@ const strategyReducer = (state, action) => {
       }
       return { ...state, errorMessage: '', compTickerList: state.compTickerList.concat(action.payload) }
     case 'set_highlighted_item':
-      return {...state, errorMessage: '', highightedItem: action.payload };
+      return { ...state, errorMessage: '', highightedItem: action.payload };
     case 'set_time_period' :
-      return {...state, errorMessage: '', timePeriod : action.payload };
+      return { ...state, errorMessage: '', timePeriod : action.payload };
+    case 'preview_strategy':
+      return { ...state, errorMessage: '', previewData : action.payload };
     default:
       return state;
   }
@@ -47,7 +50,8 @@ const listStrategies = dispatch => async () => {
   if (token) {
       try{
         let config = {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
+          clearCacheEntry: true
         };
         let response = await authApi.get(`/strategies`, config);
 
@@ -66,7 +70,8 @@ const getStrategy = dispatch => async (strategyID, timePeriod) => {
   if (token) {
       try{
         let config = {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
+          clearCacheEntry: false
         };
 
         let response = await authApi.get(`/strategy/${strategyID}/${timePeriod}`, config);
@@ -80,6 +85,36 @@ const getStrategy = dispatch => async (strategyID, timePeriod) => {
   }
 };
 
+const previewStrategy = dispatch => async (strategy) => {
+  const token = await getToken();
+  if (token) {
+    try{
+      let config = {
+        headers: { Authorization: `Bearer ${token}` },
+        clearCacheEntry: true
+      };
+
+      let response = await authApi.post(`/previewstrategy/`, {strategy}, config);
+
+      let previews = [];
+      let indexes = getIndexRange();
+      indexes.forEach((index) => {
+        let dateFrom = getChartStartDate(index);
+        let filtered = response.data.filter(x=> x.date >= dateFrom);
+        let xAxisLabels = getChartAxisLabels(index, filtered.length);
+        previews.push({index: index, data: filtered, labels: xAxisLabels})
+      });
+      
+      dispatch({ type: 'preview_strategy', payload: previews });
+
+    } catch(err) {
+      dispatch({ type: 'add_error', payload: err.data.error });
+    }
+  } else {
+    dispatch({ type: 'add_error', payload: 'No data acess token available' });
+  }
+};
+
 const uploadStartegy = dispatch => async (strategy) => {
   const token = await getToken();
   if (token) {
@@ -87,9 +122,10 @@ const uploadStartegy = dispatch => async (strategy) => {
       let config = {
         headers: { Authorization: `Bearer ${token}` }
       };
+
       let response = await authApi.post(`/uploadstrategy/`, {strategy}, config);
-      console.log(response);
-      //dispatch({ type: 'get_instructionlist', payload: response.data });
+      
+      dispatch({ type: 'set_upload_result', payload: response.data });
     } catch(err) {
       dispatch({ type: 'add_error', payload: err.data.error });
     }
@@ -185,9 +221,8 @@ const getComparisonChartData = dispatch => async (startegies, timePeriod) =>{
             headers: { Authorization: `Bearer ${token}` }
           };
 
-          console.log(`/tickerchartdata/${startegies}/${timePeriod}`);
           let response = await authApi.get(`/tickerchartdata/${startegies}/${timePeriod}`, config);
-          console.log(response.data);
+          
           dispatch({ type: 'get_compchartdata', payload: response.data });
         } catch(err) {
           dispatch({ type: 'add_error', payload: err.data.error });
@@ -236,8 +271,8 @@ export const { Context, Provider } = createDataContext(
   strategyReducer,
   {listStrategies, getStrategy, getInstructionList, getInstructionDetail, getTickerData, 
     getComparisonTickerData, getComparisonData, getComparisonChartData, toggleCompTickerList, 
-    setHighightedItem, clearErrorMessage, setTimePeriod, uploadStartegy},
+    setHighightedItem, clearErrorMessage, setTimePeriod, previewStrategy, uploadStartegy},
   { strategies: [], strategy : { analytics: []}, tickerData : [], comparisonTickerData : [], 
   comparisonData : [], comparisonChartData : [], compTickerList: [], instructions : [], 
-  instructionDetail : [], highightedItem : '', errorMessage: '', timePeriod : 2 }
+  instructionDetail : [], previewData : [], highightedItem : '', errorMessage: '', timePeriod : 2 }
 );

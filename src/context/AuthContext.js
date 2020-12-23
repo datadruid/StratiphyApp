@@ -3,7 +3,7 @@ import createDataContext from './createDataContext';
 import authApi from '../api/auth';
 import { navigate } from '../navigationRef';
 import { getToken, setToken, removeToken, setRefreshToken, removeRefreshToken, getAuth0Token, setAuth0Token, removeAuth0Token } from '../storage/tokenStorage'
-import { getFirstName, setFirstName, removeFirstName, getLastName, setLastName, removeLastName} from '../storage/userStorage'
+import { getFirstName, setFirstName, removeFirstName, getLastName, setLastName, removeLastName, getEmail, setEmail, removeEmail} from '../storage/userStorage'
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -65,12 +65,13 @@ const updateEmailPasswordUser = dispatch => async (email, password, hasName) => 
 const updateGoogleUser = dispatch => async (googleCode, firstName, lastName) => {
   const token = await getToken();
   const auth_id = await getAuth0Token(auth_id);
+  const email = getEmail();
   if (token) {
     try {
       if(googleCode){
         const linkResponse = await authApi.post('/linkusergoogle', { code: googleCode }, {headers: { Authorization: `Bearer ${token}` }});
       }
-      const response = await authApi.post('/updateuser', { firstName, lastName, auth_id }, {headers: { Authorization: `Bearer ${token}` }});
+      const response = await authApi.post('/updateuser', { firstName, lastName, email, auth_id }, {headers: { Authorization: `Bearer ${token}` }});
       //await removeAuth0Token();
       //await removeName();
     } catch (err){
@@ -91,10 +92,14 @@ const verifyCode = dispatch => async ({ code, email, auth_id, isApproved, hasNam
       });
       return;
     }
+
     let response = await authApi.post('/verifycode', { email, code });
+
     await setRefreshToken(response.data.refresh_token);
     await setToken(response.data.id_token);
     await setAuth0Token(auth_id);
+    await setEmail(email);
+    
     dispatch({
       type: 'signup',
       payload: response.data.id_token
@@ -104,10 +109,13 @@ const verifyCode = dispatch => async ({ code, email, auth_id, isApproved, hasNam
     } else if(!hasName) {
       navigate('AddName');
     } else {
+      response = await authApi.post('/updateemail', { email }, {headers: { Authorization: `Bearer ${response.data.id_token}` }});
       navigate('StrategyList');
     }
   
   } catch (err) {
+    console.log('error');
+    console.log(err.response.data.error);
     dispatch({
       type: 'add_error',
       payload: err.response.data.error
@@ -135,10 +143,11 @@ const addname = dispatch => async ({ firstName, lastName }) => {
     }
     await setFirstName(firstName);
     await setLastName(lastName);
+    const email = getEmail();
     const token = await getToken();
     const auth_id = await getAuth0Token();
     if (token) {
-        const response = await authApi.post('/updateuser', { firstName, lastName, auth_id }, {headers: { Authorization: `Bearer ${token}` }});
+        const response = await authApi.post('/updateuser', { firstName, lastName, email, auth_id }, {headers: { Authorization: `Bearer ${token}` }});
         //await removeAuth0Token();
         //await removeName();
       } 

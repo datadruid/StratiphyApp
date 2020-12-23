@@ -8,7 +8,10 @@ const cache = setupCache({
     if (method !== 'get') {
       await cfg.store.removeItem(cfg.uuid)
     }
-  },
+    if (req.clearCacheEntry) {
+      await cfg.store.removeItem(cfg.uuid)
+    }
+  }
 })
 
 export default axios.create({

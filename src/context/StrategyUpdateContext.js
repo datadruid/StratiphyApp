@@ -44,7 +44,7 @@ const strategyUpdateReducer = (state, action) => {
             return { ...state, 
                 strategy: {
                     ...state.strategy,
-                    lastRun: action.payload }
+                    dateModified: action.payload }
                 };
         case 'set_status':
             return { ...state, 
@@ -113,6 +113,8 @@ const strategyUpdateReducer = (state, action) => {
 };
 
 const setStrategy =  dispatch => async (strategy) => {
+    // delete strategy.analytics;
+    // delete strategy.latestActions;
     dispatch({ type: 'set_strategy', payload: strategy });
 };
 

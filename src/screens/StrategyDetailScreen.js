@@ -10,7 +10,7 @@ import IconStack from '../components/strategy/IconStack';
 import StrategyTab from '../components/strategy/StrategyTab';
 import AnalysisTab from '../components/strategy/AnalysisTab';
 import StrategyDetailChart from '../components/strategy/StrategyDetailChart';
-import { getChartEndDate, getChartStartDate } from '../components/modules/UiHelper';
+import {getChartAxisLabels, getDateFilterButtonLabels} from '../components/modules/UiHelper'
 
 const mastercolour = '#4CD697';
 
@@ -20,7 +20,7 @@ const currencyFormat = {
 };
 
 const StrategySettingScreen = ({ navigation }) => {
-  const buttons = ['1M', '3M', '6M', '1Y', 'All']
+  const buttons = getDateFilterButtonLabels();
   const item = navigation.getParam('item');
   const [isStartegyTab, setIsStartegyTab] = useState(true);
   const [isAnalysisTab, setIsAnalysisTab] = useState(false);

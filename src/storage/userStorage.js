@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
-const FIRST_NAME_KEY = 'firstnamekey'
-const LAST_NAME_KEY = 'lasttnamekey'
+const FIRST_NAME_KEY = 'firstnamekey';
+const LAST_NAME_KEY = 'lasttnamekey';
+const EMAIL_KEY = 'emailkey';
 
 export async function getLastName() {
     const token = await AsyncStorage.getItem(LAST_NAME_KEY);
@@ -27,4 +28,17 @@ export async function setFirstName(name) {
 
 export async function removeFirstName() {
     await AsyncStorage.removeItem(FIRST_NAME_KEY);
+}
+
+export async function getEmail() {
+    const token = await AsyncStorage.getItem(EMAIL_KEY);
+    return token;
+}
+
+export async function setEmail(email) {
+    await AsyncStorage.setItem(EMAIL_KEY, email);
+}
+
+export async function removeEmail() {
+    await AsyncStorage.removeItem(EMAIL_KEY);
 }

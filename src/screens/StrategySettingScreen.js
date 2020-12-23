@@ -14,8 +14,10 @@ import Classes from '../components/strategy/Classes';
 import MarketCaps from '../components/strategy/MarketCaps';
 import Sectors from '../components/strategy/Sectors';
 import Tickers from '../components/strategy/Tickers';
+import Preview from '../components/strategy/Preview';
 import { Context as UpdateContext } from '../context/StrategyUpdateContext';
 import { Context as StrategyContext } from '../context/StrategyContext';
+import moment from 'moment';
 
 const chartConfig = {
   backgroundColor: "",
@@ -32,8 +34,8 @@ const chartConfig = {
 const StrategySettingScreen = ({ navigation }) => {
   const item = navigation.getParam('item');
   const [visible, setVisible] = useState(false);
-  const { state, setStrategy, updateName, updateDescription } = useContext(UpdateContext);
-  const { uploadStartegy } = useContext(StrategyContext);
+  const { state, setStrategy, updateName, updateDescription, updateDateModified } = useContext(UpdateContext);
+  const { previewStrategy, uploadStartegy } = useContext(StrategyContext);
     useEffect(() => {
       setStrategy(item);
   }, []); 
@@ -43,6 +45,7 @@ const StrategySettingScreen = ({ navigation }) => {
   };
 
   const openPreview = () => {
+    previewStrategy(state.strategy);
     setVisible(true);
   };
 
@@ -51,6 +54,7 @@ const StrategySettingScreen = ({ navigation }) => {
   };
 
   const saveStrategy = () => {
+    //updateDateModified(moment());
     uploadStartegy(state.strategy);
     setVisible(false);
   };
@@ -119,15 +123,8 @@ const StrategySettingScreen = ({ navigation }) => {
         
           <Modal fullScreen={false}
           style={styles.overlay} isVisible={visible} onBackdropPress={closePreview}>
-            <View style={styles.overlaycontent}>
-            <View style={styles.buttoncontainer}>
-      <Button buttonStyle={styles.whitebutton}
-          onPress={saveStrategy}
-          titleStyle={styles.whitebuttontitle}
-          title='Proceed with strategy'
-          type='solid'/>
-        </View>
-            </View>
+            <Preview strategy={state.strategy} saveStrategy={saveStrategy} closeWindow={closePreview}/>
+            
           </Modal>
 
         </ScrollView>

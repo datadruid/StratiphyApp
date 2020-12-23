@@ -8,7 +8,7 @@ const screenwidth = Dimensions.get("window").width;
 
 const StrategyDetailChart = ({ datasets, mastercolour, linecolour, isAnalysisTab }) => {
   const { state, clearErrorMessage } = useContext(StrategyContext);
-  
+
    let chartset = [];
    datasets.forEach((chart) => {
 
