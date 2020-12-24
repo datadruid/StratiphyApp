@@ -189,15 +189,17 @@ const getTickerData = dispatch => async (startegies, timePeriod) =>{
   }
 };
 
-const getComparisonTickerData = dispatch => async (startegies, timePeriod) =>{
+const getComparisonTickerData = dispatch => async (strategyId, tickers, timePeriod) =>{
   const token = await getToken();
+  console.log('hit');
   if (token) {
       try{
         let config = {
           headers: { Authorization: `Bearer ${token}` }
         };
-        if(startegies.length > 0) {
-        let response = await authApi.get(`/tickerchartdata/${startegies}/${timePeriod}`, config);
+        if(tickers.length > 0) {
+          console.log(`/tickerchartdata/${strategyId}/${tickers}/${timePeriod}`);
+        let response = await authApi.get(`/tickerchartdata/${strategyId}/${tickers}/${timePeriod}`, config);
         dispatch({ type: 'get_comptickerdata', payload: response.data });
         } else {
           dispatch({ type: 'get_comptickerdata', payload: [] });

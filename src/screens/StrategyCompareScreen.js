@@ -31,7 +31,7 @@ const StrategyCompareScreen = ({ navigation }) => {
     const dt = new Date();
     const chartDate = getChartEndDate();
 
-    getComparisonTickerData(state.compTickerList.join(','), state.timePeriod);
+    getComparisonTickerData(state.strategy._id, state.compTickerList.join(','), state.timePeriod);
     getComparisonChartData(state.compTickerList.join(','), state.timePeriod);
     navigation.goBack();
   };

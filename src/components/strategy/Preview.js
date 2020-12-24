@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Button, ButtonGroup } from 'react-native-elements';
 import { Context as StrategyContext } from '../../context/StrategyContext';
 import AIcon from 'react-native-vector-icons/dist/FontAwesome';
@@ -32,6 +32,7 @@ const Preview = ({ strategy, saveStrategy, closeWindow }) => {
         plusminus = '+';
     }
     return (
+        <ScrollView>
         <View style={styles.overlaycontent}>
             <View style={styles.content}>
                 <View style={styles.iconcontainer}>
@@ -103,7 +104,7 @@ const Preview = ({ strategy, saveStrategy, closeWindow }) => {
                 </View>
             </View>
         </View>
-
+        </ScrollView>
     );
 };
 
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     content: {
         flexDirection: 'column',
         justifyContent: 'space-between',
-        marginBottom: 15,
+        marginBottom: 5,
     },
     chartcontent:{
         flexDirection: 'column',

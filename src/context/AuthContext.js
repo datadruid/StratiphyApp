@@ -65,12 +65,13 @@ const updateEmailPasswordUser = dispatch => async (email, password, hasName) => 
 const updateGoogleUser = dispatch => async (googleCode, firstName, lastName) => {
   const token = await getToken();
   const auth_id = await getAuth0Token(auth_id);
-  const email = getEmail();
+  const email = await getEmail();
   if (token) {
     try {
       if(googleCode){
         const linkResponse = await authApi.post('/linkusergoogle', { code: googleCode }, {headers: { Authorization: `Bearer ${token}` }});
       }
+      
       const response = await authApi.post('/updateuser', { firstName, lastName, email, auth_id }, {headers: { Authorization: `Bearer ${token}` }});
       //await removeAuth0Token();
       //await removeName();
@@ -84,6 +85,7 @@ const updateGoogleUser = dispatch => async (googleCode, firstName, lastName) => 
 
 const verifyCode = dispatch => async ({ code, email, auth_id, isApproved, hasName }) => {
   const token = await getToken();
+
   try {
     if (!code) {
       dispatch({
@@ -143,9 +145,10 @@ const addname = dispatch => async ({ firstName, lastName }) => {
     }
     await setFirstName(firstName);
     await setLastName(lastName);
-    const email = getEmail();
+    const email = await getEmail();
     const token = await getToken();
     const auth_id = await getAuth0Token();
+
     if (token) {
         const response = await authApi.post('/updateuser', { firstName, lastName, email, auth_id }, {headers: { Authorization: `Bearer ${token}` }});
         //await removeAuth0Token();

@@ -39,7 +39,7 @@ const StrategySettingScreen = ({ navigation }) => {
     }).join(",");
     if(tickers){
       getTickerData(tickers, index);
-      getComparisonTickerData(state.compTickerList.join(','), state.timePeriod);
+      getComparisonTickerData(state.strategy._id, state.compTickerList.join(','), state.timePeriod);
     }
   };
   let formattedStratValue = 0;

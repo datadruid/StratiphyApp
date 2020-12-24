@@ -31,8 +31,8 @@ export async function removeFirstName() {
 }
 
 export async function getEmail() {
-    const token = await AsyncStorage.getItem(EMAIL_KEY);
-    return token;
+    const email = await AsyncStorage.getItem(EMAIL_KEY);
+    return email;
 }
 
 export async function setEmail(email) {
