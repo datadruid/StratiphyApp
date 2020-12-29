@@ -25,6 +25,8 @@ const strategyReducer = (state, action) => {
       return { ...state, errorMessage: '', comparisonChartData: action.payload }
     case 'get_comptickerdata':
       return { ...state, errorMessage: '', comparisonTickerData: action.payload };
+    case 'get_comptabdata':
+      return { ...state, errorMessage: '', comparisonTabData: action.payload };
     case 'toggle_compticker_list':
       if (state.compTickerList.indexOf(action.payload) !== -1) {
         return { ...state, errorMessage: '', compTickerList: state.compTickerList.filter(item => item !== action.payload) }
@@ -170,7 +172,7 @@ const getInstructionDetail = dispatch => async (strategyID, date) => {
   }
 };
 
-const getTickerData = dispatch => async (startegies, timePeriod) =>{
+const getTickerData = dispatch => async (strategyId, startegies, timePeriod) =>{
   const token = await getToken();
   if (token) {
       try{
@@ -178,8 +180,8 @@ const getTickerData = dispatch => async (startegies, timePeriod) =>{
           headers: { Authorization: `Bearer ${token}` }
         };
 
-        let response = await authApi.get(`/tickerchartdata/${startegies}/${timePeriod}`, config);
-        
+        let response = await authApi.get(`/tickerchartdata/${strategyId}/${startegies}/${timePeriod}`, config);
+
         dispatch({ type: 'get_tickerdata', payload: response.data });
       } catch(err) {
         dispatch({ type: 'add_error', payload: err.data.error });
@@ -198,11 +200,16 @@ const getComparisonTickerData = dispatch => async (strategyId, tickers, timePeri
           headers: { Authorization: `Bearer ${token}` }
         };
         if(tickers.length > 0) {
-          console.log(`/tickerchartdata/${strategyId}/${tickers}/${timePeriod}`);
-        let response = await authApi.get(`/tickerchartdata/${strategyId}/${tickers}/${timePeriod}`, config);
-        dispatch({ type: 'get_comptickerdata', payload: response.data });
+          
+          let response = await authApi.get(`/tickerchartdata/${strategyId}/${tickers}/${timePeriod}`, config);
+          dispatch({ type: 'get_comptickerdata', payload: response.data });
+          
+          console.log(`/tickercomparisondata/${strategyId}/${tickers}/${timePeriod}`);
+          response = await authApi.get(`/tickercomparisondata/${strategyId}/${tickers}/${timePeriod}`, config);
+          dispatch({ type: 'get_comptabdata', payload: response.data });
         } else {
           dispatch({ type: 'get_comptickerdata', payload: [] });
+          dispatch({ type: 'get_comptabdata', payload: { Volatility: {}, SharpeRatio : {}, VAR: {}, PNL : {}, Yield: {} } });
         }
 
       } catch(err) {
@@ -213,7 +220,7 @@ const getComparisonTickerData = dispatch => async (strategyId, tickers, timePeri
   }
 };
 
-const getComparisonChartData = dispatch => async (startegies, timePeriod) =>{
+const getComparisonChartData = dispatch => async (strategyId, startegies, timePeriod) =>{
   if(startegies)
   {
     const token = await getToken();
@@ -223,7 +230,7 @@ const getComparisonChartData = dispatch => async (startegies, timePeriod) =>{
             headers: { Authorization: `Bearer ${token}` }
           };
 
-          let response = await authApi.get(`/tickerchartdata/${startegies}/${timePeriod}`, config);
+          let response = await authApi.get(`/tickerchartdata/${strategyId}/${startegies}/${timePeriod}`, config);
           
           dispatch({ type: 'get_compchartdata', payload: response.data });
         } catch(err) {
@@ -275,6 +282,7 @@ export const { Context, Provider } = createDataContext(
     getComparisonTickerData, getComparisonData, getComparisonChartData, toggleCompTickerList, 
     setHighightedItem, clearErrorMessage, setTimePeriod, previewStrategy, uploadStartegy},
   { strategies: [], strategy : { analytics: []}, tickerData : [], comparisonTickerData : [], 
+  comparisonTabData: { Volatility: {}, SharpeRatio : {}, VAR: {}, PNL : {}, Yield: {}},
   comparisonData : [], comparisonChartData : [], compTickerList: [], instructions : [], 
   instructionDetail : [], previewData : [], highightedItem : '', errorMessage: '', timePeriod : 2 }
 );

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Context as StrategyContext } from '../../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import * as RNLocalize from "react-native-localize";
-import getSymbolFromCurrency from 'currency-symbol-map';
-import {getAvatarColor, getChartValueFilter} from '../modules/UiHelper';
+import {getAvatarColor, getComparisonButtonLabelForIndex, formatComparisonValue} from '../modules/UiHelper';
 import { LineChart } from 'react-native-chart-kit';
 import moment from 'moment';
 
@@ -15,8 +15,9 @@ const currencyFormat = {
 
   
 
-const Comparisons = ({ navigation, strategy }) => {
-    
+const Comparisons = ({ navigation, strategy, selectedIndex }) => {
+    const { state } = useContext(StrategyContext);
+    const displayComparison = getComparisonButtonLabelForIndex(selectedIndex);
     const actions = [strategy];
     let lastDate = '';
     const timePeriod = 3;  
@@ -28,10 +29,7 @@ const Comparisons = ({ navigation, strategy }) => {
                 {
                     actions.map(item => {
                         key = item.strategyName;
-                        let formattedStratValue = 0;
-                        if (item.endValue) {
-                            formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${item.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
-                        }
+                        let formattedStratValue = '';
                         let linecolour = 'rgb(227, 63, 100)';
                         let plusminus = ''
                         if (item.performancePct > 0) {
@@ -39,6 +37,10 @@ const Comparisons = ({ navigation, strategy }) => {
                             plusminus = '+';
                         }
 
+                        const dispValue = state.comparisonTabData[displayComparison].Strategy;
+                        if(dispValue) {
+                            formattedStratValue = formatComparisonValue(state.comparisonTabData[displayComparison].unit, dispValue, currencyFormat);
+                        }
                         let slimList = [];
                         if (strategy.analytics?.length > 0)
                         {
@@ -120,9 +122,9 @@ const Comparisons = ({ navigation, strategy }) => {
                                         <Text style={[styles.tickertext, styles.valuetext]}>
                                             {formattedStratValue}
                                         </Text>
-                                        <Text style={[styles.nametext, styles.percenttext], {color: linecolour }}>
+                                        {/* <Text style={[styles.nametext, styles.percenttext], {color: linecolour }}>
                                          {plusminus}{item.performancePct}%
-                                        </Text>
+                                        </Text> */}
                                     </View>
                                 </View>
                             </View> 

@@ -10,7 +10,7 @@ const StrategyTab = ({ navigation, strategy }) => {
     if(state.strategy?.latestActions?.actions)
     {
         useEffect(() => {
-            getTickerData(strategy?.latestActions?.actions.filter(x => x.Action === 'Hold').map(function(elem){
+            getTickerData(strategy._id, strategy?.latestActions?.actions.filter(x => x.Action === 'Hold').map(function(elem){
                 return elem.Ticker;
             }).join(","), state.timePeriod);
         }, []);

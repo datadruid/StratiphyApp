@@ -4,9 +4,10 @@ import { Context as StrategyContext } from '../../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
-import {getAvatarColor, getChartValueFilter} from '../modules/UiHelper';
+import {getAvatarColor, getComparisonButtonLabelForIndex, formatComparisonValue} from '../modules/UiHelper';
 import { LineChart } from 'react-native-chart-kit';
 import moment from 'moment';
+import { Image } from 'react-native';
 
 const langTag = RNLocalize.getLocales()[0].languageTag;
 const currencyFormat = {
@@ -14,8 +15,9 @@ const currencyFormat = {
     currency: langTag
   };
 
-const ComparisonTicker = ({navigation}) => {
+const ComparisonTicker = ({navigation, selectedIndex}) => {
     const { state, setHighightedItem, clearErrorMessage } = useContext(StrategyContext);
+    const displayComparison = getComparisonButtonLabelForIndex(selectedIndex);
 
     const onPress = async (item) => {
         setHighightedItem(item);
@@ -27,12 +29,15 @@ const ComparisonTicker = ({navigation}) => {
                 {
                     state.comparisonTickerData.map(item => {
                         key = item.ticker;
+                        let formattedStratValue = '';
                         let linecolour = 'rgb(227, 63, 100)';
                         if (item.performancePct > 0) {
                             linecolour = 'rgb(74, 250, 154)';
                         }
-
-                        let formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${item.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
+                        const dispValue = state.comparisonTabData[displayComparison][key];
+                        if(dispValue) {
+                            formattedStratValue = formatComparisonValue(state.comparisonTabData[displayComparison].unit, dispValue, currencyFormat);
+                        }
                         let isSelected = state.highightedItem.includes(item.ticker);
 
                         let slimList = [];
@@ -109,9 +114,9 @@ const ComparisonTicker = ({navigation}) => {
                                         <Text style={[styles.tickertext, styles.valuetext]}>
                                         {formattedStratValue}
                                         </Text>
-                                        <Text style={[styles.nametext, styles.percenttext], {color: linecolour }}>
+                                        {/* <Text style={[styles.nametext, styles.percenttext], {color: linecolour }}>
                                          {item.performancePct}%
-                                        </Text>
+                                        </Text> */}
                                     </View>
                                 </View>
                             </View> 

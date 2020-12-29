@@ -1,6 +1,8 @@
 import moment from 'moment';
+import * as RNLocalize from "react-native-localize";
+import getSymbolFromCurrency from 'currency-symbol-map';
 
-const defaultStart = '2018-01-01'; 
+const defaultStart = '2018-01-01';
 
 export function getAvatarColor(str) {
     var hash = 0;
@@ -27,8 +29,37 @@ export function getDateFilterButtonLabels() {
     return ['1M', '3M', '6M', '1Y', 'All'];
 }
 
+export function getComparisonButtonLabels() {
+    return ['Ratio', 'Yields', 'P&L', 'Volatility', 'VAR'];
+}
+
+export function getComparisonButtonLabelForIndex(index) {
+    switch (index) {
+        case 0:
+            return 'SharpeRatio';
+        case 1:
+            return 'Yield';
+        case 2:
+            return 'PNL';
+        case 3:
+            return 'Volatility';
+        case 4:
+            return 'VAR';
+    }
+}
+
+export function formatComparisonValue(unit, value, currencyFormat) {
+    switch(unit)
+    {
+        case 'ccy':
+            return `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${value.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
+        case 'percent':
+            return `${value}%`;
+    }
+}
+
 export function getChartStartDate(periodIndex) {
-    
+
     switch (periodIndex) {
         case 0: //1M
             return moment().subtract(30, 'day').format("YYYY-MM-DDT00:00:00");
@@ -74,31 +105,26 @@ export function getChartAxisLabels(periodIndex, arraylength) {
             break;
     }
     baseDate = moment().subtract(arraylength, 'day');
-    
+
     let year = baseDate.year();
     const resultArray = [];
-    while (baseDate < moment().subtract(1, 'day'))
-    {
-        if(counter % interval === 0)
-        {
-            if(year !== baseDate.year())
-            {
+    while (baseDate < moment().subtract(1, 'day')) {
+        if (counter % interval === 0) {
+            if (year !== baseDate.year()) {
                 resultArray.push(baseDate.format('YYYY'));
                 year = baseDate.year();
             }
-            else
-            {
+            else {
                 resultArray.push(baseDate.format(format));
             }
         }
-        else
-        {
+        else {
             resultArray.push('');
         }
         baseDate.add(1, 'day');
         counter++;
     }
-    
+
     return resultArray;
 }
 

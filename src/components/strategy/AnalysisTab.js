@@ -5,9 +5,10 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { Context as StrategyContext } from '../../context/StrategyContext';
 import Comparisons from './Comparisons';
 import ComparisonTicker from './ComparisonTicker';
+import {getComparisonButtonLabels} from '../modules/UiHelper'
 
 const AnalysisTab = ({ navigation, strategy }) => {
-  const buttons = ['Ratio', 'Yields', 'P&L', 'Volatility', 'VAR']
+  const buttons = getComparisonButtonLabels();
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   return (
@@ -39,8 +40,8 @@ const AnalysisTab = ({ navigation, strategy }) => {
         textStyle={styles.textstyle}
       />
               <View style={styles.comparisoncontainer}>
-                <Comparisons navigation={navigation} strategy={strategy} />
-                <ComparisonTicker navigation={navigation}/>   
+                <Comparisons navigation={navigation} strategy={strategy} selectedIndex={selectedIndex}/>
+                <ComparisonTicker navigation={navigation} selectedIndex={selectedIndex}/>   
             </View>
     </>
   )

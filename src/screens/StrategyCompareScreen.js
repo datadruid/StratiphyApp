@@ -32,7 +32,7 @@ const StrategyCompareScreen = ({ navigation }) => {
     const chartDate = getChartEndDate();
 
     getComparisonTickerData(state.strategy._id, state.compTickerList.join(','), state.timePeriod);
-    getComparisonChartData(state.compTickerList.join(','), state.timePeriod);
+    getComparisonChartData(state.strategy._id, state.compTickerList.join(','), state.timePeriod);
     navigation.goBack();
   };
 

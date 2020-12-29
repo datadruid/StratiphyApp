@@ -33,12 +33,12 @@ const StrategySettingScreen = ({ navigation }) => {
   const changeTimePeriod = async (index) =>{
     await setTimePeriod(index);
     getStrategy(item._id, index);
-    getComparisonChartData(state.compTickerList.join(','), index);
+    getComparisonChartData(item._id, state.compTickerList.join(','), index);
     let tickers = state.strategy?.latestActions?.actions.filter(x => x.Action === 'Hold').map(function(elem){
       return elem.Ticker;
     }).join(",");
     if(tickers){
-      getTickerData(tickers, index);
+      getTickerData(item._id, tickers, index);
       getComparisonTickerData(state.strategy._id, state.compTickerList.join(','), state.timePeriod);
     }
   };

@@ -274,14 +274,14 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     margin: 5
   },
+  buttontitle: {
+    marginHorizontal: 20,
+    fontWeight: 'bold'
+  },
   whitebutton: {
     backgroundColor: 'white',
     borderRadius: 12,
     margin: 5
-  },
-  buttontitle: {
-    marginHorizontal: 20,
-    fontWeight: 'bold'
   },
   whitebuttontitle: {
     marginHorizontal: 20,
