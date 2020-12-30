@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { Dimensions } from 'react-native'
 import { StatusBar, View, StyleSheet, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-import { Button, } from 'react-native-elements';
 import HeaderBack from '../components/strategywizard/HeaderBack';
 import * as Progress from 'react-native-progress';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -9,31 +8,19 @@ import { colors } from '../components/modules/Colors';
 
 const windowWidth = Dimensions.get('window').width;
 const StrategyCreateScreen = ({ navigation }) => {
-  const [index, setIndex] = useState(0);
 
-  const onNextButtonPress = () => {
-    if(index === 3) {
-      navigation.navigate('StrategyWizard', {stage: 'strategyType'});
+  const onNextButtonPress = (id) => {
+    if(id === 3) {
+      navigation.navigate('StrategyWizard', { pageNo: 1});
     } else {
-      let id = index;
       navigation.navigate('StrategyTemplated', {index: id});
     }
-  }
+  };
 
-  onRiskCardPress = (id) => {
-    console.log('button pressed');
-    setIndex(id);
-  }
-
-  console.log(index);
   const renderCard = (id, image, title, description) => {
-    let selectedStyle = {};
-    if(id == index)
-    {
-      selectedStyle = styles.selectedcardinfo;
-    }
+
     return (
-    <TouchableOpacity style={[styles.cardInfo, selectedStyle]} onPress={() => onRiskCardPress(id)}>
+    <TouchableOpacity style={styles.cardInfo} onPress={() => onNextButtonPress(id)}>
       <View style={styles.cardItems}>
         <View style={styles.tipLeftContainer} >
           <Image source={image} resizeMode='contain' style={styles.tipImage} />
@@ -52,14 +39,11 @@ const StrategyCreateScreen = ({ navigation }) => {
       {Platform.OS === 'ios' ? <StatusBar translucent barStyle="dark-content" /> :
         <StatusBar backgroundColor="white" barStyle="dark-content" />
       }
-      <View style={{ height: 88 }}>
-        {/* <HeaderBack text={'1/7'} navigation={navigation} /> */}
+      <View style={{ height: 48 }}>
       </View>
-      <View style={styles.progressContainer}>
-        <Progress.Bar progress={0} width={windowWidth - (40)} color={colors.yellowTheme} unfilledColor={colors.silver} borderWidth={0} />
-      </View>
+      
       <View style={styles.horizontalTopContainer}>
-        <Text style={styles.titleStyle}> Choose your Strategies</Text>
+        <Text style={styles.titleStyle}>Choose your Strategies</Text>
         <FontAwesome style={styles.infoicon} size={20} name='info-circle' />
       </View>
       <Text style={styles.paragraph} numberOfLines={3}>{'Choose a template based strategy based on rist appetite or create a custom stragedy from scratch'}</Text>
@@ -71,13 +55,6 @@ const StrategyCreateScreen = ({ navigation }) => {
         {renderCard(2, require('../img/icons/icTinder.png'), 'High Risk', 'Potentially high returns but with high risk')}
         <Text style={styles.orText}>{'OR'}</Text>
         {renderCard(3, require('../img/icons/icPlayGreen.png'), 'Build Your Own', 'create your own stargedy using stragedy builder')}
-        <View style={styles.buttoncontainer}>
-          <Button buttonStyle={styles.button}
-            onPress={onNextButtonPress}
-            titleStyle={styles.buttontitle}
-            title='Next'
-            type='solid' />
-        </View>
       </ScrollView>
     </View>
   );
@@ -111,7 +88,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: (19),
     marginTop: (20),
-    marginBottom: (1),
+    marginBottom: 5,
     alignItems: 'center'
 
   },
@@ -119,7 +96,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: 'black',
-
+    marginStart: 3
   },
   tipLeftContainer: { width: '20%', height: '100%' },
   tipImage: {

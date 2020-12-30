@@ -8,8 +8,6 @@ import { colors } from '../components/modules/Colors';
 
 const StrategyTemplatedScreen = ({ navigation, index }) => {
 
- const windowWidth = Dimensions.get('window').width;
-
  onCardPress = () => {
   };
 
@@ -44,7 +42,7 @@ const StrategyTemplatedScreen = ({ navigation, index }) => {
       {Platform.OS === 'ios' ? <StatusBar translucent barStyle="dark-content" /> :
         <StatusBar backgroundColor="white" barStyle="dark-content" />
       }
-      <HeaderBack text={''} navigation={navigation} />
+      <HeaderBack text={''} navigation={navigation} onPress={() => navigation.goBack()}/>
 
       <Text style={styles.paragraph} numberOfLines={3}>{'Your selection'}</Text>
       <View style={styles.horizontalTopContainer}>

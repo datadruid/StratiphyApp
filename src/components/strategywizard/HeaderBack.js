@@ -3,11 +3,11 @@ import { SafeAreaView, Text, View, TouchableOpacity, StyleSheet } from 'react-na
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { colors } from '../modules/Colors';
 
-const HeaderBack = ({ text, navigation }) => {
+const HeaderBack = ({ text, navigation, onPress }) => {
     return (
         <SafeAreaView style={styles.mainContainer}>
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignContent: 'center' }}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={() => onPress()}>
                     <View style={styles.textcontainer}>
                         <Icon style={styles.backicon} size={40} name='long-arrow-left' />
                     </View>
