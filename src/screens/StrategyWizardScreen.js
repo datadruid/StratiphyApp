@@ -14,6 +14,7 @@ import Volatility from '../components/strategywizard/Volatility';
 import Investment from '../components/strategywizard/Investment';
 import SetIcon from '../components/strategywizard/SetIcon';
 import NameStratgey from '../components/strategywizard/NameStrategy';
+import BackTest from '../components/strategywizard/BackTest';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -60,6 +61,11 @@ const StrategyWizardScreen = ({ navigation }) => {
     setPageNo(pageNo +1);
   };
 
+  const backtestSelected = (settings)=> {
+    console.log(settings);
+    setPageNo(pageNo +1);
+  };
+
   const onBackPress = () => {
     if(pageNo > 1)
     {
@@ -94,7 +100,7 @@ const StrategyWizardScreen = ({ navigation }) => {
       
       { pageNo === 5 ? <Volatility navigation={navigation} onSelected={volatilitySelected} /> : null }
 
-      { pageNo === 6 ? <Investment navigation={navigation} onSelected={investmentSelected} /> : null }
+      { pageNo === 6 ? <BackTest navigation={navigation} onSelected={backtestSelected} /> : null }
 
       { pageNo === 7 ? <SetIcon navigation={navigation} onSelected={iconSelected} /> : null }
 

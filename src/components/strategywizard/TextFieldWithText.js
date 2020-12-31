@@ -1,18 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, TextInput, Text } from 'react-native';
 import { colors } from '../modules/Colors';
-import * as RNLocalize from "react-native-localize";
-import getSymbolFromCurrency from 'currency-symbol-map';
-const currencyFormat = {
-  style: "currency",
-  currency: RNLocalize.getLocales()[0].languageTag
-};
 
-const TextFieldWithText = ({ placeholder, secureTextEntry, value, onChangeText, rightText, style }) => {
-
+const TextFieldWithText = ({ placeholder, secureTextEntry, value, onChangeText, rightText, style, preSymbol, postSymbol }) => {
+  
   return (
     <View style={[styles.mainView, style]}>
-      <Text style={styles.currencySymbol}>{getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}</Text>
+      <Text style={styles.preSymbol}>{preSymbol}</Text>
     <TextInput
       placeholderTextColor="black"
       placeholder={placeholder}
@@ -20,7 +14,9 @@ const TextFieldWithText = ({ placeholder, secureTextEntry, value, onChangeText, 
       secureTextEntry={secureTextEntry}
       onChangeText={onChangeText}
       value={value}
+      keyboardType='decimal-pad'
     />
+    <Text style={styles.postSymbol}>{postSymbol}</Text>
     <View style={styles.rightContainer}>
       <Text  numberOfLines={1} style={styles.titleShow}>{rightText}</Text>
     </View>
@@ -46,25 +42,27 @@ const styles = StyleSheet.create({
       inputView: {
         // ...Fonts.style.medium,
         height: (48),
-        width: '60%',
         color: 'black',
         fontWeight: 'bold',
-        paddingLeft: (5),
+        paddingLeft: 0,
+        textAlign: 'right',
       },
       titleShow: {
     
         // ...Fonts.style(Fonts.type.base, 12, 'normal'),
         color: colors.coolGrey,
-        marginRight: (50),
+        marginRight: 10,
         alignSelf: 'flex-end',
       },
       rightContainer: { 
-        width: '50%', 
-      alignItems: 'flex-start',
-      marginLeft:-20 
+        flex:1, 
+      alignItems: 'flex-end',
     },
-    currencySymbol:{
+    preSymbol:{
       marginLeft: (20),
+    },
+    postSymbol: {
+      textAlign:'left'
     }
 });
 

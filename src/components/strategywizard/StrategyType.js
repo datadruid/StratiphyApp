@@ -4,13 +4,18 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../modules/Colors';
 
 const StrategyType = ({ navigation, onSelected }) => {
-    const [showHideHeader, setShowHideHeader] = useState(true);
+    const typeSelected = (item) => {
+        onSelected(item);
+    };
+
     const typeInfo =() => {
 
     };
     renderItem = ({ item }) => {
+        if(item.id > -1)
+        {
         return (
-            <TouchableOpacity onPress={(item) => onSelected(item)}>
+            <TouchableOpacity onPress={(item) => typeSelected(item)}>
           <View style={[styles.listItem, { backgroundColor: item.backgroundColor }]}>
             <View style={styles.titleTop}>
               <View style={styles.leftContainer} >
@@ -31,17 +36,11 @@ const StrategyType = ({ navigation, onSelected }) => {
           </View >
           </TouchableOpacity>
         )
-      }
-
-    return (
-        <>
-            <View style={styles.horizontalTopContainer}>
-                <Text style={styles.titleStyle}>Choose strategy type</Text>
-                <FontAwesome style={styles.infoicontop} size={20} name='info-circle' />
-            </View>
-            <View style={styles.secondContainer}>
-                <Text style={styles.paragraph} numberOfLines={3}>{'Choose what type of strategy to build.'}</Text>
-                {showHideHeader ? <View style={styles.cardInfo}>
+        }
+        else
+        {
+            return (
+                <View style={styles.cardInfo}>
                     <View style={styles.tipContainer}>
                         <View style={styles.tipLeftContainer} >
                             <Image source={require('../../img/icons/icEyeCircle.png')} resizeMode='contain' style={styles.tipImage} />
@@ -53,7 +52,19 @@ const StrategyType = ({ navigation, onSelected }) => {
                   </Text>
                         </View>
                     </View>
-                </View> : null}
+                </View>
+            )
+        }
+      }
+
+    return (
+        <>
+            <View style={styles.horizontalTopContainer}>
+                <Text style={styles.titleStyle}>Choose strategy type</Text>
+                <FontAwesome style={styles.infoicontop} size={20} name='info-circle' />
+            </View>
+            <View style={styles.secondContainer}>
+            <Text style={styles.paragraph} numberOfLines={3}>{'Choose what type of strategy to build.'}</Text>
                 <FlatList
                     style={styles.listContainer}
                     data={data}
@@ -79,6 +90,10 @@ const styles = StyleSheet.create({
         marginRight: 5,
         marginTop: -10
     },
+    cardInfoSelected: {
+        borderWidth: 2,
+        borderColor: colors.yellowTheme,
+      },
     horizontalTopContainer: {
         flexDirection: 'row',
         width: '100%',
@@ -108,7 +123,7 @@ const styles = StyleSheet.create({
     },
     cardInfo: {
         width: '90%',
-        height: (97),
+        height: 97,
         alignSelf: 'center',
         backgroundColor: colors.white,
         borderRadius: 12,
@@ -222,11 +237,15 @@ const styles = StyleSheet.create({
 
 const data = [
     {
+        id: -1,
+    },
+    {
         id: 0,
         title: 'Momentum',
         short_desc: 'Invest in assets whose prices have risen the most, and sell those that have fallen the most.',
         backgroundImage: require('../../img/strategytypes/icMomentumChart.png'),
         backgroundColor: colors.lightishBlue,
+        selected : false,
         offset: { top: 0 }
     },
     {
@@ -235,6 +254,7 @@ const data = [
         short_desc: 'Invest in assets that are most undervalued,and sell those that are most overvalued.',
         backgroundImage: require('../../img/strategytypes/icMomentumValue.png'),
         backgroundColor: colors.lightPurple,
+        selected : false,
         top: { top: 0 }
     },
     {
@@ -243,6 +263,7 @@ const data = [
         short_desc: 'Invest in assets that are oversold, and sell assets that are overbought.,',
         backgroundImage: require('../../img/strategytypes/icStreghtChart.png'),
         backgroundColor: colors.blue,
+        selected : false,
         offset: { top: 25 }
     },
     {
@@ -251,6 +272,7 @@ const data = [
         short_desc: 'Invest in assets whose traded volume rises before its price does, and sell those whose traded volume falls before its price does.',
         backgroundImage: require('../../img/strategytypes/icStrenght2.png'),
         backgroundColor: '#8609ca',
+        selected : false,
         offset: { top: -15 }
     },
 ]

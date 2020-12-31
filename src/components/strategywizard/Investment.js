@@ -5,6 +5,12 @@ import { Button, } from 'react-native-elements';
 import TextFieldWithText from './TextFieldWithText';
 import { colors } from '../modules/Colors';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import * as RNLocalize from "react-native-localize";
+import getSymbolFromCurrency from 'currency-symbol-map';
+const currencyFormat = {
+  style: "currency",
+  currency: RNLocalize.getLocales()[0].languageTag
+};
 
 const Investment = ({ navigation, onSelected }) => {
     const [startingAmount, setStartingAmount] = useState('');
@@ -31,6 +37,7 @@ const Investment = ({ navigation, onSelected }) => {
             }}
             value={startingAmount}
             style={styles.input}
+            preSymbol={getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}
             placeholder={'10,000'}
             rightText={'Starting amount'}
           />
@@ -44,6 +51,7 @@ const Investment = ({ navigation, onSelected }) => {
             keyboardType="email-address"
             value={monthlyAmount}
             style={styles.input}
+            preSymbol={getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}
             placeholder={'0'}
             rightText={'Monthly contribution'}
           />

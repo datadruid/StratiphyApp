@@ -56,13 +56,13 @@ const Regions = ({ navigation, onSelected }) => {
   return (
     <>
       <View style={styles.horizontalTopContainer}>
-        <Text style={styles.titleStyle}>Choose sectors</Text>
+        <Text style={styles.titleStyle}>Choose regions</Text>
         <TouchableOpacity>
           <FontAwesome style={styles.infoicon} size={20} name='search' />
         </TouchableOpacity>
 
       </View>
-      <Text style={styles.paragraph} numberOfLines={3}>{'Which sectors do you want to invest in? '}</Text>
+      <Text style={styles.paragraph} numberOfLines={3}>{'Which regions do you want to invest in? '}</Text>
       <FlatList
         numColumns={2}
         showsVerticalScrollIndicator={false}
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   },
   icListImage: {
     height: (50),
-    height: (50),
+    width: (50),
     marginLeft: (15),
     top: 15
   },
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.yellowTheme,
     borderRadius: 12,
-
+    height:60
   },
   buttontitle: {
     fontWeight: 'bold'

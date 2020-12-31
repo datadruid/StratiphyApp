@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
   },
   icListImage: {
     height: (50),
-    height: (50),
+    width: (50),
     marginLeft: (15),
     top: 15
   },
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.yellowTheme,
     borderRadius: 12,
-
+    height:60
   },
   buttontitle: {
     fontWeight: 'bold'
