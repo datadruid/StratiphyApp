@@ -27,7 +27,6 @@ const Stocks = ({ comparisons }) => {
             <>
                 {
                     comparisons.map(item => {
-                        key = item.ticker;
                         let linecolour = 'rgb(227, 63, 100)';
                         if (item.performancePct > 0) {
                             linecolour = 'rgb(74, 250, 154)';
@@ -59,7 +58,7 @@ const Stocks = ({ comparisons }) => {
 
                         let circlecolour = getAvatarColor(item.ticker);
                         return (
-                            <TouchableOpacity
+                            <TouchableOpacity key={item.ticker}
                             onPress={() => {onPress(item.ticker)}}
                             >
 

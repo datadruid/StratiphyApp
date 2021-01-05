@@ -1,9 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { View, StyleSheet, Image, ActivityIndicator, KeyboardAvoidingView, ImageBackground } from 'react-native';
+import { View, StyleSheet, Image, ActivityIndicator, KeyboardAvoidingView, ImageBackground, Button, Text, Input } from 'react-native';
 import { GoogleSocialButton } from "react-native-social-buttons";
 import {GoogleSignin} from 'react-native-google-signin';
 import Spacer from '../components/Spacer';
-import { Button, Text, Input } from '@ui-kitten/components';
 import { Context as AuthContext  } from '../context/AuthContext';
 import { ThemeContext } from '../theme-context';
 

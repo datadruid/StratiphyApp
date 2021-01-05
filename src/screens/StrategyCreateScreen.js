@@ -1,13 +1,20 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { Dimensions } from 'react-native'
 import { StatusBar, View, StyleSheet, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-import HeaderBack from '../components/strategywizard/HeaderBack';
-import * as Progress from 'react-native-progress';
+import { Context as UpdateContext } from '../context/StrategyUpdateContext';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../components/modules/Colors';
 
 const windowWidth = Dimensions.get('window').width;
 const StrategyCreateScreen = ({ navigation }) => {
+  const { state, getStrategyTemplate} = useContext(UpdateContext);
+
+  useEffect(() => {
+      async function asyncLoadTemplate() {
+        await getStrategyTemplate();
+      }   
+      asyncLoadTemplate();
+  }, []);
 
   const onNextButtonPress = (id) => {
     if(id === 3) {

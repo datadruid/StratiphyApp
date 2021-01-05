@@ -6,44 +6,6 @@ import CheckBox from '@react-native-community/checkbox';
 import { colors } from '../modules/Colors';
 
 const windowWidth = Dimensions.get('window').width;
-const data = [
-  {
-    id: 0,
-    title: 'Tech ',
-    image: require('../../img/marketsectors/icTech.png'),
-    selected : false
-  },
-  {
-    id: 1,
-    title: 'Sustainable',
-    image: require('../../img/marketsectors/icLeaf.png'),
-    selected : false
-  },
-  {
-    id: 2,
-    title: 'Finance',
-    image: require('../../img/marketsectors/icFinance.png'),
-    selected : false
-  },
-  {
-    id: 3,
-    title: 'Pharma ',
-    image: require('../../img/marketsectors/icHeart.png'),
-    selected : false
-  },
-  {
-    id: 4,
-    title: 'Construction',
-    image: require('../../img/marketsectors/icConstruction.png'),
-    selected : false
-  },
-  {
-    id: 5,
-    title: 'Manufacturing ',
-    image: require('../../img/marketsectors/icManufacture.png'),
-    selected : false
-  }
-];
 
 const MarketSectors = ({ navigation, onSelected }) => {
   const [sectors, setSectors] = useState(data);
@@ -314,5 +276,45 @@ const styles = StyleSheet.create({
   },
 
 });
+
+const data = [
+  {
+    id: 0,
+    title: 'Tech',
+    image: require('../../img/marketsectors/icTech.png'),
+    selected : false
+  },
+  {
+    id: 1,
+    title: 'Sustainable',
+    image: require('../../img/marketsectors/icLeaf.png'),
+    selected : false
+  },
+  {
+    id: 2,
+    title: 'Finance',
+    image: require('../../img/marketsectors/icFinance.png'),
+    selected : false
+  },
+  {
+    id: 3,
+    title: 'Pharma',
+    image: require('../../img/marketsectors/icHeart.png'),
+    selected : false
+  },
+  {
+    id: 4,
+    title: 'Construction',
+    image: require('../../img/marketsectors/icConstruction.png'),
+    selected : false
+  },
+  {
+    id: 5,
+    title: 'Manufacturing',
+    image: require('../../img/marketsectors/icManufacture.png'),
+    selected : false
+  }
+];
+
 
 export default MarketSectors;

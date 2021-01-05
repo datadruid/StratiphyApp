@@ -6,36 +6,24 @@ import CheckBox from '@react-native-community/checkbox';
 import { colors } from '../modules/Colors';
 
 const windowWidth = Dimensions.get('window').width;
-const data = [
-  {
-    id: 0,
-    title: 'UK',
-    image: require('../../img/marketsectors/icTech.png'),
-    selected : false
-  },
-  {
-    id: 1,
-    title: 'Europe',
-    image: require('../../img/marketsectors/icLeaf.png'),
-    selected : false
-  },
-  {
-    id: 2,
-    title: 'North America',
-    image: require('../../img/marketsectors/icFinance.png'),
-    selected : false
-  },
-];
+const imageMap = {
+  'icTech.png' : require('../../img/marketsectors/icTech.png'),
+  'icLeaf.png': require('../../img/marketsectors/icLeaf.png'),
+  'icFinance.png': require('../../img/marketsectors/icFinance.png')
+}
 
-const Regions = ({ navigation, onSelected }) => {
-  const [sectors, setSectors] = useState(data);
+const Regions = ({ navigation, onSelected, regionData }) => {
+  const [sectors, setSectors] = useState(regionData);
   const [refresh, setRefresh] = useState(false);
 
+  console.log(sectors);
   const setToggleCheckBox = (item) => {
     let updates = sectors;
-    let updater = updates[item.id];
+    let updater = updates.find(x=> x.id === item.id);
+    let index = updates.indexOf(updater);
+    console.log(index);
     updater.selected = !updater.selected;
-    updates.splice(item.id, 1, updater);
+    updates.splice(index, 1, updater);
     setSectors(updates);
     setRefresh(!refresh);
   };
@@ -45,10 +33,11 @@ const Regions = ({ navigation, onSelected }) => {
   };
 
   const renderItem = ({ item }) => {
+
     return (
       <TouchableOpacity style={item.selected == true ? styles.listItemSelected : styles.listItem} onPress={() => setToggleCheckBox(item)}>
-        <Image source={item.image} resizeMode='contain' style={styles.icListImage}></Image>
-        <Text style={styles.listTitle}>{item.title}</Text>
+        <Image source={imageMap[item.image]} resizeMode='contain' style={styles.icListImage}></Image>
+        <Text style={styles.listTitle}>{item.label}</Text>
       </TouchableOpacity >
     )
   };

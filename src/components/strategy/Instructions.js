@@ -25,8 +25,9 @@ const Instructions = ({ actions }) => {
                         let circlecolour = getAvatarColor(item.Ticker);
                         let showDate = (item.Date !== lastDate);
                         lastDate = item.Date;
+                        let index = `${item.Date}${item.Ticker}`
                         return (
-                            <>
+                            <View key={index} >
                             { item.Date && showDate && <Text style={styles.datetext}>{moment(Date.parse(item.Date)).format('D MMMM')}</Text>}
                                 <View style={styles.instructionitemcontainer}>
                                     <View style={[styles.stockcircle, {backgroundColor: circlecolour}]}> 
@@ -42,7 +43,7 @@ const Instructions = ({ actions }) => {
                                     </Text>
                                 </View>
                                 <View style={styles.spacerContainer} />
-                            </>
+                            </View>
                         );
                     })}
 

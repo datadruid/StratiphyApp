@@ -7,14 +7,24 @@ import Holdings from './Holdings';
 
 const StrategyTab = ({ navigation, strategy }) => {
     const { state, getTickerData, clearErrorMessage } = useContext(StrategyContext);
-    if(state.strategy?.latestActions?.actions)
-    {
-        useEffect(() => {
-            getTickerData(strategy._id, strategy?.latestActions?.actions.filter(x => x.Action === 'Hold').map(function(elem){
-                return elem.Ticker;
-            }).join(","), state.timePeriod);
-        }, []);
-    }
+
+    const renderHoldings = (actions, id) => {
+        if(actions)
+        {
+            return (
+                <>
+                <View style={styles.titleiconcontainer}>
+                <Text style={styles.titletext}>
+                    Holdings
+              </Text>
+                <Icon style={styles.infoicon} size={20} name='info-circle' />
+                </View>
+                <Holdings actions={actions} id={id} />
+                </>
+            )
+        }
+    };
+
     return (
         <>
             <View style={styles.titlelinkcontainer}>
@@ -36,13 +46,10 @@ const StrategyTab = ({ navigation, strategy }) => {
             <View style={styles.instructioncontainer}>
                 <Instructions actions={strategy?.latestActions?.actions} />
             </View>
-            <View style={styles.titleiconcontainer}>
-                <Text style={styles.titletext}>
-                    Holdings
-              </Text>
-                <Icon style={styles.infoicon} size={20} name='info-circle' />
-            </View>
-            <Holdings actions={strategy?.latestActions?.actions} />
+            {
+                renderHoldings(strategy?.latestActions?.actions, strategy._id)
+            }
+            
         </>
     )
 };

@@ -4,12 +4,13 @@ import { Button, } from 'react-native-elements';
 import HeaderBack from '../components/strategywizard/HeaderBack';
 import { colors } from '../components/modules/Colors';
 
-const StrategyTemplatedScreen = ({ navigation, index }) => {
+const StrategySummaryScreen = ({ navigation, index }) => {
 
   onCardPress = () => {
   };
 
   onNextButtonPress = () => {
+      
   };
 
 
@@ -33,11 +34,12 @@ const StrategyTemplatedScreen = ({ navigation, index }) => {
     <View style={styles.mainContainer}>
       <HeaderBack text={''} navigation={navigation} onPress={() => navigation.goBack()} />
 
-      <Text style={styles.paragraph} numberOfLines={3}>{'Your selection'}</Text>
       <View style={styles.horizontalTopContainer}>
-        <Text style={styles.titleStyle}> Low Risk Strategy</Text>
+        <Text style={styles.titleStyle}>Your Strategy</Text>
       </View>
 
+      <Text style={styles.paragraph} numberOfLines={3}>{'This is a summary of your strategy.'}</Text>
+      
       <ScrollView>
         <View style={styles.firstCard}>
           {renderCard(0, require('../img/icons/icLowRisk.png'), 'Risk profile', 'Low Risk Strategy')}
@@ -62,8 +64,7 @@ const StrategyTemplatedScreen = ({ navigation, index }) => {
 };
 
 
-
-StrategyTemplatedScreen.navigationOptions = () => {
+StrategySummaryScreen.navigationOptions = () => {
   return {
     header: () => false,
   };
@@ -86,8 +87,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: (19),
     marginTop: (20),
     marginBottom: (1),
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
 
   },
   titleStyle: {
@@ -95,8 +96,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     textAlign: 'center',
-    marginTop: (-10)
-
+    marginTop: (-10),
+    textAlign:'left'
   },
   searchImage: {
     width: (30),
@@ -130,10 +131,6 @@ const styles = StyleSheet.create({
     margin: (5),
     height: (18),
     width: (18)
-  },
-  paragraph: {
-
-    marginHorizontal: (20)
   },
   tipLeftContainer: { width: '20%', height: '100%' },
   tipImage: {
@@ -190,7 +187,7 @@ const styles = StyleSheet.create({
     marginHorizontal: (22),
     fontSize: 20,
     color: 'black',
-    alignSelf: 'center'
+    alignSelf: 'flex-start'
   },
   nextBtn: {
     backgroundColor: colors.yellowTheme,
@@ -232,4 +229,4 @@ height:60
   },
 });
 
-export default StrategyTemplatedScreen;
+export default StrategySummaryScreen;

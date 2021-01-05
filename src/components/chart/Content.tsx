@@ -1,6 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Layout, Text } from '@ui-kitten/components';
+import { StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const styles = StyleSheet.create({
@@ -72,16 +71,16 @@ interface ButtonProps {
 }
 
 const Button = ({ color, backgroundColor, label }: ButtonProps) => (
-  <Layout style={[styles.button, { backgroundColor }]}>
+  <View style={[styles.button, { backgroundColor }]}>
     <Text style={[styles.label, { color }]}>{label}</Text>
-  </Layout>
+  </View>
 );
 
 export default () => {
   return (
-    <Layout>
+    <View>
     <SafeAreaView style={styles.container}>
-      <Layout>
+      <View>
         <View style={styles.tabs}>
           <View style={styles.tabActive}>
             <Text style={styles.tabLabelActive}>Orders</Text>
@@ -93,16 +92,16 @@ export default () => {
         <View style={styles.content}>
           <Text style={styles.noOrders}>You have no orders</Text>
         </View>
-      </Layout>
-      <Layout style={styles.actions}>
+      </View>
+      <View style={styles.actions}>
         <View style={styles.values}>
           <Text style={styles.value}>0 BTC</Text>
           <Text style={styles.value}>0.00 USD</Text>
         </View>
         <Button label="Buy" backgroundColor="#4AFA9A" color="#222324" />
         <Button label="Sell" backgroundColor="#E33F64" color="white" />
-      </Layout>
+      </View>
     </SafeAreaView>
-    </Layout>
+    </View>
   );
 };

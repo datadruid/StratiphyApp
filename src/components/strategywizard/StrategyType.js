@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, Text, Image, FlatList, StatusBar, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../modules/Colors';
 
+
 const StrategyType = ({ navigation, onSelected }) => {
-    const typeSelected = (item) => {
-        onSelected(item);
+    const typeSelected = (strategyType) => {
+        onSelected(strategyType);
     };
 
-    const typeInfo =() => {
-
-    };
     renderItem = ({ item }) => {
         if(item.id > -1)
         {
         return (
-            <TouchableOpacity onPress={(item) => typeSelected(item)}>
+            <TouchableOpacity onPress={() => typeSelected({strategyType : item.key})}>
           <View style={[styles.listItem, { backgroundColor: item.backgroundColor }]}>
             <View style={styles.titleTop}>
               <View style={styles.leftContainer} >
@@ -25,9 +23,9 @@ const StrategyType = ({ navigation, onSelected }) => {
                 <Text numberOfLines={4} style={styles.description}>{item.short_desc}</Text>
               </View>
               <View style={styles.rightContainer}>
-                <TouchableOpacity style={styles.pressStyle} onPress={() => typeInfo()}>
+                {/* <TouchableOpacity style={styles.pressStyle} onPress={() => typeInfo()}>
                   <FontAwesome style={styles.infoicon} size={20} name='info-circle' />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </View>
             <View style={[{width: '104%', height:'80%', left:-7 }, item.offset]} >
@@ -69,6 +67,7 @@ const StrategyType = ({ navigation, onSelected }) => {
                     style={styles.listContainer}
                     data={data}
                     renderItem={renderItem}
+                    keyExtractor={(item, index) => item.id.toString()}
                     contentContainerStyle={{ flexGrow: 1 }}
                     ListFooterComponentStyle={{ flex: 1, justifyContent: 'flex-end' }}
                     ListFooterComponent={<View style={{ height: 100, width: 100 }}></View>}
@@ -242,6 +241,7 @@ const data = [
     {
         id: 0,
         title: 'Momentum',
+        key: 'momentum',
         short_desc: 'Invest in assets whose prices have risen the most, and sell those that have fallen the most.',
         backgroundImage: require('../../img/strategytypes/icMomentumChart.png'),
         backgroundColor: colors.lightishBlue,
@@ -251,6 +251,7 @@ const data = [
     {
         id: 1,
         title: 'Value',
+        key: 'relativeValueIndicator',
         short_desc: 'Invest in assets that are most undervalued,and sell those that are most overvalued.',
         backgroundImage: require('../../img/strategytypes/icMomentumValue.png'),
         backgroundColor: colors.lightPurple,
@@ -260,6 +261,7 @@ const data = [
     {
         id: 2,
         title: 'Strength',
+        key: 'relativeStrengthIndicator',
         short_desc: 'Invest in assets that are oversold, and sell assets that are overbought.,',
         backgroundImage: require('../../img/strategytypes/icStreghtChart.png'),
         backgroundColor: colors.blue,
@@ -269,6 +271,7 @@ const data = [
     {
         id: 3,
         title: 'Liquidity',
+        key: 'onBalancedVolume',
         short_desc: 'Invest in assets whose traded volume rises before its price does, and sell those whose traded volume falls before its price does.',
         backgroundImage: require('../../img/strategytypes/icStrenght2.png'),
         backgroundColor: '#8609ca',

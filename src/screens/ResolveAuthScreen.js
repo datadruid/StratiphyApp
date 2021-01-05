@@ -1,6 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { StyleSheet } from 'react-native';
-import { Layout, } from '@ui-kitten/components';
+import { StyleSheet, View } from 'react-native';
 import { Context as AuthContext } from '../context/AuthContext';
 
 const ResolveAuthScreen = () => {
@@ -11,7 +10,7 @@ const ResolveAuthScreen = () => {
   }, []);
 
   return (
-       <Layout style={styles.container}/>
+       <View style={styles.container}/>
   );
   return null;
 };

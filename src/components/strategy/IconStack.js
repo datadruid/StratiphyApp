@@ -17,13 +17,11 @@ const IconStack = ({ actions, borderColor, size }) => {
                         let circlecolour = getAvatarColor(item.Ticker);
                         counter ++;
                         return (
-                        <>
-                            <View style={[styles.stockcircle, 
+                            <View key={item.Ticker} style={[styles.stockcircle, 
                                 {backgroundColor: circlecolour, right: counter * leftby, borderColor: borderColor, width: size, height: size, borderRadius: borderRadii}
                                 ]}>
                                 <Text style={styles.stockcircletext}>{item.Ticker}</Text>
                             </View>
-                        </>
                         )
                     })
                     }

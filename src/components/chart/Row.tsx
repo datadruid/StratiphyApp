@@ -1,6 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import { Layout, Text } from '@ui-kitten/components';
+import { StyleSheet, Text } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -25,9 +24,9 @@ interface RowProps {
 
 export default ({ label, value, color }: RowProps) => {
   return (
-    <Layout style={styles.container}>
+    <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
       <Text style={styles.text}>{value}</Text>
-    </Layout>
+    </View>
   );
 };

@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Image, View, ActivityIndicator, KeyboardAvoidingView, ImageBackground } from 'react-native';
-import { Button, Text, Input } from '@ui-kitten/components';
+import { StyleSheet, Image, View, ActivityIndicator, KeyboardAvoidingView, ImageBackground, Button, Text, Input } from 'react-native';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../theme-context';

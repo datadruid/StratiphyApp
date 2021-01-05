@@ -193,7 +193,6 @@ const getTickerData = dispatch => async (strategyId, startegies, timePeriod) =>{
 
 const getComparisonTickerData = dispatch => async (strategyId, tickers, timePeriod) =>{
   const token = await getToken();
-  console.log('hit');
   if (token) {
       try{
         let config = {
@@ -204,7 +203,6 @@ const getComparisonTickerData = dispatch => async (strategyId, tickers, timePeri
           let response = await authApi.get(`/tickerchartdata/${strategyId}/${tickers}/${timePeriod}`, config);
           dispatch({ type: 'get_comptickerdata', payload: response.data });
           
-          console.log(`/tickercomparisondata/${strategyId}/${tickers}/${timePeriod}`);
           response = await authApi.get(`/tickercomparisondata/${strategyId}/${tickers}/${timePeriod}`, config);
           dispatch({ type: 'get_comptabdata', payload: response.data });
         } else {
@@ -281,7 +279,7 @@ export const { Context, Provider } = createDataContext(
   {listStrategies, getStrategy, getInstructionList, getInstructionDetail, getTickerData, 
     getComparisonTickerData, getComparisonData, getComparisonChartData, toggleCompTickerList, 
     setHighightedItem, clearErrorMessage, setTimePeriod, previewStrategy, uploadStartegy},
-  { strategies: [], strategy : { analytics: []}, tickerData : [], comparisonTickerData : [], 
+  { strategies: [], strategy : { analytics: []}, strategyTemplate : { analytics: []}, tickerData : [], comparisonTickerData : [], 
   comparisonTabData: { Volatility: {}, SharpeRatio : {}, VAR: {}, PNL : {}, Yield: {}},
   comparisonData : [], comparisonChartData : [], compTickerList: [], instructions : [], 
   instructionDetail : [], previewData : [], highightedItem : '', errorMessage: '', timePeriod : 2 }

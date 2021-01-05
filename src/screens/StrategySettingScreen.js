@@ -1,8 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ScrollView, View, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
-import { Button, Input, Overlay } from 'react-native-elements';
-import { Layout, Text, Divider } from '@ui-kitten/components';
-import Modal from 'react-native-modal';
+import { Button, Input, Text, Divider } from 'react-native-elements';
+import Modal from 'react-native-modal'
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Spacer from '../components/Spacer';
 import StrategyType from '../components/strategy/StrategyType';
@@ -143,8 +142,8 @@ const StrategySettingScreen = ({ navigation }) => {
         else{
           return (
           <SafeAreaView forceInset={{ top: 'always' }}>
-          <Layout style={styles.layoutcontainer}>
-          </Layout>
+          <View style={styles.layoutcontainer}>
+          </View>
         </SafeAreaView>
           );
         }

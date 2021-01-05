@@ -28,7 +28,6 @@ const Comparisons = ({ navigation, strategy, selectedIndex }) => {
             <>
                 {
                     actions.map(item => {
-                        key = item.strategyName;
                         let formattedStratValue = '';
                         let linecolour = 'rgb(227, 63, 100)';
                         let plusminus = ''
@@ -64,7 +63,7 @@ const Comparisons = ({ navigation, strategy, selectedIndex }) => {
                         let showDate = (item.Date !== lastDate);
                         lastDate = item.Date;
                         return (
-                            <>
+                            <View key={item.strategyName}>
                             { item.Date && showDate && <Text style={styles.datetext}>{moment(Date.parse(item.Date)).format('D MMMM')}</Text>}
                             <View style={styles.itemcontainer}>
                                 <View style={[styles.stockcircle, {backgroundColor: circlecolour}]}>
@@ -129,7 +128,7 @@ const Comparisons = ({ navigation, strategy, selectedIndex }) => {
                                 </View>
                             </View> 
                                 <View style={styles.spacerContainer} />
-                            </>
+                            </View>
 
                         );
                         

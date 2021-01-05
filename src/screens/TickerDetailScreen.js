@@ -1,8 +1,6 @@
 import React , { useContext, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-navigation';
-import { StyleSheet, Dimensions, View } from 'react-native';
-import { Layout, Card, List, Text } from '@ui-kitten/components';
-import { Context as StrategyContext } from '../context/StrategyContext';
+import { StyleSheet, Text, View } from 'react-native';
 
 import data from "../components/chart/data.json";
 import Chart, { size } from "../components/chart/Chart";
@@ -45,7 +43,7 @@ const TickerDetalScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
-      <Layout style={styles.layoutcontainer}>
+      <View style={styles.layoutcontainer}>
       <Text tyle={styles.text} category='h4' status='default'>ABC.L</Text>
       <View>
       <Header />
@@ -82,7 +80,7 @@ const TickerDetalScreen = ({ navigation }) => {
             
       </View>
         
-  </Layout>
+  </View>
     </SafeAreaView>
   );
 };

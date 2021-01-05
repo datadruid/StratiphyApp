@@ -1,6 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
-import { Text } from '@ui-kitten/components';
+import { View, StyleSheet, Image, TouchableOpacity, ImageBackground, Text } from 'react-native';
 import { ThemeContext } from '../theme-context';
 import { NavigationEvents } from 'react-navigation';
 import Spacer from '../components/Spacer';

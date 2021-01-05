@@ -11,24 +11,30 @@ const currencyFormat = {
     currency: RNLocalize.getLocales()[0].languageTag
   };
 
-const Holdings = ({ actions }) => {
+const Holdings = ({ id, actions }) => {
     const { state, getTickerData, clearErrorMessage } = useContext(StrategyContext); 
+        let tickers = actions.filter(x => x.Action === 'Hold').map(function(elem){
+            return elem.Ticker;
+        }).join(",");
+        let timeperiod = state.timePeriod;
+        getTickerData(id, tickers, timeperiod);
+
     let counter = 0;
     if (actions?.some(x => x.Action !== 'Hold')) {
-
         return (
             <View style={styles.holdingcontainer}>
                 {
                     actions.filter(x => x.Action === 'Hold').map(item => {
-                        key = item.ticker;
                         let tickerData = {series : [0]};
                         let formattedStratValue ='';
+                        let percentChar = '';
                         let slimList = [];
                         if(state.tickerData.find(x=> x.ticker === item.Ticker)?.series?.length)
                         {
                             tickerData = state.tickerData.find(x=> x.ticker === item.Ticker);
                             slimList = tickerData.series.map(x=> x.value);
                             formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${tickerData.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
+                            percentChar = '%';
                         }
 
                         let circlecolour = getAvatarColor(item.Ticker);
@@ -37,7 +43,6 @@ const Holdings = ({ actions }) => {
                             linecolour = 'rgb(74, 250, 154)';
                         }
 
-                        
                         const chartConfig = {
                             backgroundColor: "#ffffff",
                             backgroundGradientFrom: "#ffffff",
@@ -53,7 +58,7 @@ const Holdings = ({ actions }) => {
                           };
                         counter++;
                         return (
-                            <>
+                            <View key={item.Ticker} >
                             {(counter > 1) && <View style={styles.linespacer} />}
                             <View style={styles.itemcontainer}>
                                 <View style={[styles.stockcircle, {backgroundColor: circlecolour}]}>
@@ -108,12 +113,12 @@ const Holdings = ({ actions }) => {
                                             {formattedStratValue}
                                         </Text>
                                         <Text style={[{color: linecolour }, styles.nametext, styles.percenttext] }>
-                                         {tickerData.performancePct}%
+                                         {tickerData.performancePct}{percentChar}
                                         </Text>
                                     </View>
                                 </View>
                             </View>    
-                            </>
+                            </View>
                         );
                         
                     })}

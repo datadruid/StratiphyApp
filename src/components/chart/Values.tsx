@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
-import { Layout, Text, StyleService, useStyleSheet } from '@ui-kitten/components';
+import { View, Text, StyleSheet } from "react-native";
 import Animated, {
   call,
   divide,
@@ -14,7 +13,7 @@ import moment from "moment";
 import { Candle } from "./Candle";
 import Row from "./Row";
 
-const themedStyles = StyleService.create({
+const themedStyles = StyleSheet.create({
   layout: {
     
   },

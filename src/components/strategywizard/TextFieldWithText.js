@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
         color: 'black',
         fontWeight: 'bold',
         paddingLeft: 0,
-        textAlign: 'right',
+        textAlign: 'left',
+        width: '50%'
       },
       titleShow: {
     

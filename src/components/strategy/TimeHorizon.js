@@ -3,23 +3,14 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import RadioButtons from '../../components/strategy/RadioButtons'
 import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
+import { AddStrategy } from '../modules/StrategyUpdates'
 
 const TimeHorizon = ({ strategy }) => {
   const { state, updateStrategyTypes } = useContext(UpdateContext);
   var types = strategy.strategyTypes.filter(x=> x.setting !== 'none');
 
   const optionselected = (parent, option) => {
-    let index = state.strategy.strategyTypes.findIndex(x => x.typeName === parent.typeName);
-    let updatedType = {
-      setting: parent.setting,
-      specifications: {
-        periodicities: option.periodicities,
-        periods: option.periods,
-        weightings: option.weightings
-      },
-      typeName: parent.typeName
-    }
-    updateStrategyTypes(index, updatedType);
+    AddStrategy(state.strategy.strategyTypes, parent.typeName, updateStrategyTypes, option, parent.setting);
   };
 
     return (

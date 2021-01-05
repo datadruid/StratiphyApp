@@ -36,7 +36,7 @@ const Sectors = ({ strategy }) => {
     outtics.tagsArray.forEach(x =>
       exclude.push({ 'tag': x } )
     );
-    console.log(include);
+
     let tickers = {
       tickersInclude: include,
       tickersExclude: exclude

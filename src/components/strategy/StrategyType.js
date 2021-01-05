@@ -4,6 +4,7 @@ import { Overlay } from 'react-native-elements';
 import { Text, Divider, List, Layout } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
+import { AddStrategy, RemoveStrategy } from '../modules/StrategyUpdates'
 
 const StrategyType = ({ strategy }) => {
   const types = strategy.strategyTypes.filter(x => x.setting !== 'none');
@@ -20,30 +21,18 @@ const StrategyType = ({ strategy }) => {
   };
 
   const addStrategy = (strategyType) => {
-    let index = state.strategy.strategyTypes.findIndex(x => x.typeName === strategyType.typeName);
-    let updatedType = {
-      setting: 'basic',
-      specifications: {
-        periodicities: 'Months',
-        periods: 6,
-        weightings: 1
-      },
-      typeName: state.strategy.strategyTypes[index].typeName
-    }
-    updateStrategyTypes(index, updatedType);
+    let option = {periodicities: 'Months',
+    periods: 6,
+    weightings: 1};
+    AddStrategy(state.strategy.strategyTypes, strategyType.typeName, updateStrategyTypes, option, 'basic');
 
     setVisible(false);
     setUpdated(true);
   };
 
   const removeStrategy = (strategyType) => {
-    let index = state.strategy.strategyTypes.findIndex(x => x.typeName === strategyType.typeName);
-    let updatedType = {
-      setting: 'none',
-      specifications: {},
-      typeName: state.strategy.strategyTypes[index].typeName
-    }
-    updateStrategyTypes(index, updatedType);
+    RemoveStrategy(state.strategy.strategyTypes, strategyType.typeName, updateStrategyTypes);
+
     setUpdated(true);
   };
   return (

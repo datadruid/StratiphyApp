@@ -21,6 +21,7 @@ import StrategyInstructionsScreen from './src/screens/StrategyInstructionsScreen
 import StrategyCompareScreen from './src/screens/StrategyCompareScreen';
 import StrategyWizardScreen from './src/screens/StrategyWizardScreen';
 import StrategyTemplatedScreen from './src/screens/StrategyTemplatedScreen';
+import StrategySummaryScreen from './src/screens/StrategySummaryScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import DiscoverScreen from './src/screens/DiscoverScreen';
 import { Provider as AuthProvider } from './src/context/AuthContext';
@@ -83,7 +84,8 @@ accountFlow.navigationOptions = {
 const strategyFlow = createStackNavigator({
   StrategyCreate: StrategyCreateScreen,
   StrategyWizard: StrategyWizardScreen,
-  StrategyTemplated : StrategyTemplatedScreen
+  StrategyTemplated : StrategyTemplatedScreen,
+  StrategySummary : StrategySummaryScreen
 });
 
 strategyFlow.navigationOptions = {

@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
       button: {
         backgroundColor: colors.yellowTheme,
         borderRadius: 12,
+        height: 60
       },
       buttontitle: {
         fontWeight: 'bold'

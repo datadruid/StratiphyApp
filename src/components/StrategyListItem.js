@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
-import { Text } from '@ui-kitten/components';
+import { StyleSheet, TouchableOpacity, View, Dimensions, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { LineChart } from 'react-native-chart-kit';
 import * as RNLocalize from "react-native-localize";
@@ -16,7 +15,7 @@ const currencyFormat  = {
   currency: RNLocalize.getLocales()[0].languageTag
 };
 
-const StrategyListItem = ({ navigation, item }) => {
+const StrategyListItem = ({ navigation, item, index }) => {
   let delta = getChartValueFilter(4);
   let slimList = item.analytics[0].data.map(a => a.value);
   // [];

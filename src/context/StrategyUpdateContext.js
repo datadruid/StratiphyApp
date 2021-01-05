@@ -1,4 +1,6 @@
 import createDataContext from './createDataContext';
+import authApi from '../api/auth';
+import { getToken } from '../storage/tokenStorage';
 
 const strategyUpdateReducer = (state, action) => {
     switch (action.type) {
@@ -113,10 +115,32 @@ const strategyUpdateReducer = (state, action) => {
 };
 
 const setStrategy =  dispatch => async (strategy) => {
+    console.log('setting strategy');
+    console.log(strategy);
     // delete strategy.analytics;
     // delete strategy.latestActions;
     dispatch({ type: 'set_strategy', payload: strategy });
 };
+
+const getStrategyTemplate = dispatch => async () => {
+    const token = await getToken();
+    if (token) {
+        try{
+          let config = {
+            headers: { Authorization: `Bearer ${token}` },
+            clearCacheEntry: false
+          };
+  
+          let response = await authApi.get(`/strategytemplate`, config);
+  
+          dispatch({ type: 'set_strategy', payload: response.data });
+        } catch(err) {
+          dispatch({ type: 'add_error', payload: err.data.error });
+        }
+    } else {
+      dispatch({ type: 'add_error', payload: 'No data acess token available' });
+    }
+  };
 
 const updateName = dispatch => async (name) => {
     dispatch({ type: 'set_name', payload: name });
@@ -190,7 +214,7 @@ export const { Context, Provider } = createDataContext(
         updateUserId, updateEmail, updateDateAdded, updateDateModified,
         updateStatus, updateSectors, updateMeta, updateRegions,
         updateStrategyTypes, updateAssetClassAllocations, updateMarketCaps,
-        updateTickers, updateGlobalSpecifications
+        updateTickers, updateGlobalSpecifications, getStrategyTemplate
     },
     { strategy : {} }
 );

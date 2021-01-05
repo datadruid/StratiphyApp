@@ -4,19 +4,22 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CheckBox from '@react-native-community/checkbox';
 import { colors } from '../modules/Colors';
 
-const LookBackPeriod = ({ navigation, onSelected }) => {
-    const [showHideHeader, setShowHideHeader] = useState(true);
-    const typeInfo =() => {
+const LookBackPeriod = ({ navigation, options, selected, onSelected }) => {
+    const optionSelected = (id) => {
+      let lbp = options.find(x=> x.id === Number(id));
+      onSelected(lbp);
+    }
 
-    };
     renderTermItem = (description, selection) => {
-
+      
         return <TouchableOpacity style={styles.horizontalView} >
           <CheckBox
             style={styles.box}
             disabled={false}
-            value={false}
-            onValueChange={() => onSelected(selection)}
+            value={selection === selected}
+            onValueChange={() => {
+              optionSelected(selection);
+            }}
           />
           <Text style={styles.defaultText}>{description}</Text>
         </TouchableOpacity>
@@ -35,9 +38,9 @@ const LookBackPeriod = ({ navigation, onSelected }) => {
               <Text style={styles.description}>{item.short_desc}</Text>
             </View>
             <View style={styles.rightContainer}>
-              <TouchableOpacity style={styles.pressStyle} onPress={() => this.cardPress(item)}>
+              {/* <TouchableOpacity style={styles.pressStyle} onPress={() => this.cardPress(item)}>
               <FontAwesome style={styles.infoicon} size={20} name='info-circle' />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
           <Image source={item.backgroundImage} style={styles.bottomImage} />
@@ -56,9 +59,9 @@ const LookBackPeriod = ({ navigation, onSelected }) => {
 
         <View style={styles.switchConatiner}>
 
-          {this.renderTermItem('Short term (1 month)', 'short')}
-          {this.renderTermItem('Medium term (6 months)', 'medium')}
-          {this.renderTermItem('Long term (12 months)', 'long')}
+          {this.renderTermItem('Short term (1 month)', 0)}
+          {this.renderTermItem('Medium term (6 months)', 1)}
+          {this.renderTermItem('Long term (12 months)', 2)}
           {this.renderGraphCard(itemCard)}
         </View>
         </>
