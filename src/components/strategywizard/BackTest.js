@@ -8,12 +8,10 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 
 
-const BackTest = ({ navigation, onSelected }) => {
+const BackTest = ({ navigation, options, onSelected }) => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [benchmark, setBenchmark] = useState('FTSE100');
-    const [date, setDate] = useState(moment())
-
-    const options = ['FTSE100', 'DJIA', 'NASDAQ Composite'];
+    const [date, setDate] = useState(moment().subtract(2, 'years'))
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -34,7 +32,7 @@ const BackTest = ({ navigation, onSelected }) => {
     };
 
     const onButtonPress = () => {
-        onSelected({ date, benchmark, });
+        onSelected({ date: date.format('DD/MM/YYYY'), benchmark });
     };
 
     return (
@@ -76,8 +74,8 @@ const BackTest = ({ navigation, onSelected }) => {
                                 }}
                                 selected={benchmark}>
 
-                                {Object.values(options).map((val, index) => (
-                                    <SelectPicker.Item label={val} value={val} key={index} />
+                                {options.map((benchmark) => (
+                                    <SelectPicker.Item label={benchmark.preset} value={benchmark.preset} key={benchmark.id} />
                                 ))}
 
                             </SelectPicker>

@@ -9,18 +9,12 @@ const windowWidth = Dimensions.get('window').width;
 const StrategyCreateScreen = ({ navigation }) => {
   const { state, getStrategyTemplate} = useContext(UpdateContext);
 
-  useEffect(() => {
-      async function asyncLoadTemplate() {
-        await getStrategyTemplate();
-      }   
-      asyncLoadTemplate();
-  }, []);
-
   const onNextButtonPress = (id) => {
-    if(id === 3) {
+    getStrategyTemplate(id);
+    if(id === 0) {
       navigation.navigate('StrategyWizard', { pageNo: 1});
     } else {
-      navigation.navigate('StrategyTemplated', {index: id});
+      navigation.navigate('StrategyWizard', {pageNo: 7});
     }
   };
 
@@ -56,12 +50,12 @@ const StrategyCreateScreen = ({ navigation }) => {
       <Text style={styles.paragraph} numberOfLines={3}>{'Choose a template based strategy based on rist appetite or create a custom stragedy from scratch'}</Text>
       <ScrollView>
         <View style={styles.firstCard}>
-          {renderCard(0, require('../img/icons/icLowRisk.png'), 'Low Risk', 'Low risk staregdy are safer but lesser return')}
+          {renderCard(1, require('../img/icons/icLowRisk.png'), 'Low Risk', 'Low risk staregdy are safer but lesser return')}
         </View>
-        {renderCard(1, require('../img/icons/icStar.png'), 'Medium Risk', 'Medium stragedies include a mixxed risk/return profile')}
-        {renderCard(2, require('../img/icons/icTinder.png'), 'High Risk', 'Potentially high returns but with high risk')}
+        {renderCard(2, require('../img/icons/icStar.png'), 'Medium Risk', 'Medium stragedies include a mixxed risk/return profile')}
+        {renderCard(3, require('../img/icons/icTinder.png'), 'High Risk', 'Potentially high returns but with high risk')}
         <Text style={styles.orText}>{'OR'}</Text>
-        {renderCard(3, require('../img/icons/icPlayGreen.png'), 'Build Your Own', 'create your own stargedy using stragedy builder')}
+        {renderCard(0, require('../img/icons/icPlayGreen.png'), 'Build Your Own', 'create your own stargedy using stragedy builder')}
       </ScrollView>
     </View>
   );

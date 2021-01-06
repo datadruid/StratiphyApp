@@ -12,11 +12,23 @@ const strategyUpdateReducer = (state, action) => {
                     ...state.strategy,
                     strategyName: action.payload }
                 };
+        case 'set_icon':
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    iconid: action.payload }
+                };
         case 'set_description':
             return { ...state, 
                 strategy: {
                     ...state.strategy,
                     strategyDescription: action.payload }
+                };
+        case 'set_investment':
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                    investment: action.payload }
                 };
         case 'set_lastrun':
             return { ...state, 
@@ -72,6 +84,12 @@ const strategyUpdateReducer = (state, action) => {
                     ...state.strategy,
                  regions: action.payload }
                 };
+        case 'set_volatility':
+            return { ...state, 
+                strategy: {
+                    ...state.strategy,
+                 volatility: action.payload }
+                };
         case 'set_strategytypes':
             return {
                 ...state,
@@ -122,7 +140,7 @@ const setStrategy =  dispatch => async (strategy) => {
     dispatch({ type: 'set_strategy', payload: strategy });
 };
 
-const getStrategyTemplate = dispatch => async () => {
+const getStrategyTemplate = dispatch => async (option) => {
     const token = await getToken();
     if (token) {
         try{
@@ -131,7 +149,7 @@ const getStrategyTemplate = dispatch => async () => {
             clearCacheEntry: false
           };
   
-          let response = await authApi.get(`/strategytemplate`, config);
+          let response = await authApi.get(`/strategytemplate/${option}`, config);
   
           dispatch({ type: 'set_strategy', payload: response.data });
         } catch(err) {
@@ -146,8 +164,16 @@ const updateName = dispatch => async (name) => {
     dispatch({ type: 'set_name', payload: name });
 }
 
+const updateIcon = dispatch => async (iconid) => {
+    dispatch({ type: 'set_icon', payload: iconid });
+}
+
 const updateDescription = dispatch => async (description) => {
     dispatch({ type: 'set_description', payload: description });
+}
+
+const updateInvestment = dispatch => async (investment) => {
+    dispatch({ type: 'set_investment', payload: investment });
 }
 
 const updateLastRun = dispatch => async (lastRun) => {
@@ -186,6 +212,10 @@ const updateRegions = dispatch => async (regions) => {
     dispatch({ type: 'set_regions', payload: regions });
 }
 
+const updateVolatility = dispatch => async (volatility) => {
+    dispatch({ type: 'set_volatility', payload: volatility });
+}
+
 const updateStrategyTypes = dispatch => async (strategyTypeIndex, updatedType) => {
     dispatch({ type: 'set_strategytypes', payload: {strategyTypeIndex, updatedType} });
 }
@@ -214,7 +244,8 @@ export const { Context, Provider } = createDataContext(
         updateUserId, updateEmail, updateDateAdded, updateDateModified,
         updateStatus, updateSectors, updateMeta, updateRegions,
         updateStrategyTypes, updateAssetClassAllocations, updateMarketCaps,
-        updateTickers, updateGlobalSpecifications, getStrategyTemplate
+        updateTickers, updateGlobalSpecifications, getStrategyTemplate,
+        updateVolatility, updateIcon, updateInvestment
     },
     { strategy : {} }
 );

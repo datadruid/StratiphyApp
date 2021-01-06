@@ -7,69 +7,82 @@ import CheckBox from '@react-native-community/checkbox';
 import TextFieldWithText from './TextFieldWithText';
 import { colors } from '../modules/Colors';
 
-const Volatility = ({ navigation, onSelected }) => {
-  const [index, setIndex] = useState(1);
-  const [volatility, setVolatility] = useState('40');
+const imageMap = {
+  'icLowRisk.png' : require('../../img/icons/icLowRisk.png'),
+  'icStar.png': require('../../img/icons/icStar.png'),
+  'icTinder.png': require('../../img/icons/icTinder.png')
+}
 
-  const onNextButtonPress = (id, value) => {
+const Volatility = ({ navigation, options, onSelected }) => {
+  const [vols, setVols] = useState(options);
+  const [index, setIndex] = useState(1);
+  const [volatilitySelection, setVolatilitySelection] = useState('Medium Volatility');
+  const [volatility, setVolatility] = useState('40');
+  const [customBorderColour, setCustomBorderColour] = useState(styles.inputnotselected);
+
+  const onNextButtonPress = (id, title, value) => {
+    setCustomBorderColour(styles.inputnotselected);
     setIndex(id);
     setVolatility(value);
+    setVolatilitySelection(title);
   };
 
   const onButtonPress = () => {
-    onSelected({ volatility: volatility });
+    onSelected({ 
+      preset : volatilitySelection,
+      volatility: volatility 
+    });
   };
 
-  const renderCard = (id, image, title, description, value) => {
-    let selected = {};
-    if (id == index) {
-      selected = styles.selectedcardinfo;
-    }
-    return (
-      <TouchableOpacity style={[styles.cardInfo, selected]} onPress={() => onNextButtonPress(id, value)}>
-        <View style={styles.cardItems}>
-          <View style={styles.tipLeftContainer} >
-            <Image source={image} resizeMode='contain' style={styles.tipImage} />
-          </View>
-          <View style={styles.icMiddleContainer} >
-            <Text style={styles.infoTitle}> {title}</Text>
-            <Text style={styles.infoDescription}>{description}
-            </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-    )
-  };
+  const setCustomVolatility = (text) => {
+    setCustomBorderColour(styles.inputselected);
+    setIndex(-1);
+    setVolatility(text);
+    setVolatilitySelection('custom');
+  }
 
   return (
     <>
       <View style={styles.horizontalTopContainer}>
         <Text style={styles.titleStyle}>Choose your volatility threshold</Text>
-        <FontAwesome style={styles.infoicon} size={20} name='info-circle' />
+        {/* <FontAwesome style={styles.infoicon} size={20} name='info-circle' /> */}
       </View>
       <Text style={styles.paragraph} numberOfLines={3}>{'Choose to invest in stocks with a maximum volatility according to your risk appetite.'}</Text>
       <KeyboardAwareScrollView>
-        <View style={styles.firstCard}>
-          {renderCard(0, require('../../img/icons/icLowRisk.png'), 'Low Volatility', 'Low volatility stocks are safer but return less.', '20')}
+        <View style={styles.firstCard}/>
+        {vols.map((item) => {
+          let selected = {};
+          if (item.id == index) {
+            selected = styles.selectedcardinfo;
+          }
+          return (
+            <TouchableOpacity key={item.id} style={[styles.cardInfo, selected]} onPress={() => onNextButtonPress(item.id, item.title, item.volatility)}>
+        <View style={styles.cardItems}>
+          <View style={styles.tipLeftContainer} >
+            <Image source={imageMap[item.image]} resizeMode='contain' style={styles.tipImage} />
+          </View>
+          <View style={styles.icMiddleContainer} >
+            <Text style={styles.infoTitle}> {item.preset}</Text>
+            <Text style={styles.infoDescription}>{item.desc}
+            </Text>
+          </View>
         </View>
-        {renderCard(1, require('../../img/icons/icStar.png'), 'Medium Volatility', 'Medium volatility stocks include a mixed risk/return profile.', '40')}
-        {renderCard(2, require('../../img/icons/icTinder.png'), 'High Volatility', 'Potentially higher returns but with higher risks.', '60')}
+      </TouchableOpacity>
+   )})}
         <Text style={styles.orText}>{'OR'}</Text>
         <View style={styles.horizontalTopContainer}>
           <Text style={styles.titleStyle}>Set your own threshold</Text>
-          <FontAwesome style={styles.infoicon} size={20} name='info-circle' />
+          {/* <FontAwesome style={styles.infoicon} size={20} name='info-circle' /> */}
         </View>
         <View style={{ marginHorizontal: 20 }}>
           <TextFieldWithText
             placeholderStyle={styles.placeholderStyle}
-            onInputChanged={this._onEmailChanged}
-            onInputSubmitted={this._onEmailSubmitted}
             onChangeText={text => {
-              setVolatility(text);
+              setCustomVolatility(text);
             }}
             value={volatility}
             postSymbol={'%'}
-            style={styles.input}
+            style={[styles.input, customBorderColour]}
             placeholder={''}
             rightText={'Maximum volatility'}
           />
@@ -117,8 +130,12 @@ const styles = StyleSheet.create({
     height: null,
     width: '100%',
     overflow: 'hidden',
+  },
+  inputnotselected: {
     borderColor: colors.coolGrey,
-
+  },
+  inputselected: {
+    borderColor: colors.yellowTheme,
   },
   titleStyle: {
     fontSize: 22,
@@ -176,8 +193,6 @@ const styles = StyleSheet.create({
     color: 'black'
   },
   firstCard: {
-
-
     marginTop: (30)
   },
   orText: {

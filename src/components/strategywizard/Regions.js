@@ -7,21 +7,24 @@ import { colors } from '../modules/Colors';
 
 const windowWidth = Dimensions.get('window').width;
 const imageMap = {
-  'icTech.png' : require('../../img/marketsectors/icTech.png'),
-  'icLeaf.png': require('../../img/marketsectors/icLeaf.png'),
-  'icFinance.png': require('../../img/marketsectors/icFinance.png')
+  'icUk.png' : require('../../img/regions/icUk.png'),
+  'icEurope.png' : require('../../img/regions/icEurope.png'),
+  'icNa.png' : require('../../img/regions/icNa.png'),
+  'icSa.png' : require('../../img/regions/icSa.png'),
+  'icMe.png' : require('../../img/regions/icMe.png'),
+  'icAsia.png' : require('../../img/regions/icAsia.png'),
+  'icAustralia.png' : require('../../img/regions/icAustralia.png'),
+  'icAfrica.png' : require('../../img/regions/icAfrica.png'),
 }
 
 const Regions = ({ navigation, onSelected, regionData }) => {
   const [sectors, setSectors] = useState(regionData);
   const [refresh, setRefresh] = useState(false);
 
-  console.log(sectors);
   const setToggleCheckBox = (item) => {
     let updates = sectors;
     let updater = updates.find(x=> x.id === item.id);
     let index = updates.indexOf(updater);
-    console.log(index);
     updater.selected = !updater.selected;
     updates.splice(index, 1, updater);
     setSectors(updates);

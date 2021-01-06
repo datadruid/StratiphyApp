@@ -1,28 +1,46 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, StatusBar, Image, Text, View, TouchableOpacity, ScrollView, Dimensions, ImageBackground } from 'react-native';
 import { Button, } from 'react-native-elements';
+import Modal from 'react-native-modal'
 import HeaderBack from '../components/strategywizard/HeaderBack';
+import Preview from '../components/strategy/Preview';
 import { colors } from '../components/modules/Colors';
+import { Context as UpdateContext } from '../context/StrategyUpdateContext';
+import { Context as StrategyContext } from '../context/StrategyContext';
 
 const StrategySummaryScreen = ({ navigation, index }) => {
+  const { state } = useContext(UpdateContext);
+  const { previewStrategy, uploadStrategy } = useContext(StrategyContext);
+  const [visible, setVisible] = useState(false);
 
-  onCardPress = () => {
+  let periodicities =state.strategy.strategyTypes.find(x=> x.setting !== 'none').specifications.periodicities;
+  let periods =state.strategy.strategyTypes.find(x=> x.setting !== 'none').specifications.periods;
+  let weightings =state.strategy.strategyTypes.find(x=> x.setting !== 'none').specifications.weightings;
+  let lookback = state.strategy.options.basicStrategySettingOptions.find(x=> x.periodicities == periodicities && x.periods == periods && x.weightings == weightings).label;
+
+  let strategyType = state.strategy.strategyTypes.find(x=> x.setting !== 'none').typeName;
+  let sectors = state.strategy.sectors.sectorsInclude.map(x=> x.tag ).join(", ");
+  
+  const openPreview = () => {
+    previewStrategy(state.strategy);
+    setVisible(true);
   };
 
-  onNextButtonPress = () => {
-      
+  const closePreview = () => {
+    setVisible(false);
   };
 
+  const saveStrategy = () => {
+    uploadStrategy(state.strategy);
+    setVisible(false);
+  };
 
-  renderCard = (id, image, title, description) => {
+  renderCard = (id, title, description) => {
   return (
     <TouchableOpacity style={styles.cardInfo} onPress={() => onCardPress(id)}>
       <View style={styles.cardItems}>
-        <View style={styles.tipLeftContainer} >
-          <Image source={image} resizeMode='contain' style={styles.tipImage} />
-        </View>
         <View style={styles.icMiddleContainer} >
-          <Text style={styles.infoTitle}> {title}</Text>
+          <Text style={styles.infoTitle}>{title}</Text>
           <Text style={styles.infoDescription}>{description}
           </Text>
         </View>
@@ -42,21 +60,26 @@ const StrategySummaryScreen = ({ navigation, index }) => {
       
       <ScrollView>
         <View style={styles.firstCard}>
-          {renderCard(0, require('../img/icons/icLowRisk.png'), 'Risk profile', 'Low Risk Strategy')}
+          {renderCard(0, 'Strategy type', strategyType)}
         </View>
-        {renderCard(1, require('../img/icons/icStar.png'), 'Momentum', 'Long term')}
-        {renderCard(2, require('../img/icons/icTinder.png'), 'Value', 'Short term')}
-        <Text style={styles.textBottom}>{'Get useful tips and advance your strategy with Stratiphy.'}</Text>
+        {renderCard(1, 'Lookback period', lookback)}
+        {renderCard(2, 'Sectors', sectors)}
 
         
       </ScrollView>
       <View style={styles.buttoncontainer}>
           <Button buttonStyle={styles.button}
-            onPress={onNextButtonPress}
+            onPress={openPreview}
             titleStyle={styles.buttontitle}
             title='Preview Performance'
             type='solid' />
         </View>
+
+        <Modal fullScreen={false}
+          style={styles.overlay} isVisible={visible} onBackdropPress={closePreview}>
+            <Preview strategy={state.strategy} saveStrategy={saveStrategy} closeWindow={closePreview}/>
+            
+          </Modal>
     </View>
 
   );
@@ -81,6 +104,11 @@ const styles = StyleSheet.create({
     height: 10,
 
   },
+  overlay: {
+    marginHorizontal:0,
+    marginTop: 95,
+    marginBottom: 0
+  },
   horizontalTopContainer: {
     flexDirection: 'row',
     width: '100%',
@@ -97,17 +125,12 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center',
     marginTop: (-10),
+    marginBottom: 10,
     textAlign:'left'
   },
   searchImage: {
     width: (30),
     height: (30)
-  },
-  infoDescription: {
-    color: colors.coolGrey,
-    fontSize: 14,
-    marginLeft: (5),
-    width: '72%'
   },
   discoverImage: {
     width: (330),
@@ -156,11 +179,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: (10),
     marginLeft: (5),
+    textTransform: 'capitalize'
   },
   infoTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: (5),
+    marginStart: 5,
     marginTop: (11)
   },
   cardInfo: {
@@ -170,7 +195,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: (120),
     alignSelf: 'center',
-    backgroundColor: colors.paleGrey,
     borderRadius: 12,
     marginBottom: 15,
   },

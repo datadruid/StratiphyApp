@@ -117,7 +117,7 @@ const previewStrategy = dispatch => async (strategy) => {
   }
 };
 
-const uploadStartegy = dispatch => async (strategy) => {
+const uploadStrategy = dispatch => async (strategy) => {
   const token = await getToken();
   if (token) {
     try{
@@ -278,7 +278,7 @@ export const { Context, Provider } = createDataContext(
   strategyReducer,
   {listStrategies, getStrategy, getInstructionList, getInstructionDetail, getTickerData, 
     getComparisonTickerData, getComparisonData, getComparisonChartData, toggleCompTickerList, 
-    setHighightedItem, clearErrorMessage, setTimePeriod, previewStrategy, uploadStartegy},
+    setHighightedItem, clearErrorMessage, setTimePeriod, previewStrategy, uploadStrategy},
   { strategies: [], strategy : { analytics: []}, strategyTemplate : { analytics: []}, tickerData : [], comparisonTickerData : [], 
   comparisonTabData: { Volatility: {}, SharpeRatio : {}, VAR: {}, PNL : {}, Yield: {}},
   comparisonData : [], comparisonChartData : [], compTickerList: [], instructions : [], 

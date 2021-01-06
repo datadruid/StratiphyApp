@@ -16,7 +16,6 @@ import Tickers from '../components/strategy/Tickers';
 import Preview from '../components/strategy/Preview';
 import { Context as UpdateContext } from '../context/StrategyUpdateContext';
 import { Context as StrategyContext } from '../context/StrategyContext';
-import moment from 'moment';
 
 const chartConfig = {
   backgroundColor: "",
@@ -34,7 +33,7 @@ const StrategySettingScreen = ({ navigation }) => {
   const item = navigation.getParam('item');
   const [visible, setVisible] = useState(false);
   const { state, setStrategy, updateName, updateDescription, updateDateModified } = useContext(UpdateContext);
-  const { previewStrategy, uploadStartegy } = useContext(StrategyContext);
+  const { previewStrategy, uploadStrategy } = useContext(StrategyContext);
     useEffect(() => {
       setStrategy(item);
   }, []); 
@@ -54,7 +53,7 @@ const StrategySettingScreen = ({ navigation }) => {
 
   const saveStrategy = () => {
     //updateDateModified(moment());
-    uploadStartegy(state.strategy);
+    uploadStrategy(state.strategy);
     setVisible(false);
   };
 

@@ -3,6 +3,7 @@ import { Text, TextInput, View, StyleSheet } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Button, } from 'react-native-elements';
 import TextFieldWithText from './TextFieldWithText';
+import Spacer from '../Spacer';
 import { colors } from '../modules/Colors';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
@@ -11,14 +12,27 @@ const currencyFormat = {
   currency: RNLocalize.getLocales()[0].languageTag
 };
 
-const NameStratgey = ({ navigation, onSelected }) => {
-  const [startingAmount, setStartingAmount] = useState('');
-  const [monthlyAmount, setMonthlyAmount] = useState('');
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+const NameStratgey = ({ navigation, investData, onSelected }) => {
+  const [startingAmount, setStartingAmount] = useState(investData.amounts.startingAmount);
+  const [monthlyAmount, setMonthlyAmount] = useState(investData.amounts.monthlyAmount);
+  const [name, setName] = useState(investData.name);
+  const [errorMessage, setErrorMessage] = useState(undefined);
+  const [description, setDescription] = useState(investData.description);
 
   const onButtonPress = () => {
-    onSelected({ amounts: { startingAmount, monthlyAmount } });
+    setErrorMessage(undefined);
+    if(name.length < 2)
+    {
+      setErrorMessage('You need to name this strategy');
+      return;
+    }
+    if(Number(startingAmount) == 0  && Number(monthlyAmount) == 0)
+    {
+      setErrorMessage('a starting or monthly amount is required');
+      return;
+    }
+    
+    onSelected({name, description, amounts :{ startingAmount, monthlyAmount }});
   };
 
   return (
@@ -60,7 +74,7 @@ const NameStratgey = ({ navigation, onSelected }) => {
             value={startingAmount}
             style={styles.input}
             preSymbol={getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}
-            placeholder={'10,000'}
+            placeholder={'0'}
             rightText={'Starting amount'}
           />
           <TextFieldWithText
@@ -78,7 +92,11 @@ const NameStratgey = ({ navigation, onSelected }) => {
             rightText={'Monthly contribution'}
           />
         </View>
-      
+        <Spacer />
+      {errorMessage ? (
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+      ) : null}
+      <Spacer/>
       <View style={styles.buttoncontainer}>
         <Button buttonStyle={styles.button}
           onPress={onButtonPress}
@@ -126,6 +144,12 @@ const styles = StyleSheet.create({
   discoverImage: {
     width: (330),
     height: (40),
+  },
+  errorMessage: {
+    fontSize: 16,
+    color: 'red',
+    marginLeft: 15,
+    marginTop: 15
   },
   formContainer: {
     width: '90%',

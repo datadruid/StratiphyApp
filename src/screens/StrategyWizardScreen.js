@@ -20,8 +20,11 @@ import { AddStrategy, RemoveStrategy } from '../components/modules/StrategyUpdat
 const windowWidth = Dimensions.get('window').width;
 
 const StrategyWizardScreen = ({ navigation }) => {
-  const { state, updateStrategyTypes, updateSectors, updateRegions } = useContext(UpdateContext);
+  const { state, updateStrategyTypes, updateSectors, updateRegions, updateVolatility, updateGlobalSpecifications, updateIcon, updateName, updateDescription, updateInvestment } = useContext(UpdateContext);
   const [selectedTypeId, setSelectedTypeId] = useState(-1);
+  const [strategyType, setStrategyType] = useState('');
+  const [selectedIcon, setSelectedIcon] = useState(0);
+  const [nameInvest, setNameInvest] = useState({ amounts: {} });
   const [pageNo, setPageNo] = useState(navigation.getParam('pageNo'));
   const pageTotal = 8;
 
@@ -32,12 +35,16 @@ const StrategyWizardScreen = ({ navigation }) => {
       });
     }
     let option = state.strategy.options.basicStrategySettingOptions[1];
+    setStrategyType(strategyType.strategyType);
     AddStrategy(state.strategy.strategyTypes, strategyType.strategyType, updateStrategyTypes, option, 'basic');
     setPageNo(pageNo + 1);
   };
 
   const lookBackPeriodSelected = (period) => {
     setSelectedTypeId(period.id);
+    let option = state.strategy.options.basicStrategySettingOptions[period.id];
+    AddStrategy(state.strategy.strategyTypes, strategyType, updateStrategyTypes, option, 'basic');
+
     setPageNo(pageNo + 1);
   };
 
@@ -56,25 +63,34 @@ const StrategyWizardScreen = ({ navigation }) => {
     setPageNo(pageNo + 1);
   };
 
-  const volatilitySelected = (id) => {
-    console.log(id);
+  const volatilitySelected = (volatility) => {
+    updateVolatility(volatility);
+    setPageNo(pageNo + 1);
+  };
+
+  const backtestSelected = (settings) => {
+    let globalSpecs = {
+      backtestingStart: settings.date, 
+      benchmarkName: settings.benchmark.toLowerCase(), 
+      emailUpdatesSetting: state.strategy.globalSpecifications.emailUpdatesSetting, 
+      updateFrequency: state.strategy.globalSpecifications.updateFrequency
+    };
+    updateGlobalSpecifications(globalSpecs);
     setPageNo(pageNo + 1);
   };
 
   const iconSelected = (icon) => {
-    console.log(icon);
+    setSelectedIcon(icon.iconid);
+    updateIcon(icon.iconid);
     setPageNo(pageNo + 1);
   };
 
-  const nameSelected = (name) => {
-    console.log(name);
-    // End of wizard
+  const nameInvestSelected = (data) => {
+    setNameInvest(data);
+    updateInvestment(data.amounts);
+    updateName(data.name);
+    updateDescription(data.description);
     navigation.navigate('StrategySummary');
-  };
-
-  const backtestSelected = (settings) => {
-    console.log(settings);
-    setPageNo(pageNo + 1);
   };
 
   const onBackPress = () => {
@@ -103,17 +119,17 @@ const StrategyWizardScreen = ({ navigation }) => {
 
       { pageNo === 2 ? <LookBackPeriod navigation={navigation} options={state.strategy.options.basicStrategySettingOptions} selected={selectedTypeId} onSelected={lookBackPeriodSelected} /> : null}
 
-      { pageNo === 3 ? <MarketSectors navigation={navigation} onSelected={marketSectorsSelected} /> : null}
+      { pageNo === 3 ? <MarketSectors navigation={navigation} sectorData={state.strategy.options.marketSectorOptions} onSelected={marketSectorsSelected} /> : null}
 
       { pageNo === 4 ? <Regions navigation={navigation} regionData={state.strategy.options.regionsOptions} onSelected={regionSelected} /> : null}
 
-      { pageNo === 5 ? <Volatility navigation={navigation} onSelected={volatilitySelected} /> : null}
+      { pageNo === 5 ? <Volatility navigation={navigation} options={state.strategy.options.strategyVolatityOptions} onSelected={volatilitySelected} /> : null}
 
-      { pageNo === 6 ? <BackTest navigation={navigation} onSelected={backtestSelected} /> : null}
+      { pageNo === 6 ? <BackTest navigation={navigation} options={state.strategy.options.strategyBenchmarkOptions} onSelected={backtestSelected} /> : null}
 
-      { pageNo === 7 ? <SetIcon navigation={navigation} onSelected={iconSelected} /> : null}
+      { pageNo === 7 ? <SetIcon navigation={navigation} selected={selectedIcon} onSelected={iconSelected} /> : null}
 
-      { pageNo === 8 ? <NameStratgey navigation={navigation} onSelected={nameSelected} /> : null}
+      { pageNo === 8 ? <NameStratgey navigation={navigation} investData={nameInvest} onSelected={nameInvestSelected} /> : null}
 
     </View>
   );
