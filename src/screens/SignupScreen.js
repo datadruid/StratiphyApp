@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Image, View, ActivityIndicator, KeyboardAvoidingView, ImageBackground, Button, Text, Input } from 'react-native';
+import { StyleSheet, Image, View, ActivityIndicator, KeyboardAvoidingView, ImageBackground, Button, Text } from 'react-native';
+import { Input } from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../theme-context';
@@ -59,7 +60,8 @@ const SignupScreen = ({ navigation }) => {
             setIndicator(!indicator);
             signup({ email })
           }}
-        >Next</Button>
+          title='Next'
+        />
       </Spacer>
     </View>
       </ImageBackground>

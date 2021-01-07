@@ -1,8 +1,8 @@
-import React, {useState, useContext} from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useContext} from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Text, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
-import { Text, Divider } from '@ui-kitten/components';
 import CheckBox from '@react-native-community/checkbox';
 import Spacer from '../../components/Spacer';
 
@@ -25,15 +25,15 @@ const MarketCaps = ({ strategy }) => {
         <>
          <Spacer />
           <View style={styles.settingheadercontainer}>
-            <Text style={styles.settingtitletext} category='h6' status='default'>Market Caps</Text>
+            <Text style={styles.settingtitletext} >Market Caps</Text>
           <Icon style={styles.icon} size={18} name='info-circle'/>
         </View>
         <Divider style={styles.shortdivider} />
           <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>Select Caps</Text>
+            <Text style={styles.settingtext} >Select Caps</Text>
             <View style={styles.multicontainer}>
               <View style={styles.settingcontainer}>
-                <Text tyle={styles.settingtext} category='label' status='default'>Small Cap</Text>
+                <Text tyle={styles.settingtext} >Small Cap</Text>
                 <CheckBox style={styles.circle}
                         lineWidth={1}
                             boxType='square'
@@ -46,7 +46,7 @@ const MarketCaps = ({ strategy }) => {
                             />
               </View>
               <View style={styles.settingcontainer}>
-                <Text tyle={styles.settingtext} category='label' status='default'>Mid Cap</Text>
+                <Text tyle={styles.settingtext} >Mid Cap</Text>
                 <CheckBox style={styles.circle}
                         lineWidth={1}
                             boxType='square'
@@ -59,7 +59,7 @@ const MarketCaps = ({ strategy }) => {
                             />
               </View>
               <View style={styles.settingcontainer}>
-                <Text tyle={styles.settingtext} category='label' status='default'>Large Cap</Text>
+                <Text tyle={styles.settingtext} >Large Cap</Text>
                 <CheckBox style={styles.circle}
                         lineWidth={1}
                             boxType='square'
@@ -72,7 +72,7 @@ const MarketCaps = ({ strategy }) => {
                             />
               </View>
               <View style={styles.settingcontainer}>
-                <Text tyle={styles.settingtext} category='label' status='default'>Supras Cap</Text>
+                <Text tyle={styles.settingtext} >Supras Cap</Text>
                 <CheckBox style={styles.circle}
                         lineWidth={1}
                             boxType='square'
@@ -86,7 +86,7 @@ const MarketCaps = ({ strategy }) => {
               </View>
             </View>
           </View>
-          <Divider style={styles.longdivider} />
+          <Divider style={styles.longdivider} /> 
     </>
     );
   };

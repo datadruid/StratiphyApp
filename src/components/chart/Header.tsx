@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SimpleLineIcons as Icon } from "@expo/vector-icons";
+//import { SimpleLineIcons as Icon } from "@expo/vector-icons";
 import { useNavigation } from "react-navigation-hooks";
 
 const styles = StyleSheet.create({
@@ -76,14 +76,14 @@ export default () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
           <View style={styles.header}>
-            <Icon.Button
+            {/* <Icon.Button
               name="arrow-left"
               color="#d3d3d3"
               size={32}
               style={styles.icon}
               onPress={() => goBack()}
               backgroundColor="transparent"
-            />
+            /> */}
             <View style={styles.rightColumn}>
               <Text style={styles.title}>ABC.L</Text>
               <Text style={styles.subtitle}>2.2k 24hr vol</Text>

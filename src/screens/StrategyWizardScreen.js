@@ -23,10 +23,13 @@ const StrategyWizardScreen = ({ navigation }) => {
   const { state, updateStrategyTypes, updateSectors, updateRegions, updateVolatility, updateGlobalSpecifications, updateIcon, updateName, updateDescription, updateInvestment } = useContext(UpdateContext);
   const [selectedTypeId, setSelectedTypeId] = useState(-1);
   const [strategyType, setStrategyType] = useState('');
-  const [selectedIcon, setSelectedIcon] = useState(0);
+  const [selectedIcon, setSelectedIcon] = useState(Math.floor(Math.random() * (50 - 0 + 1)) + 0);
   const [nameInvest, setNameInvest] = useState({ amounts: {} });
   const [pageNo, setPageNo] = useState(navigation.getParam('pageNo'));
   const pageTotal = 8;
+
+  console.log(selectedIcon);
+  console.log(state.strategy.iconid);
 
   const strategyTypeSelected = (strategyType) => {
     if (state.strategy.strategyTypes.filter(x => x.setting !== 'none').length > 0) {

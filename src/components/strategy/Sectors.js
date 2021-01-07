@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Divider } from '@ui-kitten/components';
+import { Text, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import TagInput from 'react-native-tags-input';
 import Spacer from '../../components/Spacer';
@@ -9,6 +9,7 @@ import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
 const Sectors = ({ strategy }) => {
   const { state, updateSectors } = useContext(UpdateContext);
 
+  console.log(strategy.sectors.sectorsInclude);
   const [intags, setIntags] = useState({
     tag: '',
     tagsArray: strategy.sectors.sectorsInclude.map(a => a.tag)
@@ -40,13 +41,13 @@ const Sectors = ({ strategy }) => {
     <>
       <Spacer />
       <View style={styles.settingheadercontainer}>
-        <Text style={styles.settingtitletext} category='h6' status='default'>Sectors</Text>
+        <Text style={styles.settingtitletext}>Sectors</Text>
         <Icon style={styles.icon} size={18} name='info-circle' />
       </View>
 
       <Divider style={styles.longdivider} />
       <View style={styles.settingcontainer}>
-        <Text style={styles.settingtext} category='p1' status='default'>Include Sectors</Text>
+        <Text style={styles.settingtext}>Include Sectors</Text>
         <View style={styles.multicontainer}>
           <TagInput style={styles.tagInput}
           containerStyle={styles.tagContainer}
@@ -60,7 +61,7 @@ const Sectors = ({ strategy }) => {
       </View>
       <Divider style={styles.shortdivider} />
       <View style={styles.settingcontainer}>
-        <Text style={styles.settingtext} category='p1' status='default'>Excude Sectors</Text>
+        <Text style={styles.settingtext}>Excude Sectors</Text>
         <View style={styles.multicontainer}>
           <TagInput style={styles.tagInput}
             containerStyle={styles.tagContainer}

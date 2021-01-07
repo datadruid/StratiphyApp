@@ -136,6 +136,26 @@ const uploadStrategy = dispatch => async (strategy) => {
 }
 };
 
+const deleteStrategy = dispatch => async (strategyid) => {
+  const token = await getToken();
+  if (token) {
+    try{
+      let config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+      let response = await authApi.delete(`/strategy/${strategyid}`, config);
+      if(!response.data.$undefined)
+      {
+        dispatch({ type: 'add_error', payload: 'Delete strategy failed.' });
+      }
+    } catch(err) {
+      dispatch({ type: 'add_error', payload: err.data.error });
+    }
+} else {
+  dispatch({ type: 'add_error', payload: 'No data acess token available' });
+}
+};
+
 const getInstructionList = dispatch => async (strategyID) => {
   const token = await getToken();
   if (token) {
@@ -278,7 +298,8 @@ export const { Context, Provider } = createDataContext(
   strategyReducer,
   {listStrategies, getStrategy, getInstructionList, getInstructionDetail, getTickerData, 
     getComparisonTickerData, getComparisonData, getComparisonChartData, toggleCompTickerList, 
-    setHighightedItem, clearErrorMessage, setTimePeriod, previewStrategy, uploadStrategy},
+    setHighightedItem, clearErrorMessage, setTimePeriod, previewStrategy, uploadStrategy, 
+    deleteStrategy },
   { strategies: [], strategy : { analytics: []}, strategyTemplate : { analytics: []}, tickerData : [], comparisonTickerData : [], 
   comparisonTabData: { Volatility: {}, SharpeRatio : {}, VAR: {}, PNL : {}, Yield: {}},
   comparisonData : [], comparisonChartData : [], compTickerList: [], instructions : [], 

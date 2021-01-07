@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { View, StyleSheet, Image, ActivityIndicator, KeyboardAvoidingView, ImageBackground, Button, Text, Input } from 'react-native';
+import { View, StyleSheet, Image, ActivityIndicator, KeyboardAvoidingView, ImageBackground, Button, Text } from 'react-native';
+import { Input } from 'react-native-elements';
 import { GoogleSocialButton } from "react-native-social-buttons";
 import {GoogleSignin} from 'react-native-google-signin';
 import Spacer from '../components/Spacer';
@@ -90,7 +91,8 @@ const SigninScreen = ({ navigation }) => {
             setIndicator(!indicator);
             updateEmailPasswordUser( email, password, hasName )
           }}
-        >Link Account</Button>
+          title='Link Account'
+        />
       </Spacer>
     </View>
       </ImageBackground>

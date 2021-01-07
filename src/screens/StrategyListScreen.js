@@ -1,20 +1,26 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-navigation';
-import { StyleSheet, Dimensions, View, FlatList, Text } from 'react-native';
+import { StyleSheet, Image, View, FlatList, Text, RefreshControl } from 'react-native';
 import { Context as StrategyContext } from '../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import StrategyListItem from '../components/StrategyListItem'
-import { getChartEndDate, getChartStartDate } from '../components/modules/UiHelper';
+import StrategyListItem from '../components/strategylist/StrategyListItem';
 
 const StrategyListScreen = ({ navigation }) => {
-  const screenWidth = Dimensions.get("window").width;
   const { state, listStrategies, clearErrorMessage } = useContext(StrategyContext);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
-    const listener = navigation.addListener('didFocus', () => {
-      listStrategies();
-    });
     listStrategies();
+  }, []);
+
+  const onRefresh = React.useCallback(async () => {
+    if(refreshing)
+    {
+      return;
+    }
+    setRefreshing(true);
+    await listStrategies();
+    setRefreshing(false);
   }, []);
 
   return (
@@ -22,7 +28,7 @@ const StrategyListScreen = ({ navigation }) => {
       <View style={styles.layoutcontainer}>
         <View style={styles.titleiconcontainer}>
           <Text style={styles.header}>My strategies</Text>
-          <Icon style={styles.infoicon} size={20} name='info-circle' />
+          {/* <Icon style={styles.infoicon} size={20} name='info-circle' /> */}
         </View>
         <View style={styles.content} >
           <FlatList
@@ -31,6 +37,7 @@ const StrategyListScreen = ({ navigation }) => {
             data={state.strategies}
             keyExtractor={(item, index) => item._id}
             renderItem={({ item }) => <StrategyListItem item={item} navigation={navigation} index={item._id} />}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           />
         </View>
       </View>

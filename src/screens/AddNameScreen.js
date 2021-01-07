@@ -1,5 +1,6 @@
 import React, { useContext,useState } from 'react';
-import { View, StyleSheet, Image, ActivityIndicator, KeyboardAvoidingView, ImageBackground, Button, Text, Input } from 'react-native';
+import { View, StyleSheet, Image, ActivityIndicator, KeyboardAvoidingView, ImageBackground, Button, Text } from 'react-native';
+import { Input } from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../theme-context';
@@ -55,7 +56,8 @@ const AddNameScreen = ({ navigation }) => {
             setIndicator(!indicator);
             addname({ firstName, lastName })
           }}
-        >Finish</Button>
+        title='Finish'
+        />
       </Spacer>
     </View>
       </ImageBackground>
