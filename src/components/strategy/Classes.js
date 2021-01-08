@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import { Text, Divider } from '@ui-kitten/components';
+import { Divider } from 'react-native-elements';
 import Slider from '@react-native-community/slider';
 import Spacer from '../../components/Spacer';
 import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
@@ -63,15 +63,15 @@ const Classes = ({ strategy }) => {
         <>
         <Spacer />
         <View style={styles.settingheadercontainer}>
-            <Text style={styles.settingtitletext} category='h6' status='default'>Asset Classes</Text>
+            <Text style={styles.settingtitletext} >Asset Classes</Text>
           <Icon style={styles.icon} size={18} name='info-circle'/>
         </View>
         <Divider style={styles.shortdivider} />
           <View style={styles.settingcontainer}>
-            <Text style={styles.settingtext} category='p1' status='default'>Select classes</Text>
+            <Text style={styles.settingtext} >Select classes</Text>
             <View style={styles.slidercontainer}>
               <View style={styles.settingcontainer}>
-                <Text tyle={styles.settingtext} category='label' status='default'>Stocks</Text>
+                <Text tyle={styles.settingtext} >Stocks</Text>
                 <Slider
                   style={styles.slider}
                   minimumValue={0}
@@ -175,7 +175,9 @@ marginTop: 8
     },
     settingtitletext: {
       textAlignVertical: "center",
-      paddingLeft: 15
+      paddingLeft: 15,
+      fontSize: 20,
+    fontWeight: 'bold'
     },
     longdivider: {
       borderBottomColor: 'lightgrey',

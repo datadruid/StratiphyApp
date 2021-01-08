@@ -42,6 +42,7 @@ const BackTest = ({ navigation, options, onSelected }) => {
                 mode='date'
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
+                date={date.toDate()}
             />
 
                 <View style={styles.scrollcontainer}>

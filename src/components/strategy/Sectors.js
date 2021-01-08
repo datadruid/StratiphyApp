@@ -9,7 +9,6 @@ import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
 const Sectors = ({ strategy }) => {
   const { state, updateSectors } = useContext(UpdateContext);
 
-  console.log(strategy.sectors.sectorsInclude);
   const [intags, setIntags] = useState({
     tag: '',
     tagsArray: strategy.sectors.sectorsInclude.map(a => a.tag)
@@ -134,7 +133,9 @@ const styles = StyleSheet.create({
   },
   settingtitletext: {
     textAlignVertical: "center",
-    paddingLeft: 15
+    paddingLeft: 15,
+    fontWeight:'bold',
+    fontSize:20
   },
   longdivider: {
     borderBottomColor: 'lightgrey',

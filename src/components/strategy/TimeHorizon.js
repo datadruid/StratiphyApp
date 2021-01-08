@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text } from '@ui-kitten/components';
+import { View, StyleSheet, Text } from 'react-native';
 import RadioButtons from '../../components/strategy/RadioButtons'
 import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
 import { AddStrategy } from '../modules/StrategyUpdates'
@@ -19,7 +18,7 @@ const TimeHorizon = ({ strategy }) => {
 
             return (
               <View style={styles.settingcontainer}>
-                <Text style={styles.settingtext} category='p1' status='default'>{strategy.options.strategyTypeOptions.find(x=> x.id === item.typeName).text} settings</Text>
+                <Text style={styles.settingtext} >{strategy.options.strategyTypeOptions.find(x=> x.id === item.typeName).text} lookback:</Text>
                 <View style={styles.container}>
                   <RadioButtons options={strategy.options.basicStrategySettingOptions} selectedId={strategy.options.basicStrategySettingOptions.find(x => x.periods === item.specifications.periods && x.periodicities === item.specifications.periodicities && x.weightings === item.specifications.weightings).id} selectedAction={optionselected} parentItem={item}/>
                 </View> 

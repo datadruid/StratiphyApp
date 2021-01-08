@@ -4,10 +4,13 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../modules/Colors';
 
 
-const StrategyType = ({ navigation, onSelected }) => {
+const StrategyType = ({ navigation, selected, onSelected }) => {
     const typeSelected = (strategyType) => {
         onSelected(strategyType);
     };
+
+    // let selectedTypes = selected.filter(x => x.setting !== 'none').map(x=> x.typeName)
+    // console.log(selectedTypes);
 
     renderItem = ({ item }) => {
         if(item.id > -1)

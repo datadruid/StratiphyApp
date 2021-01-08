@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, Divider } from '@ui-kitten/components';
+import { View, StyleSheet, Text } from 'react-native';
+import {  Divider } from 'react-native-elements';
 import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
 import CheckBox from '@react-native-community/checkbox';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -26,7 +26,7 @@ const Regions = ({ strategy }) => {
         <>
         <Spacer />
         <View style={styles.settingheadercontainer}>
-            <Text style={styles.settingtitletext} category='h6' status='default'>Regions</Text>
+            <Text style={styles.settingtitletext} >Regions</Text>
           <Icon style={[styles.icon, {color: '#FFC234'}]} size={18} name='info-circle'/>
         </View>
         <Divider style={styles.shortdivider} />
@@ -103,7 +103,9 @@ const Regions = ({ strategy }) => {
     },
     settingtitletext: {
       textAlignVertical: "center",
-      paddingLeft: 15
+      paddingLeft: 15,
+      fontSize: 20,
+    fontWeight: 'bold'
     },
     longdivider: {
       borderBottomColor: 'lightgrey',

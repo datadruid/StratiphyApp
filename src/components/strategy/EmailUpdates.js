@@ -1,8 +1,6 @@
 import React, {useContext} from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, Divider, List, RadioGroup, Radio, Layout } from '@ui-kitten/components';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import Spacer from '../../components/Spacer';
+import { View, StyleSheet, Text } from 'react-native';
+import { Divider } from 'react-native-elements';
 import RadioButtons from '../../components/strategy/RadioButtons'
 import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
 
@@ -23,7 +21,7 @@ const EmailUpdates = ({ strategy }) => {
     return (
         <>
           <View style={styles.settingcontainer}>
-              <Text style={styles.settingtext} category='p1' status='default'>Email updates</Text>
+              <Text style={styles.settingtext}>Email updates</Text>
               <View style={styles.container}>
                 <RadioButtons options={strategy.options.emailUpdatesOptions} selectedId={id} selectedAction={updateChanged} parentItem={strategy.globalSpecifications}/>
               </View> 

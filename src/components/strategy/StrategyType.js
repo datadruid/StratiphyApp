@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Overlay } from 'react-native-elements';
-import { Text, Divider, List, Layout } from '@ui-kitten/components';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { Overlay, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
 import { AddStrategy, RemoveStrategy } from '../modules/StrategyUpdates'
@@ -11,7 +10,7 @@ const StrategyType = ({ strategy }) => {
   const { state, updateStrategyTypes } = useContext(UpdateContext);
   const [visible, setVisible] = useState(false);
   const [updated, setUpdated] = useState(false);
-
+  
   if (updated) {
     setUpdated(false);
   }
@@ -38,18 +37,18 @@ const StrategyType = ({ strategy }) => {
   return (
     <View styles={styles.container}>
       <View style={styles.settingheadercontainer}>
-        <Text style={styles.settingtitletext} category='h6' status='default'>Strategy type</Text>
+        <Text style={styles.settingtitletext}>Strategy type</Text>
         <Icon style={[styles.icon, {color: '#FFC234'}]} size={18} name='info-circle' />
       </View>
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
         <View>
-          <Text category='h6' status='default'>Add a strategy</Text>
+          <Text>Add a strategy</Text>
           {
             strategy.strategyTypes.filter(x => x.setting === 'none').map(strategyType => {
               return (
                 <View>
                   <TouchableOpacity style={styles.touch} onPress={() => addStrategy(strategyType)}>
-                    <Text style={styles.settingtext} category='p1' status='default'>{strategy.options.strategyTypeOptions.find(x => x.id === strategyType.typeName).text}</Text>
+                    <Text style={styles.settingtext} >{strategy.options.strategyTypeOptions.find(x => x.id === strategyType.typeName).text}</Text>
                   </TouchableOpacity>
                 </View>
               );
@@ -62,17 +61,17 @@ const StrategyType = ({ strategy }) => {
         types.map(strategyType => {
 
           return (
-            <Layout key={strategyType.typeName} style={styles.settingcontainer}>
-              <Text style={styles.settingtext} category='p1' status='default'>{strategy.options.strategyTypeOptions.find(x => x.id === strategyType.typeName).text}</Text>
+            <View key={strategyType.typeName} style={styles.settingcontainer}>
+              <Text style={styles.settingtext} >{strategy.options.strategyTypeOptions.find(x => x.id === strategyType.typeName).text}</Text>
               <TouchableOpacity style={styles.touch} onPress={() => removeStrategy(strategyType)}>
                 <Icon style={styles.icon} size={20} name='minus' />
               </TouchableOpacity>
-            </Layout>
+            </View>
           );
         })}
 
       <View style={styles.settingcontainer}>
-        <Text style={styles.settingtext} category='p1' status='default'></Text>
+        <Text style={styles.settingtext} ></Text>
         <TouchableOpacity style={styles.touch} onPress={() => toggleOverlay()}>
           <Icon style={styles.icon} size={20} name='plus' />
         </TouchableOpacity>
@@ -109,7 +108,9 @@ const styles = StyleSheet.create({
   },
   settingtitletext: {
     textAlignVertical: 'center',
-    paddingLeft: 15
+    paddingLeft: 15,
+    fontSize: 20,
+    fontWeight: 'bold'
   },
   longdivider: {
     borderBottomColor: 'lightgrey',

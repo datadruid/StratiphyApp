@@ -1,8 +1,5 @@
 import React, {useEffect} from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, Divider, List, RadioGroup, Radio, Layout } from '@ui-kitten/components';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import Spacer from '../../components/Spacer';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 const RadioButtons = ({ options, selectedId, selectedAction, parentItem }) => {
     const [selectedIndex, setSelectedIndex] = React.useState(selectedId);

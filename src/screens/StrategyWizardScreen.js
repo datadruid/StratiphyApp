@@ -28,9 +28,6 @@ const StrategyWizardScreen = ({ navigation }) => {
   const [pageNo, setPageNo] = useState(navigation.getParam('pageNo'));
   const pageTotal = 8;
 
-  console.log(selectedIcon);
-  console.log(state.strategy.iconid);
-
   const strategyTypeSelected = (strategyType) => {
     if (state.strategy.strategyTypes.filter(x => x.setting !== 'none').length > 0) {
       state.strategy.strategyTypes.filter(x => x.setting !== 'none').forEach((stratType) => {
@@ -118,7 +115,7 @@ const StrategyWizardScreen = ({ navigation }) => {
       <View style={styles.progressContainer}>
         <Progress.Bar progress={pageNo / pageTotal} width={windowWidth - (40)} color={colors.yellowTheme} unfilledColor={colors.silver} borderWidth={0} />
       </View>
-      { pageNo === 1 ? <StrategyType navigation={navigation} onSelected={strategyTypeSelected} /> : null}
+      { pageNo === 1 ? <StrategyType navigation={navigation} selected={state.strategy.strategyTypes} onSelected={strategyTypeSelected} /> : null}
 
       { pageNo === 2 ? <LookBackPeriod navigation={navigation} options={state.strategy.options.basicStrategySettingOptions} selected={selectedTypeId} onSelected={lookBackPeriodSelected} /> : null}
 

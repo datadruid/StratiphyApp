@@ -3,10 +3,12 @@ import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
 import { Button, MenuItem, OverflowMenu } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { Context as StrategyContext } from '../../context/StrategyContext';
+//import { Context as UpdateContext } from '../../context/StrategyUpdateContext';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 const ItemOverlayMenu = ({ navigation, item }) => {
-    const { state, deleteStrategy, listStrategies } = useContext(StrategyContext);
+    const { deleteStrategy, listStrategies } = useContext(StrategyContext);
+    //const { setStrategy } = useContext(UpdateContext);
     const [spinnerVisible, setSpinnerVisible] = useState(false);
     const [visible, setVisible] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(null);
@@ -40,6 +42,8 @@ const ItemOverlayMenu = ({ navigation, item }) => {
         switch (index.row) {
             case 0:
                 navigation.navigate('StrategySetting', {item: item});
+                // setStrategy(item);
+                // navigation.navigate('StrategyWizard', { pageNo: 1});
                 break;
             case 1:
                 console.log('follow');

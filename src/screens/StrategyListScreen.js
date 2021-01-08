@@ -7,10 +7,10 @@ import StrategyListItem from '../components/strategylist/StrategyListItem';
 
 const StrategyListScreen = ({ navigation }) => {
   const { state, listStrategies, clearErrorMessage } = useContext(StrategyContext);
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    listStrategies();
+    onRefresh();
   }, []);
 
   const onRefresh = React.useCallback(async () => {
@@ -36,7 +36,7 @@ const StrategyListScreen = ({ navigation }) => {
             contentContainerStyle={styles.contentContainer}
             data={state.strategies}
             keyExtractor={(item, index) => item._id}
-            renderItem={({ item }) => <StrategyListItem item={item} navigation={navigation} index={item._id} />}
+            renderItem={({ item, index }) => <StrategyListItem item={item} navigation={navigation} index={index} list={state.strategies}/>}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           />
         </View>

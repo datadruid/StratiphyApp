@@ -133,10 +133,6 @@ const strategyUpdateReducer = (state, action) => {
 };
 
 const setStrategy =  dispatch => async (strategy) => {
-    console.log('setting strategy');
-    console.log(strategy);
-    // delete strategy.analytics;
-    // delete strategy.latestActions;
     dispatch({ type: 'set_strategy', payload: strategy });
 };
 

@@ -55,6 +55,7 @@ const StrategySettingScreen = ({ navigation }) => {
     //updateDateModified(moment());
     uploadStrategy(state.strategy);
     setVisible(false);
+    navigation.navigate('StrategyList');
   };
 
   if(state.strategy.UserID)
@@ -79,7 +80,6 @@ const StrategySettingScreen = ({ navigation }) => {
             label='Name:'
             onChangeText={nextValue => updateName(nextValue)}
           />
-         <Spacer />
          <Input 
           style={styles.input}
           inputContainerStyle ={styles.inputcontainer}
@@ -94,7 +94,7 @@ const StrategySettingScreen = ({ navigation }) => {
 
         <Spacer />
           <View style={styles.settingheadercontainer}>
-            <Text style={styles.settingtitletext} category='h6' status='default'>Timings</Text>
+            <Text style={styles.settingtitletext} >Timings</Text>
             <Icon style={[styles.icon, {color: '#FFC234'}]} size={18} name='info-circle'/>
           </View>
 
@@ -110,6 +110,8 @@ const StrategySettingScreen = ({ navigation }) => {
           <EmailUpdates strategy={state.strategy}/>
 
           <Regions strategy={state.strategy}/> 
+
+          <Sectors strategy={state.strategy}/> 
 
           <Classes strategy={state.strategy}/> 
        
@@ -233,7 +235,9 @@ const styles = StyleSheet.create({
   },
   settingtitletext: {
     textAlignVertical: "center",
-    paddingLeft: 15
+    paddingLeft: 15,
+    fontSize: 20,
+    fontWeight: 'bold'
   },
   header: {
     width:240,

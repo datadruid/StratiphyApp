@@ -10,7 +10,7 @@ import { Context as StrategyContext } from '../context/StrategyContext';
 
 const StrategySummaryScreen = ({ navigation, index }) => {
   const { state } = useContext(UpdateContext);
-  const { previewStrategy, uploadStrategy } = useContext(StrategyContext);
+  const { previewStrategy, uploadStrategy, listStrategies } = useContext(StrategyContext);
   const [visible, setVisible] = useState(false);
 
   let periodicities =state.strategy.strategyTypes.find(x=> x.setting !== 'none').specifications.periodicities;
@@ -30,9 +30,11 @@ const StrategySummaryScreen = ({ navigation, index }) => {
     setVisible(false);
   };
 
-  const saveStrategy = () => {
-    uploadStrategy(state.strategy);
+  const saveStrategy = async () => {
     setVisible(false);
+    await uploadStrategy(state.strategy);
+    listStrategies();
+    navigation.navigate('StrategyList');
   };
 
   renderCard = (id, title, description) => {
