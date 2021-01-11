@@ -7,11 +7,13 @@ import Preview from '../components/strategy/Preview';
 import { colors } from '../components/modules/Colors';
 import { Context as UpdateContext } from '../context/StrategyUpdateContext';
 import { Context as StrategyContext } from '../context/StrategyContext';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const StrategySummaryScreen = ({ navigation, index }) => {
   const { state } = useContext(UpdateContext);
   const { previewStrategy, uploadStrategy, listStrategies } = useContext(StrategyContext);
   const [visible, setVisible] = useState(false);
+  const [spinnerVisible, setSpinnerVisible] = useState(false);
 
   let periodicities =state.strategy.strategyTypes.find(x=> x.setting !== 'none').specifications.periodicities;
   let periods =state.strategy.strategyTypes.find(x=> x.setting !== 'none').specifications.periods;
@@ -32,9 +34,14 @@ const StrategySummaryScreen = ({ navigation, index }) => {
 
   const saveStrategy = async () => {
     setVisible(false);
+    setSpinnerVisible(true);
+    let timer = setTimeout(() => {
+        setSpinnerVisible(false);
+    }, 5000);
     await uploadStrategy(state.strategy);
-    listStrategies();
+    navigation.navigate('StrategyCreate');
     navigation.navigate('StrategyList');
+    listStrategies();
   };
 
   renderCard = (id, title, description) => {
@@ -52,6 +59,11 @@ const StrategySummaryScreen = ({ navigation, index }) => {
 
   return (
     <View style={styles.mainContainer}>
+      <Spinner
+                visible={spinnerVisible}
+                textContent={'Saving...'}
+                textStyle={styles.spinnerTextStyle}
+            />
       <HeaderBack text={''} navigation={navigation} onPress={() => navigation.goBack()} />
 
       <View style={styles.horizontalTopContainer}>

@@ -9,19 +9,19 @@ const windowWidth = Dimensions.get('window').width;
 const StrategyCreateScreen = ({ navigation }) => {
   const { state, getStrategyTemplate} = useContext(UpdateContext);
 
-  const onNextButtonPress = (id) => {
+  const onNextButtonPress = (id, title) => {
     getStrategyTemplate(id);
     if(id === 0) {
-      navigation.navigate('StrategyWizard', { pageNo: 1});
+      navigation.navigate('StrategyWizard', { pageNo: 1, showtotal: true});
     } else {
-      navigation.navigate('StrategyWizard', {pageNo: 7});
+      navigation.navigate('StrategyWizard', {pageNo: 7, showtotal: false, title: title});
     }
   };
 
   const renderCard = (id, image, title, description) => {
 
     return (
-    <TouchableOpacity style={styles.cardInfo} onPress={() => onNextButtonPress(id)}>
+    <TouchableOpacity style={styles.cardInfo} onPress={() => onNextButtonPress(id, title)}>
       <View style={styles.cardItems}>
         <View style={styles.tipLeftContainer} >
           <Image source={image} resizeMode='contain' style={styles.tipImage} />

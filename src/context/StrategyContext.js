@@ -74,7 +74,7 @@ const loadStrategyData = dispatch => async (index, strategyID, timePeriod, strat
     try {
       let config = {
         headers: { Authorization: `Bearer ${token}` },
-        clearCacheEntry: false
+        clearCacheEntry: true
       };
 
       let response = await authApi.get(`/strategy/${strategyID}/${timePeriod}`, config);
@@ -118,6 +118,8 @@ const previewStrategy = dispatch => async (strategy) => {
         headers: { Authorization: `Bearer ${token}` },
         clearCacheEntry: true
       };
+
+      dispatch({ type: 'preview_strategy', payload: [] });
 
       let response = await authApi.post(`/previewstrategy/`, { strategy }, config);
 
@@ -168,7 +170,6 @@ const runStrategy = dispatch => async (strategyid) => {
       };
 
       let response = await authApi.get(`/runstrategy/${strategyid}`, config);
-      //console.log(response.data);
 
     } catch (err) {
       console.log(err.data.error);
@@ -189,14 +190,13 @@ const getStrategyStatus = dispatch => async (strategyid) => {
         clearCacheEntry: true
       };
 
-      console.log('running get status');
       let updatedPercent = 0;
       for (let i = 1; i < 91; i++) {
         setTimeout(async function timer() {
           if (updatedPercent >= 1)
             return;
           let response = await authApi.get(`/strategystatus/${strategyid}`, config);
-          //console.log(response.data);
+
           let result = response.data[0].status;
           if (result.includes('run start')) {
             updatedPercent = 0.1;

@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from 'react';
-import { StyleSheet, TouchableOpacity, View, Dimensions, Text, Image } from 'react-native';
+import React, { useEffect, useContext, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View, Dimensions, Text, Image, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { LineChart } from 'react-native-chart-kit';
 import * as RNLocalize from "react-native-localize";
@@ -20,24 +20,24 @@ const currencyFormat = {
 
 const StrategyListItem = ({ navigation, item, index, list }) => {
   const { state, loadStrategyData, runStrategy, getStrategyStatus } = useContext(StrategyContext);
+  const [isLoaded, setIsloaded] = useState(false);
   let slimList = item.analytics[0].data.map(a => a.value);
   let updatedPercent = state.processingStatus;
-  //console.log(updatedPercent);
-  useEffect(() => {
+  if (!isLoaded && slimList.length === 0 && updatedPercent === 1) {
     loadStrategyData(index, item._id, 4, list);
-    //console.log(item.status);
-    if (item.status.includes('added')) {
-      console.log('added');
+    setIsloaded(true);
+  }
+  useEffect(() => {
+    // console.log(item._id);
+    loadStrategyData(index, item._id, 4, list);
+    if (item?.status?.includes('added')) {
       runStrategy(item._id);
       getStrategyStatus(item._id);
-    } else if (item.status.includes('run start')) {
-      console.log('run start');
+    } else if (item?.status?.includes('run start')) {
       getStrategyStatus(item._id);
     }
-    
+
   }, [list]);
-
-
 
   const openDetail = (item) => {
     navigation.navigate('StrategyDetail', { item: item });
@@ -131,9 +131,9 @@ const StrategyListItem = ({ navigation, item, index, list }) => {
               </View>
             </View>
           }
-          {!shownumbers &&
+          {!shownumbers && updatedPercent < 1 &&
             <View style={styles.box5}>
-              <Progress.Bar progress={updatedPercent} width={200} color={colors.yellowTheme}/>
+              <Progress.Bar progress={updatedPercent} width={200} color={colors.yellowTheme} />
             </View>
           }
         </View>

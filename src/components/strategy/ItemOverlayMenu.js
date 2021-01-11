@@ -14,34 +14,36 @@ const ItemOverlayMenu = ({ navigation, item }) => {
     const [selectedIndex, setSelectedIndex] = useState(null);
 
     const createTwoButtonAlert = (item) =>
-    Alert.alert(
-      "Delete strategy",
-      "are you sure you want to delete this strategy?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel"
-        },
-        { text: "OK", onPress: async () => {
-            setSpinnerVisible(true);
-            let timer = setTimeout(() => {
-                Alert.alert('Timed out', 'the delete action took to long, please try again.');
-                setSpinnerVisible(false);
-              }, 5000);
-            
-            await deleteStrategy(item._id);
-            await listStrategies();
-            clearTimeout(timer);
-            setSpinnerVisible(false);
-        } }
-      ],
-      { cancelable: false }
-    );
+        Alert.alert(
+            "Delete strategy",
+            "are you sure you want to delete this strategy?",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                {
+                    text: "OK", onPress: async () => {
+                        setSpinnerVisible(true);
+                        let timer = setTimeout(() => {
+                            Alert.alert('Timed out', 'the delete action took to long, please try again.');
+                            setSpinnerVisible(false);
+                        }, 10000);
+
+                        await deleteStrategy(item._id);
+                        await listStrategies();
+                        clearTimeout(timer);
+                        setSpinnerVisible(false);
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
 
     const onItemSelect = (index) => {
         switch (index.row) {
             case 0:
-                navigation.navigate('StrategySetting', {item: item});
+                navigation.navigate('StrategySetting', { item: item });
                 // setStrategy(item);
                 // navigation.navigate('StrategyWizard', { pageNo: 1});
                 break;
@@ -85,7 +87,7 @@ const ItemOverlayMenu = ({ navigation, item }) => {
                 visible={spinnerVisible}
                 textContent={'Deleting...'}
                 textStyle={styles.spinnerTextStyle}
-                />
+            />
             <OverflowMenu
                 style={styles.overflowmenu}
                 anchor={renderToggleButton}
@@ -121,9 +123,9 @@ const styles = StyleSheet.create({
     menuitem: {
         fontSize: 10
     },
-    spinnerTextStyle: { 
+    spinnerTextStyle: {
         color: '#FFF'
-      },
+    },
 });
 
 export default ItemOverlayMenu;

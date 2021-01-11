@@ -3,7 +3,7 @@ import { View, StyleSheet, TextInput, Text } from 'react-native';
 import { colors } from '../modules/Colors';
 
 const TextFieldWithText = ({ placeholder, secureTextEntry, value, onChangeText, rightText, style, preSymbol, postSymbol }) => {
-  
+
   return (
     <View style={[styles.mainView, style]}>
       <Text style={styles.preSymbol}>{preSymbol}</Text>

@@ -5,7 +5,7 @@ import { Context as StrategyContext } from '../../context/StrategyContext';
 import AIcon from 'react-native-vector-icons/dist/FontAwesome';
 import MIcon from 'react-native-vector-icons/dist/MaterialIcons';
 import PreviewLineChart from './PreviewLineChart';
-import {getDateFilterButtonLabels} from '../modules/UiHelper'
+import {getDateFilterButtonLabels} from '../modules/UiHelper';
 
 const mastercolour = '#4CD697';
 let linecolour = '#FFFFFF';

@@ -16,5 +16,5 @@ const cache = setupCache({
 
 export default axios.create({
   adapter: cache.adapter,
-  baseURL: 'https://datadruid.herokuapp.com' // 'http://localhost:3000' // 
+  baseURL: 'https://datadruid.herokuapp.com' //'http://localhost:3000' //  
 });

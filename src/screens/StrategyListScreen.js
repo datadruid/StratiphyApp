@@ -8,6 +8,7 @@ import StrategyListItem from '../components/strategylist/StrategyListItem';
 const StrategyListScreen = ({ navigation }) => {
   const { state, listStrategies, clearErrorMessage } = useContext(StrategyContext);
   const [refreshing, setRefreshing] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     onRefresh();
@@ -35,8 +36,9 @@ const StrategyListScreen = ({ navigation }) => {
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
             data={state.strategies}
+            extraData={refresh}
             keyExtractor={(item, index) => item._id}
-            renderItem={({ item, index }) => <StrategyListItem item={item} navigation={navigation} index={index} list={state.strategies}/>}
+            renderItem={({ item, index }) => <StrategyListItem item={item} navigation={navigation} index={index} list={state.strategies} />}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           />
         </View>

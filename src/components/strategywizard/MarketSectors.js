@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, FlatList, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { Button, } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CheckBox from '@react-native-community/checkbox';
@@ -7,12 +7,12 @@ import { colors } from '../modules/Colors';
 
 const windowWidth = Dimensions.get('window').width;
 const imageMap = {
-  'icTech.png' : require('../../img/marketsectors/icTech.png'),
-  'icLeaf.png' : require('../../img/marketsectors/icLeaf.png'),
-  'icFinance.png' : require('../../img/marketsectors/icFinance.png'),
-  'icHeart.png' : require('../../img/marketsectors/icHeart.png'),
-  'icConstruction.png' : require('../../img/marketsectors/icConstruction.png'),
-  'icManufacture.png' : require('../../img/marketsectors/icManufacture.png'),
+  'icTech.png': require('../../img/marketsectors/icTech.png'),
+  'icLeaf.png': require('../../img/marketsectors/icLeaf.png'),
+  'icFinance.png': require('../../img/marketsectors/icFinance.png'),
+  'icHeart.png': require('../../img/marketsectors/icHeart.png'),
+  'icConstruction.png': require('../../img/marketsectors/icConstruction.png'),
+  'icManufacture.png': require('../../img/marketsectors/icManufacture.png'),
 }
 
 const MarketSectors = ({ navigation, sectorData, onSelected }) => {
@@ -29,7 +29,13 @@ const MarketSectors = ({ navigation, sectorData, onSelected }) => {
   };
 
   const onButtonPress = () => {
-    onSelected(sectors);
+    console.log(sectors)
+    if (sectors.filter(x => x.selected).length > 0) {
+      onSelected(sectors);
+    } else {
+      Alert.alert('Sectors', 'you need to select at least one sector');
+    }
+
   };
 
   const renderItem = ({ item }) => {
@@ -60,7 +66,7 @@ const MarketSectors = ({ navigation, sectorData, onSelected }) => {
         renderItem={renderItem}
       />
 
-      <View style={styles.defaultViewContainer}>
+      {/* <View style={styles.defaultViewContainer}>
         <CheckBox
           style={styles.box}
           disabled={false}
@@ -69,15 +75,15 @@ const MarketSectors = ({ navigation, sectorData, onSelected }) => {
           onValueChange={(newValue) => setToggleCheckBox(newValue)}
         />
         <Text style={styles.defaultText}>Set as default</Text>
-      </View>
+      </View> */}
 
       <View style={styles.buttoncontainer}>
-          <Button buttonStyle={styles.button}
-            onPress={onButtonPress}
-            titleStyle={styles.buttontitle}
-            title='Next'
-            type='solid' />
-        </View>
+        <Button buttonStyle={styles.button}
+          onPress={onButtonPress}
+          titleStyle={styles.buttontitle}
+          title='Next'
+          type='solid' />
+      </View>
 
     </>
   )
@@ -272,12 +278,12 @@ const styles = StyleSheet.create({
   },
   buttoncontainer: {
     marginHorizontal: 20,
-    marginBottom: 30
+    marginBottom: 10
   },
   button: {
     backgroundColor: colors.yellowTheme,
     borderRadius: 12,
-    height:60
+    height: 60
   },
   buttontitle: {
     fontWeight: 'bold'

@@ -3,7 +3,7 @@ import { SafeAreaView, Text, View, TouchableOpacity, StyleSheet } from 'react-na
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { colors } from '../modules/Colors';
 
-const HeaderBack = ({ text, navigation, onPress }) => {
+const HeaderBack = ({ text, navigation, showtotal, onPress }) => {
     return (
         <SafeAreaView style={styles.mainContainer}>
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignContent: 'center' }}>
@@ -13,9 +13,11 @@ const HeaderBack = ({ text, navigation, onPress }) => {
                     </View>
                 </TouchableOpacity>
                 <View style={styles.textcontainer}>
+                    { showtotal &&
                     <Text style={[styles.text]}>
                         {text}
                     </Text>
+                    }
                 </View>
             </View>
         </SafeAreaView>

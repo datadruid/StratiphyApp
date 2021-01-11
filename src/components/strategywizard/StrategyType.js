@@ -1,45 +1,54 @@
-import React, { useContext } from 'react';
-import { StyleSheet, View, Text, Image, FlatList, StatusBar, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Image, FlatList, StatusBar, TouchableOpacity, Alert } from 'react-native';
+import { Button } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../modules/Colors';
 
 
-const StrategyType = ({ navigation, selected, onSelected }) => {
+const StrategyType = ({ navigation, selected, onSelected, nextPage }) => {
+
     const typeSelected = (strategyType) => {
         onSelected(strategyType);
     };
 
-    // let selectedTypes = selected.filter(x => x.setting !== 'none').map(x=> x.typeName)
-    // console.log(selectedTypes);
+    const onButtonPress = () => {
+        if (selected?.filter(x => x.setting !== 'none').length > 0) {
+            nextPage();
+        } else {
+            Alert.alert('Strategy type', 'you need to select a strategy type');
+        }
+    };
 
     renderItem = ({ item }) => {
-        if(item.id > -1)
-        {
-        return (
-            <TouchableOpacity onPress={() => typeSelected({strategyType : item.key})}>
-          <View style={[styles.listItem, { backgroundColor: item.backgroundColor }]}>
-            <View style={styles.titleTop}>
-              <View style={styles.leftContainer} >
-              </View>
-              <View style={styles.midlleContainer} >
-                <Text numberOfLines={1} style={styles.cardTitle}>{item.title}</Text>
-                <Text numberOfLines={4} style={styles.description}>{item.short_desc}</Text>
-              </View>
-              <View style={styles.rightContainer}>
-                {/* <TouchableOpacity style={styles.pressStyle} onPress={() => typeInfo()}>
+        let border = {};
+        if (item.id > -1) {
+            if (selected?.filter(x => x.setting !== 'none').map(x => x.typeName).includes(item.key)) {
+                border = styles.cardInfoSelected;
+            }
+            return (
+                <TouchableOpacity onPress={() => typeSelected({ strategyType: item.key })}>
+                    <View style={[styles.listItem, { backgroundColor: item.backgroundColor }, border]}>
+                        <View style={styles.titleTop}>
+                            <View style={styles.leftContainer} >
+                            </View>
+                            <View style={styles.midlleContainer} >
+                                <Text numberOfLines={1} style={styles.cardTitle}>{item.title}</Text>
+                                <Text numberOfLines={4} style={styles.description}>{item.short_desc}</Text>
+                            </View>
+                            <View style={styles.rightContainer}>
+                                {/* <TouchableOpacity style={styles.pressStyle} onPress={() => typeInfo()}>
                   <FontAwesome style={styles.infoicon} size={20} name='info-circle' />
                 </TouchableOpacity> */}
-              </View>
-            </View>
-            <View style={[{width: '104%', height:'80%', left:-7 }, item.offset]} >
-              <Image source={item.backgroundImage} style={styles.bottomImage}/>
-            </View >
-          </View >
-          </TouchableOpacity>
-        )
+                            </View>
+                        </View>
+                        <View style={[{ width: '104%', height: '80%', left: -7 }, item.offset]} >
+                            <Image source={item.backgroundImage} style={styles.bottomImage} />
+                        </View >
+                    </View >
+                </TouchableOpacity>
+            )
         }
-        else
-        {
+        else {
             return (
                 <View style={styles.cardInfo}>
                     <View style={styles.tipContainer}>
@@ -56,7 +65,7 @@ const StrategyType = ({ navigation, selected, onSelected }) => {
                 </View>
             )
         }
-      }
+    }
 
     return (
         <>
@@ -65,7 +74,7 @@ const StrategyType = ({ navigation, selected, onSelected }) => {
                 <FontAwesome style={styles.infoicontop} size={20} name='info-circle' />
             </View>
             <View style={styles.secondContainer}>
-            <Text style={styles.paragraph} numberOfLines={3}>{'Choose what type of strategy to build.'}</Text>
+                <Text style={styles.paragraph} numberOfLines={3}>{'Choose what type of strategy to build.'}</Text>
                 <FlatList
                     style={styles.listContainer}
                     data={data}
@@ -73,9 +82,17 @@ const StrategyType = ({ navigation, selected, onSelected }) => {
                     keyExtractor={(item, index) => item.id.toString()}
                     contentContainerStyle={{ flexGrow: 1 }}
                     ListFooterComponentStyle={{ flex: 1, justifyContent: 'flex-end' }}
-                    ListFooterComponent={<View style={{ height: 100, width: 100 }}></View>}
                 />
             </View>
+
+            <View style={styles.buttoncontainer}>
+                <Button buttonStyle={styles.button}
+                    onPress={onButtonPress}
+                    titleStyle={styles.buttontitle}
+                    title='Next'
+                    type='solid' />
+            </View>
+
         </>
     )
 };
@@ -93,9 +110,9 @@ const styles = StyleSheet.create({
         marginTop: -10
     },
     cardInfoSelected: {
-        borderWidth: 2,
+        borderWidth: 3,
         borderColor: colors.yellowTheme,
-      },
+    },
     horizontalTopContainer: {
         flexDirection: 'row',
         width: '100%',
@@ -228,12 +245,24 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     tipContainer: {
-
         flex: 1,
         flexDirection: 'row',
         backgroundColor: colors.paleGrey,
         borderRadius: 12,
         marginBottom: 5
+    },
+    buttoncontainer: {
+        marginHorizontal: 20,
+        marginTop: 10,
+        marginBottom: 10
+    },
+    button: {
+        backgroundColor: colors.yellowTheme,
+        borderRadius: 12,
+        height: 60
+    },
+    buttontitle: {
+        fontWeight: 'bold'
     },
 });
 
@@ -248,7 +277,7 @@ const data = [
         short_desc: 'Invest in assets whose prices have risen the most, and sell those that have fallen the most.',
         backgroundImage: require('../../img/strategytypes/icMomentumChart.png'),
         backgroundColor: colors.lightishBlue,
-        selected : false,
+        selected: false,
         offset: { top: 0 }
     },
     {
@@ -258,7 +287,7 @@ const data = [
         short_desc: 'Invest in assets that are most undervalued,and sell those that are most overvalued.',
         backgroundImage: require('../../img/strategytypes/icMomentumValue.png'),
         backgroundColor: colors.lightPurple,
-        selected : false,
+        selected: false,
         top: { top: 0 }
     },
     {
@@ -268,7 +297,7 @@ const data = [
         short_desc: 'Invest in assets that are oversold, and sell assets that are overbought.,',
         backgroundImage: require('../../img/strategytypes/icStreghtChart.png'),
         backgroundColor: colors.blue,
-        selected : false,
+        selected: false,
         offset: { top: 25 }
     },
     {
@@ -278,7 +307,7 @@ const data = [
         short_desc: 'Invest in assets whose traded volume rises before its price does, and sell those whose traded volume falls before its price does.',
         backgroundImage: require('../../img/strategytypes/icStrenght2.png'),
         backgroundColor: '#8609ca',
-        selected : false,
+        selected: false,
         offset: { top: -15 }
     },
 ]

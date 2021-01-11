@@ -87,16 +87,15 @@ const Volatility = ({ navigation, options, onSelected }) => {
             rightText={'Maximum volatility'}
           />
         </View>
-
-
-        <View style={styles.buttoncontainer}>
+        
+      </KeyboardAwareScrollView>
+      <View style={styles.buttoncontainer}>
           <Button buttonStyle={styles.button}
             onPress={onButtonPress}
             titleStyle={styles.buttontitle}
             title='Next'
             type='solid' />
         </View>
-      </KeyboardAwareScrollView>
     </>
   )
 };
@@ -213,7 +212,8 @@ const styles = StyleSheet.create({
   },
   buttoncontainer: {
     marginHorizontal: 20,
-    margin: 20
+    margin: 20,
+    marginBottom:10
   },
   button: {
     backgroundColor: colors.yellowTheme,

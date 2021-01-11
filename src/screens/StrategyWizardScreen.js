@@ -24,28 +24,37 @@ const StrategyWizardScreen = ({ navigation }) => {
   const [selectedTypeId, setSelectedTypeId] = useState(-1);
   const [strategyType, setStrategyType] = useState('');
   const [selectedIcon, setSelectedIcon] = useState(Math.floor(Math.random() * (50 - 0 + 1)) + 0);
-  const [nameInvest, setNameInvest] = useState({ amounts: {} });
+  const [nameInvest, setNameInvest] = useState({ amounts: { startingAmount: '10000', monthlyAmount : '0' } });
   const [pageNo, setPageNo] = useState(navigation.getParam('pageNo'));
-  const pageTotal = 8;
+  const [showtotal, setShowtotal] = useState(navigation.getParam('showtotal'));
+  const [title, setTitle] = useState('');
+  const [pageTotal, setPageTotal] = useState(7);
+  
+  if(navigation.getParam('title') && !title)
+  {
+    setTitle(navigation.getParam('title'));
+  } 
+
+  const nextPage = () => {
+    setPageNo(pageNo + 1);
+  };
 
   const strategyTypeSelected = (strategyType) => {
+    setTitle(strategyType.strategyType);
     if (state.strategy.strategyTypes.filter(x => x.setting !== 'none').length > 0) {
-      state.strategy.strategyTypes.filter(x => x.setting !== 'none').forEach((stratType) => {
+      state.strategy.strategyTypes.filter(x => x.setting !== 'none').forEach( (stratType) => {
         RemoveStrategy(state.strategy.strategyTypes, stratType.typeName, updateStrategyTypes)
       });
     }
     let option = state.strategy.options.basicStrategySettingOptions[1];
     setStrategyType(strategyType.strategyType);
     AddStrategy(state.strategy.strategyTypes, strategyType.strategyType, updateStrategyTypes, option, 'basic');
-    setPageNo(pageNo + 1);
   };
 
   const lookBackPeriodSelected = (period) => {
     setSelectedTypeId(period.id);
     let option = state.strategy.options.basicStrategySettingOptions[period.id];
     AddStrategy(state.strategy.strategyTypes, strategyType, updateStrategyTypes, option, 'basic');
-
-    setPageNo(pageNo + 1);
   };
 
   const marketSectorsSelected = (sectordata) => {
@@ -95,7 +104,12 @@ const StrategyWizardScreen = ({ navigation }) => {
 
   const onBackPress = () => {
     if (pageNo > 1) {
-      setPageNo(pageNo - 1);
+      if(showtotal) {
+        setPageNo(pageNo - 1);
+      }
+      else {
+        navigation.goBack();
+      }
     }
     else {
       navigation.goBack();
@@ -110,14 +124,14 @@ const StrategyWizardScreen = ({ navigation }) => {
       }
 
       <View style={{ height: 88 }}>
-        <HeaderBack text={`${pageNo}/${pageTotal}`} onPress={() => onBackPress()} navigation={navigation} />
+        <HeaderBack text={`${pageNo}/${pageTotal}`} showtotal={showtotal} onPress={() => onBackPress()} navigation={navigation} />
       </View>
       <View style={styles.progressContainer}>
         <Progress.Bar progress={pageNo / pageTotal} width={windowWidth - (40)} color={colors.yellowTheme} unfilledColor={colors.silver} borderWidth={0} />
       </View>
-      { pageNo === 1 ? <StrategyType navigation={navigation} selected={state.strategy.strategyTypes} onSelected={strategyTypeSelected} /> : null}
+      { pageNo === 1 ? <StrategyType navigation={navigation} selected={state.strategy.strategyTypes} onSelected={strategyTypeSelected} nextPage={nextPage}/> : null}
 
-      { pageNo === 2 ? <LookBackPeriod navigation={navigation} options={state.strategy.options.basicStrategySettingOptions} selected={selectedTypeId} onSelected={lookBackPeriodSelected} /> : null}
+      { pageNo === 2 ? <LookBackPeriod navigation={navigation} options={state.strategy.options.basicStrategySettingOptions} selected={selectedTypeId} onSelected={lookBackPeriodSelected} nextPage={nextPage}/> : null}
 
       { pageNo === 3 ? <MarketSectors navigation={navigation} sectorData={state.strategy.options.marketSectorOptions} onSelected={marketSectorsSelected} /> : null}
 
@@ -127,9 +141,7 @@ const StrategyWizardScreen = ({ navigation }) => {
 
       { pageNo === 6 ? <BackTest navigation={navigation} options={state.strategy.options.strategyBenchmarkOptions} onSelected={backtestSelected} /> : null}
 
-      { pageNo === 7 ? <SetIcon navigation={navigation} selected={selectedIcon} onSelected={iconSelected} /> : null}
-
-      { pageNo === 8 ? <NameStratgey navigation={navigation} investData={nameInvest} onSelected={nameInvestSelected} /> : null}
+      { pageNo === 7 ? <NameStratgey navigation={navigation} investData={nameInvest} selected={selectedIcon} strategyType={title} onSelected={nameInvestSelected} /> : null}
 
     </View>
   );
