@@ -3,7 +3,7 @@ import createDataContext from './createDataContext';
 import authApi from '../api/auth';
 import { navigate } from '../navigationRef';
 import { getToken, setToken, removeToken, setRefreshToken, removeRefreshToken, getAuth0Token, setAuth0Token, removeAuth0Token } from '../storage/tokenStorage'
-import { getFirstName, setFirstName, removeFirstName, getLastName, setLastName, removeLastName, getEmail, setEmail, removeEmail} from '../storage/userStorage'
+import { getFirstName, setFirstName, removeFirstName, getLastName, setLastName, removeLastName, getEmail, setEmail, removeEmail, getIntroShown, setIntroShown } from '../storage/userStorage'
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -36,7 +36,12 @@ const tryLocalSignin = dispatch => async () => {
     dispatch({ type: 'signin', payload: token });
     navigate('StrategyList');
   } else {
-    navigate('Signup');
+    //setIntroShown('false');
+    if(await getIntroShown()) {
+      navigate('StartSignin');
+    } else {
+      navigate('Start');
+    }
   }
 };
 
@@ -166,7 +171,7 @@ const addname = dispatch => async ({ firstName, lastName }) => {
   }
 };
 
-const repeatemail = dispatch => async ({ email }) => {
+const repeatemail = dispatch => async ( email ) => {
   let running = false;
   try{
     if(!running)
@@ -226,7 +231,7 @@ const signup = dispatch => async ({ email }) => {
         });
       }
       running = false;
-      navigate('CodeScreen', { email, auth_id: userInfo._id, isApproved, hasName });
+      // navigate('CodeScreen', { email, auth_id: userInfo._id, isApproved, hasName });
     }
   } catch (err) {
     running = false;
@@ -247,6 +252,7 @@ const signout = dispatch => async () => {
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  {signup, repeatemail, addname, updateEmailPasswordUser, updateGoogleUser, signout, verifyCode, tryLocalSignin, clearErrorMessage},
+  {signup, repeatemail, addname, updateEmailPasswordUser, updateGoogleUser, 
+    signout, verifyCode, tryLocalSignin, clearErrorMessage},
   { token: null, errorMessage: '', isApproved : false, hasName : false }
 );

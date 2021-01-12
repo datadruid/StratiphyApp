@@ -53,11 +53,15 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>FontAwesome.ttf</string>
 		<string>MaterialIcons.ttf</string>
+		<string>Inter-ExtraBold.ttf</string>
+		<string>GraphikBold.otf</string>
+		<string>GraphikSemibold.otf</string>
+		<string>GraphikRegular.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

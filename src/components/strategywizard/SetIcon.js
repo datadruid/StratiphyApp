@@ -9,9 +9,9 @@ const windowWidth = Dimensions.get('window').width;
 
 const SetIcon = ({ navigation, selected, onSelected }) => {
   const [selectedIcon, setSelectedIcon] = useState(icondata[selected]);
-  const spacingwidth = (windowWidth - 340)/2;
+  const spacingwidth = (windowWidth - 340) / 2;
   const onButtonPress = () => {
-    onSelected({iconid : selectedIcon.id});
+    onSelected({ iconid: selectedIcon.id });
   };
 
   const selectedItem = (item) => {
@@ -37,19 +37,19 @@ const SetIcon = ({ navigation, selected, onSelected }) => {
       <FlatList
         numColumns={4}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={[styles.iconcollection, {marginLeft: spacingwidth}]}
+        contentContainerStyle={[styles.iconcollection, { marginLeft: spacingwidth }]}
         data={icondata}
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
 
-<View style={styles.buttoncontainer}>
-          <Button buttonStyle={styles.button}
-            onPress={onButtonPress}
-            titleStyle={styles.buttontitle}
-            title='Next'
-            type='solid' />
-        </View>
+      <View style={styles.buttoncontainer}>
+        <Button buttonStyle={styles.button}
+          onPress={onButtonPress}
+          titleStyle={styles.buttontitle}
+          title='Next'
+          type='solid' />
+      </View>
     </>
   )
 };
@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
     color: 'black',
     width: '60%',
   },
-  iconcollection:{
-    width:340,
+  iconcollection: {
+    width: 340,
   },
   listItem: {
     width: 70,
@@ -118,18 +118,18 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     marginRight: (20)
   },
-    buttoncontainer: {
-        marginHorizontal: 20,
-        marginBottom: 30
-      },
-      button: {
-        backgroundColor: colors.yellowTheme,
-        borderRadius: 12,
-        height: 60
-      },
-      buttontitle: {
-        fontWeight: 'bold'
-      },
+  buttoncontainer: {
+    marginHorizontal: 20,
+    marginBottom: 30
+  },
+  button: {
+    backgroundColor: colors.yellowTheme,
+    borderRadius: 12,
+    height: 60
+  },
+  buttontitle: {
+    fontWeight: 'bold'
+  },
 });
 
 export default SetIcon;

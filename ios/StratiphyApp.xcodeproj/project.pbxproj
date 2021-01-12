@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* StratiphyAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* StratiphyAppTests.m */; };
+		03151A9525ADCD0400F2B8A7 /* GraphikSemibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03151A9425ADCD0400F2B8A7 /* GraphikSemibold.otf */; };
+		031AFA6A25ADBB8C00DE7AAA /* Inter-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 031AFA6925ADBB8C00DE7AAA /* Inter-ExtraBold.ttf */; };
+		036E731B25ADC50100ABDE49 /* GraphikRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 036E731825ADC50100ABDE49 /* GraphikRegular.otf */; };
+		036E731D25ADC50100ABDE49 /* GraphikBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 036E731A25ADC50100ABDE49 /* GraphikBold.otf */; };
 		03ED0BCE255054C3005C4299 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ED0BCD255054C3005C4299 /* File.swift */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -69,6 +73,10 @@
 		00E356EE1AD99517003FC87E /* StratiphyAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StratiphyAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* StratiphyAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StratiphyAppTests.m; sourceTree = "<group>"; };
+		03151A9425ADCD0400F2B8A7 /* GraphikSemibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = GraphikSemibold.otf; path = StratiphyApp/GraphikSemibold.otf; sourceTree = "<group>"; };
+		031AFA6925ADBB8C00DE7AAA /* Inter-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-ExtraBold.ttf"; path = "StratiphyApp/Inter-ExtraBold.ttf"; sourceTree = "<group>"; };
+		036E731825ADC50100ABDE49 /* GraphikRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = GraphikRegular.otf; path = StratiphyApp/GraphikRegular.otf; sourceTree = "<group>"; };
+		036E731A25ADC50100ABDE49 /* GraphikBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = GraphikBold.otf; path = StratiphyApp/GraphikBold.otf; sourceTree = "<group>"; };
 		03ED0BCD255054C3005C4299 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = File.swift; path = StratiphyApp/File.swift; sourceTree = "<group>"; };
 		0523B687F77E2CCE0D5C8520 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		0EA6A9A22A144CEF276E4970 /* libPods-StratiphyApp-StratiphyAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StratiphyApp-StratiphyAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -167,6 +175,10 @@
 		13B07FAE1A68108700A75B9A /* StratiphyApp */ = {
 			isa = PBXGroup;
 			children = (
+				03151A9425ADCD0400F2B8A7 /* GraphikSemibold.otf */,
+				036E731A25ADC50100ABDE49 /* GraphikBold.otf */,
+				036E731825ADC50100ABDE49 /* GraphikRegular.otf */,
+				031AFA6925ADBB8C00DE7AAA /* Inter-ExtraBold.ttf */,
 				9791D9A12576486100436741 /* StratiphyApp.entitlements */,
 				03ED0BCD255054C3005C4299 /* File.swift */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -431,7 +443,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				03151A9525ADCD0400F2B8A7 /* GraphikSemibold.otf in Resources */,
+				036E731D25ADC50100ABDE49 /* GraphikBold.otf in Resources */,
+				036E731B25ADC50100ABDE49 /* GraphikRegular.otf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				031AFA6A25ADBB8C00DE7AAA /* Inter-ExtraBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

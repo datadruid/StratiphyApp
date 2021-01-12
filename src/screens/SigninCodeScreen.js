@@ -1,6 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, ImageBackground, Text } from 'react-native';
-import { ThemeContext } from '../theme-context';
+import { View, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import Spacer from '../components/Spacer';
 import CodeSpacer from '../components/CodeSpacer';
@@ -18,8 +17,6 @@ const SigninCodeScreen = ({ navigation }) => {
     const { state, verifyCode, repeatemail, clearErrorMessage } = useContext(AuthContext);
     const inputRef = useRef(null);
 
-    const themeContext = React.useContext(ThemeContext);
-
     const sendAnotherEmail = (email) => {
       setButtonMessage("Email sent. If your code has expired, tap here.");
       setStartagain(true);
@@ -29,9 +26,6 @@ const SigninCodeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <NavigationEvents onWillFocus={clearErrorMessage} />
-      <ImageBackground
-        style={styles.backgroundcontainer}
-        source={require('../img/image-background.jpg')}>
       <View style={styles.formcontainer}>
        <Image style={styles.image} source={require('../img/stratiphyline.png')} />
        <Spacer/>
@@ -74,7 +68,6 @@ const SigninCodeScreen = ({ navigation }) => {
       </TouchableOpacity>
       ) : null} 
       </View>
-      </ImageBackground>
     </View>
   );
 };

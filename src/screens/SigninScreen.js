@@ -20,8 +20,6 @@ const SigninScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [indicator, setIndicator] = useState(false);
 
-  const themeContext = React.useContext(ThemeContext);
-
   const googleSignIn = async () => {
     try {
        await GoogleSignin.hasPlayServices();

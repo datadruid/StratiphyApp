@@ -8,8 +8,10 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import AccountScreen from './src/screens/AccountScreen';
+import StartScreen from './src/screens/StartScreen';
 import SigninScreen from './src/screens/SigninScreen';
-import SignupScreen from './src/screens/SignupScreen';
+import StartSigninScreen from './src/screens/StartSigninScreen';
+import StartCheckEmailScreen from './src/screens/StartCheckEmailScreen';
 import CodeScreen from './src/screens/SigninCodeScreen';
 import AddNameScreen from './src/screens/AddNameScreen';
 import TickerDetail from './src/screens/TickerDetailScreen';
@@ -105,7 +107,9 @@ const tab = createBottomTabNavigator({
 const switchNavigator = createSwitchNavigator({
   ResolveAuth: ResolveAuthScreen,
   loginFlow: createStackNavigator({
-    Signup: SignupScreen,
+    Start: StartScreen,
+    StartSignin: StartSigninScreen,
+    StartCheckEmail: StartCheckEmailScreen,
     Signin: SigninScreen,
     CodeScreen: CodeScreen,
     AddName: AddNameScreen,

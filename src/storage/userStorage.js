@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 const FIRST_NAME_KEY = 'firstnamekey';
 const LAST_NAME_KEY = 'lasttnamekey';
 const EMAIL_KEY = 'emailkey';
+const INTRO_SHOWN = 'introshownkey';
 
 export async function getLastName() {
     const token = await AsyncStorage.getItem(LAST_NAME_KEY);
@@ -41,4 +42,18 @@ export async function setEmail(email) {
 
 export async function removeEmail() {
     await AsyncStorage.removeItem(EMAIL_KEY);
+}
+
+export async function getIntroShown() {
+    const shown = await AsyncStorage.getItem(INTRO_SHOWN);
+    const test = (shown == 'true');
+    return test;
+}
+
+export async function setIntroShown(shown) {
+    await AsyncStorage.setItem(INTRO_SHOWN, shown);
+}
+
+export async function removeIntroShown() {
+    await AsyncStorage.removeItem(INTRO_SHOWN);
 }
