@@ -6,7 +6,7 @@ import { colors } from '../modules/Colors';
 
 
 const StrategyType = ({ navigation, selected, onSelected, nextPage }) => {
-
+ 
     const typeSelected = (strategyType) => {
         onSelected(strategyType);
     };

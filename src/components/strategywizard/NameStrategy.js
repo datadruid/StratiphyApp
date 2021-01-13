@@ -23,7 +23,7 @@ function titleCase(str) {
   return splitStr.join(' ');
 }
 
-const NameStratgey = ({ navigation, investData, strategyType, onSelected, selected }) => {
+const NameStratgey = ({ navigation, investData, strategyType, onSelected, selected, onSuplimental }) => {
   const [selectedIcon, setSelectedIcon] = useState(icondata[selected]);
   const [startingAmount, setStartingAmount] = useState(investData.amounts.startingAmount);
   const [monthlyAmount, setMonthlyAmount] = useState(investData.amounts.monthlyAmount);
@@ -50,7 +50,7 @@ const NameStratgey = ({ navigation, investData, strategyType, onSelected, select
   };
 
   const openediticon = () => {
-    console.log('edit icon');
+    onSuplimental();
   };
 
   return (
@@ -118,7 +118,7 @@ const NameStratgey = ({ navigation, investData, strategyType, onSelected, select
           <View style={[styles.mainView, styles.input]}>
             <TextInput
               multiline={true}
-              style={[styles.input, styles.textInput, styles.notesInput]}
+              style={[styles.input, styles.notesInput]}
               placeholder='Want to remember something about this strategy? Keep track by adding notes here.'
               value={description}
               onChangeText={text => setDescription(text)} />
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     color: colors.jeshText
   },
   input: {
-    height: null,
+    height: 60,
     width: '100%',
     overflow: 'hidden',
     borderColor: colors.coolGrey,

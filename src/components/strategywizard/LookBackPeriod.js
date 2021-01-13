@@ -1,25 +1,59 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, ScrollView, Alert, KeyboardAvoidingView } from 'react-native';
 import { Button } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CheckBox from '@react-native-community/checkbox';
+import TextFieldWithText from './TextFieldWithText';
 import { colors } from '../modules/Colors';
 
 const LookBackPeriod = ({ navigation, options, selected, onSelected, nextPage }) => {
+  const [lookback, setLookback] = useState();
+  const [customBorderColour, setCustomBorderColour] = useState(styles.inputnotselected);
+
   const optionSelected = (id) => {
+    setCustomBorderColour(styles.inputnotselected);
     let lbp = options.find(x => x.id === Number(id));
-    onSelected(lbp);
+    if (lbp) {
+      setLookback(undefined);
+      onSelected(lbp);
+    }
   }
 
   const onButtonPress = () => {
-    if(selected >= 0)
-    {
+    if ((selected >= 0 && selected < 3 ) || (selected == 3 && lookback)) {
       nextPage();
     }
     else {
       Alert.alert('Lookback', 'you need to select a lookback period');
     }
   };
+
+  const setCustomLookback = (text) => {
+    optionSelected(3);
+    var lb = Number.parseInt(text);
+    setCustomBorderColour(styles.inputselected);
+    if (Number.isNaN(lb)) {
+      lb = undefined;
+      onSelected(options.find(x => x.id === Number(0)));
+    }
+    else {
+      if (lb < 1) {
+        lb = 1;
+      } else if (lb > 60) {
+        lb = 60;
+      }
+      let lbp = options.find(x => x.id === Number(3));
+      lbp.periods = lb;
+      onSelected(lbp);
+      setLookback(lb.toString());
+    }
+  }
+
+  if(selected == 3 && !lookback)
+  {
+    let lbp = options.find(x => x.id === Number(3));
+    setLookback(lbp.periods.toString());
+  }
 
   renderTermItem = (description, selection) => {
 
@@ -39,53 +73,77 @@ const LookBackPeriod = ({ navigation, options, selected, onSelected, nextPage })
   renderGraphCard = () => {
     let item = itemCard[0]
     const width = Dimensions.get('window').width
-    return <View style={[styles.listItem, { backgroundColor: item.backgroundColor }]}>
+    return (
+      <View style={[styles.listItem, { backgroundColor: item.backgroundColor }]}>
 
-      <View style={styles.titleTop}>
-        <View style={styles.leftContainer} >
-        </View>
-        <View style={styles.midlleContainer} >
-          <Text numberOfLines={1} style={styles.cardTitle}>{item.title}</Text>
-          <Text style={styles.description}>{item.short_desc}</Text>
-        </View>
-        <View style={styles.rightContainer}>
-          {/* <TouchableOpacity style={styles.pressStyle} onPress={() => this.cardPress(item)}>
+        <View style={styles.titleTop}>
+          <View style={styles.leftContainer} >
+          </View>
+          <View style={styles.midlleContainer} >
+            <Text numberOfLines={1} style={styles.cardTitle}>{item.title}</Text>
+            <Text style={styles.description}>{item.short_desc}</Text>
+          </View>
+          <View style={styles.rightContainer}>
+            {/* <TouchableOpacity style={styles.pressStyle} onPress={() => this.cardPress(item)}>
               <FontAwesome style={styles.infoicon} size={20} name='info-circle' />
               </TouchableOpacity> */}
+          </View>
         </View>
-      </View>
-      <Image source={item.backgroundImage} style={styles.bottomImage} />
-    </View >
+        <Image source={item.backgroundImage} style={styles.bottomImage} />
+      </View >)
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.container}>
       <ScrollView>
-      <View style={styles.horizontalTopContainer}>
-        <Text style={styles.titleStyle}>{'Choose lookback period'}</Text>
-        <TouchableOpacity style={styles.pressStyle} onPress={() => typeInfo()}>
-          <FontAwesome style={styles.infoicontop} size={20} name='info-circle' />
-        </TouchableOpacity>
+        <View style={styles.horizontalTopContainer}>
+          <Text style={styles.titleStyle}>{'Choose lookback period'}</Text>
+          <TouchableOpacity style={styles.pressStyle} onPress={() => typeInfo()}>
+            <FontAwesome style={styles.infoicontop} size={20} name='info-circle' />
+          </TouchableOpacity>
 
-      </View>
-      <Text style={styles.paragraph} numberOfLines={3}>{'How far back should we include data to calculate your strategy?'}</Text>
+        </View>
+        <Text style={styles.paragraph} numberOfLines={3}>{'How far back should we include data to calculate your strategy?'}</Text>
 
-      <View style={styles.switchConatiner}>
+        <View style={styles.switchConatiner}>
 
-        {this.renderTermItem('Short term (1 month)', 0)}
-        {this.renderTermItem('Medium term (6 months)', 1)}
-        {this.renderTermItem('Long term (12 months)', 2)}
+          {this.renderTermItem('Short term (1 month)', 0)}
+          {this.renderTermItem('Medium term (6 months)', 1)}
+          {this.renderTermItem('Long term (12 months)', 2)}
+
+        </View>
+        <Text style={styles.orText}>{'OR'}</Text>
+        <View style={styles.horizontalTopContainer}>
+          <Text style={styles.titleStyle}>Set your own</Text>
+          {/* <FontAwesome style={styles.infoicon} size={20} name='info-circle' /> */}
+        </View>
+        <View style={{ marginHorizontal: 20 }}>
+          <TextFieldWithText
+            placeholderStyle={styles.placeholderStyle}
+            onChangeText={text => {
+              setCustomLookback(text);
+            }}
+            value={lookback}
+            postSymbol={''}
+            style={[styles.input, customBorderColour]}
+            placeholder={''}
+            rightText={'Months (1-60)'}
+          />
+        </View>
         {this.renderGraphCard(itemCard)}
-      </View>
-      </ScrollView>
-      <View style={styles.buttoncontainer}>
-        <Button buttonStyle={styles.button}
-          onPress={onButtonPress}
-          titleStyle={styles.buttontitle}
-          title='Next'
-          type='solid' />
-      </View>
-    </View>
+        </ScrollView>
+        <View style={styles.buttoncontainer}>
+          <Button buttonStyle={styles.button}
+            onPress={onButtonPress}
+            titleStyle={styles.buttontitle}
+            title='Next'
+            type='solid' />
+        </View>
+      
+
+    </KeyboardAvoidingView>
   )
 };
 
@@ -154,6 +212,12 @@ const styles = StyleSheet.create({
     alignItems: 'center', alignSelf: 'center'
 
   },
+  input: {
+    width: '100%'
+  },
+  inputselected: {
+    borderColor: colors.yellowTheme,
+  },
   titleTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -195,6 +259,11 @@ const styles = StyleSheet.create({
 
 
   },
+  orText: {
+    textAlign: 'center',
+    color: colors.coolGrey,
+    marginTop: (10)
+  },
   description: {
     color: 'white',
     width: '110%',
@@ -212,7 +281,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 30,
     marginBottom: 10,
-    width:'90%'
+    width: '90%'
   },
   button: {
     backgroundColor: colors.yellowTheme,

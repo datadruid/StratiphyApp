@@ -1,28 +1,40 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet, View, ActivityIndicator, Text, TextInput, KeyboardAvoidingView } from 'react-native';
+import { NavigationEvents } from 'react-navigation';
 import { Context as AuthContext } from '../context/AuthContext';
 import { colors } from '../components/modules/Colors';
 import { fonts } from '../components/modules/Fonts';
 import YellowButton from '../components/controls/YellowButton';
+import HeaderBack from '../components/strategywizard/HeaderBack';
 
 const StartSigninScreen = ({ navigation }) => {
-  const { state, signup } = useContext(AuthContext);
+  const { state, signup, clearErrorMessage } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [indicator, setIndicator] = useState(false);
 
-  const onButtonPress = () => {
+  const onButtonPress = async () => {
+    setIndicator(true);
+    await signup(email);
+    setIndicator(false);
     navigation.navigate('StartCheckEmail', { email });
-    //signup(email);
   };
 
   if (state.errorMessage && indicator) {
     setIndicator(false);
   }
 
+  const onBackPress = () => {
+    navigation.goBack();
+  };
+
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS == "ios" ? "padding" : "height"} 
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
       style={styles.container}>
+         <NavigationEvents onWillFocus={clearErrorMessage} />
+      <View style={{ height: 88 }}>
+        <HeaderBack text='' showtotal={false} onLeftPress={() => onBackPress()} navigation={navigation} />
+      </View>
       <View style={styles.formcontainer}>
         <Text style={styles.text} >Enter your email address</Text>
         <TextInput
@@ -38,8 +50,8 @@ const StartSigninScreen = ({ navigation }) => {
       {state.errorMessage ? (
         <Text style={styles.errorMessage}>{state.errorMessage}</Text>
       ) : null}
-      <ActivityIndicator style={styles.indicator} size="large" color='{colors.yellowTheme}' animating={indicator} />
-      
+      <ActivityIndicator style={styles.indicator} size="large" color={colors.yellowTheme} animating={indicator} />
+
 
       <View style={styles.yellowbutton}>
         <YellowButton title='Continue' onButtonPress={onButtonPress} />
@@ -67,14 +79,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white
   },
   formcontainer: {
-    marginTop: 100
+    marginTop: 0
   },
   indicator: {
     alignSelf: 'center',
     marginVertical: 30
   },
   errorMessage: {
-    alignSelf:'center',
+    alignSelf: 'center',
     fontSize: 16,
     color: 'red',
     margin: 15,

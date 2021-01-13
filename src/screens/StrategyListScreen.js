@@ -15,8 +15,7 @@ const StrategyListScreen = ({ navigation }) => {
   }, []);
 
   const onRefresh = React.useCallback(async () => {
-    if(refreshing)
-    {
+    if (refreshing) {
       return;
     }
     setRefreshing(true);
@@ -60,6 +59,7 @@ const styles = StyleSheet.create({
   header: {
     fontWeight: '700',
     fontSize: 36,
+    width:'100%'
   },
   content: {
     flex: 1,
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     padding: 20,
-    marginBottom: 30
+    marginBottom: 30,
   },
   infoicon: {
     paddingLeft: 10,

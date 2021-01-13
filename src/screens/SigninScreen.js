@@ -1,17 +1,18 @@
 import React, { useContext, useState } from 'react';
-import { View, StyleSheet, Image, ActivityIndicator, KeyboardAvoidingView, ImageBackground, Button, Text } from 'react-native';
-import { Input } from 'react-native-elements';
+import { View, StyleSheet, ActivityIndicator, KeyboardAvoidingView, Button, Text, TextInput } from 'react-native';
 import { GoogleSocialButton } from "react-native-social-buttons";
-import {GoogleSignin} from 'react-native-google-signin';
+import { GoogleSignin } from 'react-native-google-signin';
 import Spacer from '../components/Spacer';
-import { Context as AuthContext  } from '../context/AuthContext';
-import { ThemeContext } from '../theme-context';
+import { Context as AuthContext } from '../context/AuthContext';
+import { colors } from '../components/modules/Colors';
+import { fonts } from '../components/modules/Fonts';
+import YellowButton from '../components/controls/YellowButton';
 
 GoogleSignin.configure({
   webClientId: '1060831970790-vfh908lm2mvd0hr747qblplq1f8ebj99.apps.googleusercontent.com',
   iosClientId: '1060831970790-ud9kp922ecpj4eg508lavpvcbl3v1anu.apps.googleusercontent.com',
   offlineAccess: true
-     });
+});
 
 const SigninScreen = ({ navigation }) => {
   const hasName = navigation.getParam('hasName');
@@ -20,80 +21,67 @@ const SigninScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [indicator, setIndicator] = useState(false);
 
+  const onButtonPress = () => {
+    setIndicator(!indicator);
+    updateEmailPasswordUser(email, password, hasName)
+  };
+
   const googleSignIn = async () => {
     try {
-       await GoogleSignin.hasPlayServices();
-       const userInfo = await GoogleSignin.signIn();
-       let firstName = userInfo.user.givenName;
-       let lastName = userInfo.user.familyName;
-       let googleCode = userInfo.serverAuthCode;
-       updateGoogleUser(googleCode,firstName,lastName);
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      let firstName = userInfo.user.givenName;
+      let lastName = userInfo.user.familyName;
+      let googleCode = userInfo.serverAuthCode;
+      updateGoogleUser(googleCode, firstName, lastName);
     } catch (error) {
-        console.log(error)
+      console.log(error)
     }
   }
 
-  if(state.errorMessage && indicator)
-  {
+  if (state.errorMessage && indicator) {
     setIndicator(false);
   }
 
   return (
-    <KeyboardAvoidingView style={styles.topcontainer}>
-      <ImageBackground
-        style={styles.backgroundcontainer}
-        source={require('../img/image-background.jpg')}>
-      <View style={styles.container}>
-    <Image style={styles.image} source={require('../img/stratiphyline.png')} />
-      <Spacer>
-        <Text style={styles.text} category='s1' status='default'>Link your web account</Text>
-      </Spacer>
-      <Spacer>
-        <Text style={styles.text} category='s2' status='default'>Please link up your web site account.</Text>
-      </Spacer>
-      <Spacer>
-        </Spacer>
-        <Spacer>
-        <GoogleSocialButton onPress={googleSignIn} />
-        </Spacer>
-        <Spacer>
-          <Text style={{ fontSize: 24 }}>--- or ---</Text>
-          </Spacer>
-      <ActivityIndicator size="large" color="white" animating={indicator} />
-      
-      <Input 
-        style={styles.input}
-        label="Email"
-        value={email}
-        onChangeText={(value) => { setEmail(value.trim()) }}
-        autoCapitalize="none"
-        autoCorrect={false}
-      />
-        <Input
-        style={styles.input}
-        label="Password"
-        value={password}
-        onChangeText={setPassword}
-        autoCapitalize="none"
-        autoCompleteType="password"
-        secureTextEntry={true}
-        autoCorrect={false}
-      />
-      <Spacer />
-      {state.errorMessage ? (
-        <Text style={styles.errorMessage}>{state.errorMessage}</Text>
-      ) : null}
-      <Spacer>
-        <Button style={{ marginVertical: 4 }}
-          onPress={() => {
-            setIndicator(!indicator);
-            updateEmailPasswordUser( email, password, hasName )
-          }}
-          title='Link Account'
+    <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container}>
+      <View style={styles.formcontainer}>
+        <Text style={styles.title}>Link your web account</Text>
+        <Text style={styles.text}>Please link up your Stratiphy web site account.</Text>
+        <View style={styles.google}>
+          <GoogleSocialButton onPress={googleSignIn} />
+        </View>
+        <Text style={styles.ortext}>--- or ---</Text>
+        <ActivityIndicator size="large" color={colors.yellowTheme} animating={indicator} />
+        <Text style={styles.text} >Email</Text>
+        <TextInput
+          style={styles.input}
+          label="Email"
+          value={email}
+          onChangeText={(value) => { setEmail(value.trim()) }}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
-      </Spacer>
-    </View>
-      </ImageBackground>
+        <Text style={styles.text} >Password</Text>
+        <TextInput
+          style={styles.input}
+          label="Password"
+          value={password}
+          onChangeText={setPassword}
+          autoCapitalize="none"
+          autoCompleteType="password"
+          secureTextEntry={true}
+          autoCorrect={false}
+        />
+        {state.errorMessage ? (
+          <Text style={styles.errorMessage}>{state.errorMessage}</Text>
+        ) : null}
+
+      
+      <View style={styles.yellowbutton}>
+        <YellowButton title='Link Account' onButtonPress={onButtonPress} />
+      </View>
+      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -105,44 +93,63 @@ SigninScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
-  topcontainer: {
+  container: {
     flex: 1,
-    justifyContent: 'center',
-    marginBottom: 0,
+    justifyContent: 'space-evenly',
+    width: '100%',
+    alignSelf: 'center',
+    paddingVertical: 20,
+    backgroundColor: colors.white
   },
-  backgroundcontainer: {
-    flex: 1,
-    paddingVertical: 24,
-    paddingHorizontal: 16,
+  formcontainer: {
+    marginTop: 0,
   },
-  authform:{
-    opacity: 0
-  },
-  container:{
-    flex:1,
-    justifyContent : "center",
+  google: {
     alignItems: 'center',
-    width: '80%',
-    alignSelf: 'center'
+    margin: 20
+  },
+  ortext: {
+    fontSize: 22,
+    fontFamily: fonts.GraphikRegular,
+    textAlign: 'center'
+  },
+  indicator: {
+    alignSelf: 'center',
+    marginVertical: 30
   },
   errorMessage: {
+    alignSelf: 'center',
     fontSize: 16,
     color: 'red',
-    marginLeft: 15,
-    marginTop: 15
+    margin: 15,
   },
-  image: {
-    width: 200, 
-    height: 100
+  title: {
+    width: '90%',
+    marginHorizontal: 20,
+    marginBottom: 15,
+    color: "black",
+    fontSize: 22,
+    fontFamily: fonts.GraphikSemibold
   },
-  input:{
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    tintColor: 'rgba(1, 1, 1, 1)',
-    color: "rgba(1, 1, 1, 1)"
+  input: {
+    marginHorizontal: 20,
+    paddingStart: 15,
+    height: 60,
+    borderWidth: 1,
+    borderRadius: 5,
+    backgroundColor: colors.white,
+    borderColor: colors.paleGreyTwo
   },
   text: {
-    color: "white"
+    width: '90%',
+    marginHorizontal: 20,
+    marginVertical: 15,
+    color: "black",
+    fontSize: 18,
+    fontFamily: fonts.GraphikRegular,
+  },
+  yellowbutton: {
+    marginVertical: 30
   }
 });
 

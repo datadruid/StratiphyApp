@@ -1,5 +1,6 @@
 import createDataContext from './createDataContext';
 import authApi from '../api/auth';
+import { navigate } from '../navigationRef';
 import { getToken } from '../storage/tokenStorage';
 import { getIndexRange, getChartStartDate, getChartAxisLabels } from '../components/modules/UiHelper';
 
@@ -58,7 +59,9 @@ const listStrategies = dispatch => async () => {
         clearCacheEntry: true
       };
       let response = await authApi.get(`/strategies`, config);
-
+      if(response.data.length == 0) {
+        navigate('StrategyCreate');
+      }
       dispatch({ type: 'list_strategies', payload: response.data });
     } catch (err) {
       dispatch({ type: 'add_error', payload: err.data.error });

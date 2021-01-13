@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Context as AuthContext } from '../context/AuthContext';
+import YellowButton from '../components/controls/YellowButton';
 
 const ResolveAuthScreen = () => {
   const { tryLocalSignin } = useContext(AuthContext);

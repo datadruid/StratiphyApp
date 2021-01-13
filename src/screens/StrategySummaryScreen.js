@@ -64,7 +64,7 @@ const StrategySummaryScreen = ({ navigation, index }) => {
                 textContent={'Saving...'}
                 textStyle={styles.spinnerTextStyle}
             />
-      <HeaderBack text={''} navigation={navigation} onPress={() => navigation.goBack()} />
+      <HeaderBack text={''} navigation={navigation} onLeftPress={() => navigation.goBack()} />
 
       <View style={styles.horizontalTopContainer}>
         <Text style={styles.titleStyle}>Your Strategy</Text>

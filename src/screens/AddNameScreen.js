@@ -1,66 +1,61 @@
-import React, { useContext,useState } from 'react';
-import { View, StyleSheet, Image, ActivityIndicator, KeyboardAvoidingView, ImageBackground, Button, Text } from 'react-native';
-import { Input } from 'react-native-elements';
-import Spacer from '../components/Spacer';
+import React, { useContext, useState } from 'react';
+import { View, StyleSheet, TextInput, ActivityIndicator, KeyboardAvoidingView, Text } from 'react-native';
+import { fonts } from '../components/modules/Fonts';
+import { colors } from '../components/modules/Colors';
+import YellowButton from '../components/controls/YellowButton';
 import { Context as AuthContext } from '../context/AuthContext';
-import { ThemeContext } from '../theme-context';
 
 const AddNameScreen = ({ navigation }) => {
-    const { state, addname, errorMessage } = useContext(AuthContext);
-    const [indicator, setIndicator] = useState(false);
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const themeContext = React.useContext(ThemeContext);
+  const { state, addname, errorMessage } = useContext(AuthContext);
+  const [indicator, setIndicator] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
+  const saveName = () => {
+    setIndicator(!indicator);
+    addname({ firstName, lastName })
+  }
   return (
-    <KeyboardAvoidingView 
-    behavior={Platform.OS == "ios" ? "padding" : "height"}
-     style={styles.topcontainer}>
-       <ImageBackground
-        style={styles.backgroundcontainer}
-        source={require('../img/image-background.jpg')}>
-      <View style={styles.container}>
-    <Image style={styles.image} source={require('../img/stratiphyline.png')} />
-      <Spacer/>
-      <Spacer>
-        <Text style={styles.text} category='s2' status='default'>Just so we know what to call you</Text>
-      </Spacer>
-      <Spacer>
-        <Text style={styles.text} category='s2' status='default'>Please let us know your name.</Text>
-        </Spacer>
-      <ActivityIndicator size="large" color="white" animating={indicator} />
-      <Input 
-      style={styles.input}
-      label="First Name"
-      value={firstName}
-      onChangeText={setFirstName}
-      autoCapitalize="words"
-      autoCorrect={false}
-    />
-        <Input 
-        style={styles.input}
-        label="Last Name"
-        value={lastName}
-        onChangeText={setLastName}
-        autoCapitalize="words"
-        autoCorrect={false}
-      />
-
-      <Spacer />
-      {errorMessage ? (
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
-      ) : null}
-      <Spacer>
-        <Button style={{ marginVertical: 4 }}
-          onPress={() => {
-            setIndicator(!indicator);
-            addname({ firstName, lastName })
-          }}
-        title='Finish'
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.container}>
+      <View style={styles.formcontainer}>
+      <Text style={styles.title}>Your name</Text>
+        <Text style={styles.text}>Just so we know what to call you</Text>
+        <ActivityIndicator size="large" color="white" animating={indicator} />
+        <View style={styles.horizontalTopContainer}>
+          <Text style={styles.titleStyle}>First name</Text>
+        </View>
+        <TextInput
+          style={styles.input}
+          label="First Name"
+          value={firstName}
+          selectionColor={colors.yellowTheme}
+          onChangeText={setFirstName}
+          autoCapitalize="words"
+          autoCorrect={false}
         />
-      </Spacer>
-    </View>
-      </ImageBackground>
+        <View style={styles.horizontalTopContainer}>
+          <Text style={styles.titleStyle}>Last name</Text>
+        </View>
+        <TextInput
+          style={styles.input}
+          label="Last Name"
+          value={lastName}
+          selectionColor={colors.yellowTheme}
+          onChangeText={setLastName}
+          autoCapitalize="words"
+          autoCorrect={false}
+        />
+
+        {errorMessage ? (
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
+        ) : null}
+      </View>
+      <View style={styles.yellowbutton}>
+        <YellowButton title='Finish' onButtonPress={saveName} />
+      </View>
+
     </KeyboardAvoidingView>
   );
 };
@@ -74,25 +69,17 @@ AddNameScreen.navigationOptions = () => {
 };
 
 const styles = StyleSheet.create({
-  topcontainer: {
+  container: {
     flex: 1,
-    justifyContent: 'center',
-    marginBottom: 0
+    justifyContent: 'space-between',
+    width: '100%',
+    alignSelf: 'center',
+    paddingVertical: 20,
+    backgroundColor: colors.white
   },
-  backgroundcontainer: {
-    flex: 1,
-    paddingVertical: 24,
-    paddingHorizontal: 16,
-  },
-  authform:{
-    opacity: 0
-  },
-  container:{
-    flex:1,
-    justifyContent : "center",
-    alignItems: 'center',
-    width: '80%',
-    alignSelf: 'center'
+  formcontainer: {
+    marginTop: 60,
+    marginBottom: 40
   },
   errorMessage: {
     fontSize: 16,
@@ -100,19 +87,52 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 15
   },
-  image: {
-    width: 200, 
-    height: 100
+  horizontalTopContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    paddingHorizontal: (19),
+    marginTop: (20),
+    marginBottom: (1),
   },
-  nput:{
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    tintColor: 'rgba(1, 1, 1, 1)',
-    color: "rgba(1, 1, 1, 1)"
+  titleStyle: {
+    fontSize: 22,
+    fontFamily: fonts.GraphikSemibold,
+    marginBottom: 15,
+    color: 'black',
+  },
+  input: {
+    width: '90%',
+    marginHorizontal: 20,
+    paddingLeft: 15,
+    height: 60,
+    borderWidth: 1,
+    borderRadius: 5,
+    backgroundColor: colors.white,
+    borderColor: colors.paleGreyTwo,
+
+    fontSize: 20,
+    fontFamily: fonts.GraphikRegular,
+    marginBottom: 20
+  },
+  title: {
+    width: '90%',
+    marginHorizontal: 20,
+    marginBottom: 15,
+    color: "black",
+    fontSize: 22,
+    fontFamily: fonts.GraphikSemibold
   },
   text: {
-    color: "white"
-  }
+    width: '90%',
+    marginHorizontal: 20,
+    marginBottom: 15,
+    color: "black",
+    fontSize: 18,
+    fontFamily: fonts.GraphikRegular,
+  },
+  yellowbutton: {
+    marginBottom: 30
+  },
 });
 
 export default AddNameScreen;

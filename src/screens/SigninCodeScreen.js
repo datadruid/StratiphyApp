@@ -1,74 +1,79 @@
-import React, { useContext, useRef, useState } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, StyleSheet, KeyboardAvoidingView, TouchableOpacity, Text, TextInput } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
-import Spacer from '../components/Spacer';
-import CodeSpacer from '../components/CodeSpacer';
 import { Context as AuthContext } from '../context/AuthContext';
-import CodeInput from 'react-native-code-input';
+import { colors } from '../components/modules/Colors';
+import { fonts } from '../components/modules/Fonts';
+import YellowButton from '../components/controls/YellowButton';
+import HeaderBack from '../components/strategywizard/HeaderBack';
 
 const SigninCodeScreen = ({ navigation }) => {
-    const email = navigation.getParam('email');
-    const auth_id = navigation.getParam('auth_id');
-    const isApproved = navigation.getParam('isApproved');
-    const hasName = navigation.getParam('hasName');
-    const [ buttonMessage, setButtonMessage ] = useState('Resend email');
-    const [ startagain, setStartagain ] = useState(false);
+  const email = navigation.getParam('email');
+  const [code, setCode] = useState('');
 
-    const { state, verifyCode, repeatemail, clearErrorMessage } = useContext(AuthContext);
-    const inputRef = useRef(null);
+  const { state, verifyCode, repeatemail, clearErrorMessage, setError } = useContext(AuthContext);
 
-    const sendAnotherEmail = (email) => {
-      setButtonMessage("Email sent. If your code has expired, tap here.");
-      setStartagain(true);
-      repeatemail({ email });
+  const verify = () => {
+    verifyCode({ code, email, auth_id: state.auth_id, isApproved: state.isApproved, hasName:state.hasName });
+  };
+
+  const onButtonPress = () => {
+    if (code.length == 6) {
+      verify();
     }
+  };
+
+  const resendlink = () => {
+    repeatemail(email);
+  };
+
+  const checkcode = (codeinput) => {
+    setCode(codeinput);
+    if (codeinput.length > 6) {
+      setError('code is greater than 6 digits');
+    } else {
+      clearErrorMessage();
+    }
+  };
+
+  const onBackPress = () => {
+    navigation.goBack();
+  };
 
   return (
-    <View style={styles.container}>
-      <NavigationEvents onWillFocus={clearErrorMessage} />
-      <View style={styles.formcontainer}>
-       <Image style={styles.image} source={require('../img/stratiphyline.png')} />
-       <Spacer/>
-       <Spacer/>
-       <Spacer>
-        <Text style={styles.text} category='s1' status='default'>Enter Code</Text>
-      </Spacer>
-      <Spacer/>
-      <Spacer >
-        <View style={{width: '60%'}}>
-            <Text style={styles.text} category='s1' status='default'>To continue, enter the code from the email we just sent you:</Text>
+    <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container}>
+        <NavigationEvents onWillFocus={clearErrorMessage} />
+        <View style={{ height: 88 }}>
+          <HeaderBack text='' showtotal={false} onLeftPress={() => onBackPress()} navigation={navigation} />
         </View>
-      </Spacer>
-      <CodeInput
-            ref={inputRef }
-            borderType='underline'
-            activeColor='white'
-            inactiveColor='white'
-            codeLength={6}
-            space={8}
-            size={38}
-            codeInputStyle={{ fontSize: 30, fontWeight: '400' }}
-            inputPosition='left'
-            onFulfill={(code) => verifyCode({ code, email, auth_id, isApproved, hasName })}
-        />
-        {state.errorMessage ? (
-        <Text style={styles.errorMessage}>{state.errorMessage}</Text>
-      ) : null}
-      <Spacer/>
-      <Spacer/>
-       <TouchableOpacity style={styles.nav} onPress={(code) => {
-          inputRef.current.clear();
-          sendAnotherEmail(email);
-         }}>
-        <Text style={styles.link}>{buttonMessage}</Text>
-    </TouchableOpacity>
-    {startagain ? (
-        <TouchableOpacity style={styles.nav} onPress={() => navigation.goBack(null)}>
-          <Text style={styles.link}>restart login</Text>
-      </TouchableOpacity>
-      ) : null} 
-      </View>
-    </View>
+        <View style={styles.formcontainer}>
+          <Text style={styles.title}>6-digit code</Text>
+          <Text style={styles.text}>Please enter the code send to {email}.</Text>
+          <TextInput
+            style={styles.input}
+            value={code}
+            onChangeText={(value) => { checkcode(value) }}
+            autoCapitalize="none"
+            autoCorrect={false}
+            selectionColor={colors.yellowTheme}
+            keyboardType='decimal-pad'
+          />
+          {state.errorMessage ? (
+            <Text style={styles.errorMessage}>{state.errorMessage}</Text>
+          ) : null}
+
+        </View>
+        <View style={styles.yellowbutton}>
+          <YellowButton title='Submit' onButtonPress={onButtonPress} />
+
+          <TouchableOpacity onPress={resendlink}>
+            <View style={styles.resendlink}>
+              <Text style={styles.resendtext}>Resend email</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+    </KeyboardAvoidingView>
   );
 };
 
@@ -79,39 +84,62 @@ SigninCodeScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  formcontainer:{  
+    justifyContent: 'space-between',
     width: '100%',
-    marginTop: 200,
-    marginBottom: 100,
-    justifyContent: 'center',
-    alignItems: 'center'
+    alignSelf: 'center',
+    paddingVertical: 20,
+    backgroundColor: colors.white
   },
-  image: {
-    width: 200, 
-    height: 100
+  formcontainer: {
+    marginTop: 60,
+    marginBottom: 40
   },
-  nav:{
-      marginTop: 50
+  title: {
+    width: '90%',
+    marginHorizontal: 20,
+    marginBottom: 15,
+    color: "black",
+    fontSize: 22,
+    fontFamily: fonts.GraphikSemibold
   },
-  link: {
-    color: 'white',
-    textAlign: "center"
+  text: {
+    width: '90%',
+    marginHorizontal: 20,
+    marginBottom: 15,
+    color: "black",
+    fontSize: 18,
+    fontFamily: fonts.GraphikRegular,
+  },
+  input: {
+    width: '90%',
+    marginHorizontal: 20,
+
+    height: 60,
+    borderWidth: 1,
+    borderRadius: 5,
+    backgroundColor: colors.white,
+    borderColor: colors.paleGreyTwo,
+    textAlign: 'center',
+    fontSize: 20,
+    fontFamily: fonts.GraphikRegular,
   },
   errorMessage: {
     fontSize: 16,
     color: 'red',
     marginLeft: 15,
-    marginTop: 15
+    marginTop: 15,
+    textAlign: 'center'
   },
-  backgroundcontainer: {
-    width: '100%',
-    flex: 1,
+  yellowbutton: {
+    marginBottom: 0
   },
-  authform:{
-    opacity: 0
+  resendtext: {
+    alignSelf: 'center',
+    fontSize: 16,
+    fontFamily: fonts.GraphikRegular,
+    marginBottom: 40,
+    marginTop: 20,
+    color: colors.yellowTheme,
   }
 });
 

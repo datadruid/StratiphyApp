@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Text, View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Button, } from 'react-native-elements';
 import { colors } from '../modules/Colors';
 import SelectPicker from 'react-native-form-select-picker';
@@ -8,10 +7,10 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 
 
-const BackTest = ({ navigation, options, onSelected }) => {
+const BackTest = ({ navigation, options, selected, onSelected }) => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const [benchmark, setBenchmark] = useState('FTSE100');
-    const [date, setDate] = useState(moment().subtract(2, 'years'))
+    const [benchmark, setBenchmark] = useState(selected.benchmarkName);
+    const [date, setDate] = useState(moment(selected.backtestingStart, 'DD/MM/YYYY'))
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -69,6 +68,7 @@ const BackTest = ({ navigation, options, onSelected }) => {
                         </View>
                         <View style={[styles.mainView, styles.input]}>
                             <SelectPicker
+                            doneButtonText = 'Done '
                                 style={styles.selector}
                                 onValueChange={(value) => {
                                     setBenchmark(value);
@@ -76,7 +76,7 @@ const BackTest = ({ navigation, options, onSelected }) => {
                                 selected={benchmark}>
 
                                 {options.map((benchmark) => (
-                                    <SelectPicker.Item label={benchmark.preset} value={benchmark.preset} key={benchmark.id} />
+                                    <SelectPicker.Item label={benchmark.preset} value={benchmark.preset} index={benchmark.id} />
                                 ))}
 
                             </SelectPicker>

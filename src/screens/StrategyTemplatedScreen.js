@@ -31,7 +31,7 @@ const StrategyTemplatedScreen = ({ navigation, index }) => {
 
   return (
     <View style={styles.mainContainer}>
-      <HeaderBack text={''} navigation={navigation} onPress={() => navigation.goBack()} />
+      <HeaderBack text={''} navigation={navigation} onLeftPress={() => navigation.goBack()} />
 
       <Text style={styles.paragraph} numberOfLines={3}>{'Your selection'}</Text>
       <View style={styles.horizontalTopContainer}>

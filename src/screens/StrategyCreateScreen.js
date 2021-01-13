@@ -37,14 +37,8 @@ const StrategyCreateScreen = ({ navigation }) => {
 
   return (
     <View style={styles.mainContainer}>
-      {Platform.OS === 'ios' ? <StatusBar translucent barStyle="dark-content" /> :
-        <StatusBar backgroundColor="white" barStyle="dark-content" />
-      }
-      <View style={{ height: 48 }}>
-      </View>
-      
       <View style={styles.horizontalTopContainer}>
-        <Text style={styles.titleStyle}>Choose your Strategies</Text>
+        <Text style={styles.titleStyle}>Choose your Strategy</Text>
         <FontAwesome style={styles.infoicon} size={20} name='info-circle' />
       </View>
       <Text style={styles.paragraph} numberOfLines={3}>{'Choose a template based strategy based on rist appetite or create a custom stragedy from scratch'}</Text>
@@ -70,7 +64,8 @@ StrategyCreateScreen.navigationOptions = {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
+    marginTop: Platform.OS === 'ios' ? 50 : 0
   },
   infoicon: {
     paddingLeft: 10,

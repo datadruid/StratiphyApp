@@ -1,5 +1,6 @@
-import React, { useContext, useState } from 'react';
-import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import React, { useContext, useState, useEffect, useRef } from 'react';
+import { AppState, StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { NavigationEvents } from 'react-navigation';
 import { Context as AuthContext } from '../context/AuthContext';
 import { colors } from '../components/modules/Colors';
 import { fonts } from '../components/modules/Fonts';
@@ -9,13 +10,31 @@ import { openInbox } from 'react-native-email-link'
 
 const StartCheckEmailScreen = ({ navigation }) => {
     const email = navigation.getParam('email');
-    const { state, repeatemail } = useContext(AuthContext);
+    const { state, repeatemail, clearErrorMessage } = useContext(AuthContext);
     const [indicator, setIndicator] = useState(true);
+    const appState = useRef(AppState.currentState);
 
-    const onButtonPress = () => {
-        //navigation.navigate('StartCheckEmailScreen');
+    useEffect(() => {
+        AppState.addEventListener("change", handleAppStateChange);
+    }, []);
+
+    const handleAppStateChange = (nextAppState) => {
+        if (
+            appState.current.match(/inactive|background/) &&
+            nextAppState === "active"
+        ) {
+            navigation.navigate('CodeScreen', { email });
+            AppState.removeEventListener("change", handleAppStateChange);
+        }
+        appState.current = nextAppState;
+    };
+
+    const onButtonPress = async () => {
         openInbox();
-        navigation.navigate('CodeScreen', { email, auth_id: userInfo._id, isApproved, hasName });
+    };
+
+    const onNextPress = () => {
+        navigation.navigate('CodeScreen', { email });
     };
 
     const onBackPress = () => {
@@ -32,17 +51,18 @@ const StartCheckEmailScreen = ({ navigation }) => {
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container}>
+            <NavigationEvents onWillFocus={clearErrorMessage} />
             <View >
                 <View style={{ height: 88 }}>
-                    <HeaderBack text='' showtotal={false} onPress={() => onBackPress()} navigation={navigation} />
+                    <HeaderBack text='' showtotal={false} onLeftPress={() => onBackPress()} navigation={navigation} onRightPress={() => onNextPress()} rightText='enter code' />
                 </View>
                 <View style={styles.formcontainer}>
                     <Text style={styles.text} >We sent you a verifaction code to</Text>
                     <Text style={[styles.text, styles.textbold]} >{email}.</Text>
-                
-                {state.errorMessage ? (
-                    <Text style={styles.errorMessage}>{state.errorMessage}</Text>
-                ) : null}
+
+                    {state.errorMessage ? (
+                        <Text style={styles.errorMessage}>{state.errorMessage}</Text>
+                    ) : null}
                 </View>
                 <View style={styles.imagecontainer}>
                     <Image resizeMode='contain' style={styles.peekingimg} source={require('../img/emailsent.png')} />

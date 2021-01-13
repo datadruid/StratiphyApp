@@ -8,17 +8,19 @@ import { getFirstName, setFirstName, removeFirstName, getLastName, setLastName, 
 const authReducer = (state, action) => {
   switch (action.type) {
     case 'add_error':
-      return {...state, errorMessage : action.payload };
+      return { ...state, errorMessage: action.payload };
     case 'clear_error_message':
-        return { ...state, errorMessage: '' };
+      return { ...state, errorMessage: '' };
     case 'signup':
       return { errorMessage: '', token: action.payload };
     case 'signout':
-        return { token: null, errorMessage: '', isApproved: false, hasName: false };
-     case 'set_approved':
-        return { ...state, isApproved : action.payload };
-     case 'set_has_name':
-        return { ...state, hasName : action.payload };
+      return { token: null, errorMessage: '', isApproved: false, hasName: false };
+    case 'set_approved':
+      return { ...state, isApproved: action.payload };
+    case 'set_has_name':
+      return { ...state, hasName: action.payload };
+    case 'set_auth_id':
+      return { ...state, auth_id: action.payload };
     default:
       return state;
   }
@@ -36,8 +38,8 @@ const tryLocalSignin = dispatch => async () => {
     dispatch({ type: 'signin', payload: token });
     navigate('StrategyList');
   } else {
-    //setIntroShown('false');
-    if(await getIntroShown()) {
+    setIntroShown('false');
+    if (await getIntroShown()) {
       navigate('StartSignin');
     } else {
       navigate('Start');
@@ -50,21 +52,21 @@ const updateEmailPasswordUser = dispatch => async (email, password, hasName) => 
   const auth_id = await getAuth0Token(auth_id);
   if (token) {
     try {
-      if(password) {
-        const linkResponse = await authApi.post('/linkuseremail', { email, password }, {headers: { Authorization: `Bearer ${token}` }});
+      if (password) {
+        const linkResponse = await authApi.post('/linkuseremail', { email, password }, { headers: { Authorization: `Bearer ${token}` } });
       }
-      if(hasName){
+      if (hasName) {
         navigate('StrategyList');
       } else {
         navigate('AddName');
       }
-    } catch (err){
+    } catch (err) {
       dispatch({
         type: 'add_error',
         payload: err.response.data.error
       });
     }
-  } 
+  }
 };
 
 const updateGoogleUser = dispatch => async (googleCode, firstName, lastName) => {
@@ -73,24 +75,22 @@ const updateGoogleUser = dispatch => async (googleCode, firstName, lastName) => 
   const email = await getEmail();
   if (token) {
     try {
-      if(googleCode){
-        const linkResponse = await authApi.post('/linkusergoogle', { code: googleCode }, {headers: { Authorization: `Bearer ${token}` }});
+      if (googleCode) {
+        const linkResponse = await authApi.post('/linkusergoogle', { code: googleCode }, { headers: { Authorization: `Bearer ${token}` } });
       }
-      
-      const response = await authApi.post('/updateuser', { firstName, lastName, email, auth_id }, {headers: { Authorization: `Bearer ${token}` }});
+
+      const response = await authApi.post('/updateuser', { firstName, lastName, email, auth_id }, { headers: { Authorization: `Bearer ${token}` } });
       //await removeAuth0Token();
       //await removeName();
-    } catch (err){
+    } catch (err) {
       console.log(err);
       throw new Error(err);
     }
-  } 
+  }
   navigate('StrategyList');
 };
 
 const verifyCode = dispatch => async ({ code, email, auth_id, isApproved, hasName }) => {
-  const token = await getToken();
-
   try {
     if (!code) {
       dispatch({
@@ -106,20 +106,20 @@ const verifyCode = dispatch => async ({ code, email, auth_id, isApproved, hasNam
     await setToken(response.data.id_token);
     await setAuth0Token(auth_id);
     await setEmail(email);
-    
+
     dispatch({
       type: 'signup',
       payload: response.data.id_token
     });
     if (isApproved && !hasName) {
       navigate('Signin', { hasName });
-    } else if(!hasName) {
+    } else if (!hasName) {
       navigate('AddName');
     } else {
-      response = await authApi.post('/updateemail', { email }, {headers: { Authorization: `Bearer ${response.data.id_token}` }});
+      response = await authApi.post('/updateemail', { email }, { headers: { Authorization: `Bearer ${response.data.id_token}` } });
       navigate('StrategyList');
     }
-  
+
   } catch (err) {
     console.log('error');
     console.log(err.response.data.error);
@@ -155,12 +155,12 @@ const addname = dispatch => async ({ firstName, lastName }) => {
     const auth_id = await getAuth0Token();
 
     if (token) {
-        const response = await authApi.post('/updateuser', { firstName, lastName, email, auth_id }, {headers: { Authorization: `Bearer ${token}` }});
-        //await removeAuth0Token();
-        //await removeName();
-      } 
-      navigate('StrategyList');
-    
+      const response = await authApi.post('/updateuser', { firstName, lastName, email, auth_id }, { headers: { Authorization: `Bearer ${token}` } });
+      //await removeAuth0Token();
+      //await removeName();
+    }
+    navigate('StrategyList');
+
   } catch (err) {
     running = false;
     dispatch({
@@ -171,11 +171,10 @@ const addname = dispatch => async ({ firstName, lastName }) => {
   }
 };
 
-const repeatemail = dispatch => async ( email ) => {
+const repeatemail = dispatch => async (email) => {
   let running = false;
-  try{
-    if(!running)
-    {
+  try {
+    if (!running) {
       running = true;
       const signinResponse = await authApi.post('/signin', { email });
       let userInfo = signinResponse.data;
@@ -191,7 +190,8 @@ const repeatemail = dispatch => async ( email ) => {
   }
 };
 
-const signup = dispatch => async ({ email }) => {
+const signup = dispatch => async ( email ) => {
+  console.log(email);
   try {
     if (!email) {
       dispatch({
@@ -204,23 +204,24 @@ const signup = dispatch => async ({ email }) => {
     let isApproved = false;
     let hasName = false;
 
-    if(!running)
-    {
+    if (!running) {
       running = true;
       const signinResponse = await authApi.post('/signin', { email });
 
       let userInfo = signinResponse.data;
-      
-      const userStatusResponse = await authApi.post('/userstatus', 
-      { 
-        email: email, 
-        authId: userInfo._id
+      dispatch({
+        type: 'set_auth_id',
+        payload: userInfo._id
       });
+      const userStatusResponse = await authApi.post('/userstatus',
+        {
+          email: email,
+          authId: userInfo._id
+        });
 
-      if(userStatusResponse.data)
-      {
-        hasName =userStatusResponse.data.hasFirstName;
-        isApproved= userStatusResponse.data.isApproved;
+      if (userStatusResponse.data) {
+        hasName = userStatusResponse.data.hasFirstName;
+        isApproved = userStatusResponse.data.isApproved;
         dispatch({
           type: 'set_approved',
           payload: userStatusResponse.data.isApproved
@@ -231,16 +232,22 @@ const signup = dispatch => async ({ email }) => {
         });
       }
       running = false;
-      // navigate('CodeScreen', { email, auth_id: userInfo._id, isApproved, hasName });
     }
   } catch (err) {
     running = false;
-    console.log({err});
+    console.log({ err });
     dispatch({
       type: 'add_error',
       payload: 'Something went wrong with sign up'
     });
   }
+};
+
+const setError = dispatch => async (errortext) => {
+  dispatch({
+    type: 'add_error',
+    payload: errortext
+  });
 };
 
 const signout = dispatch => async () => {
@@ -252,7 +259,9 @@ const signout = dispatch => async () => {
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  {signup, repeatemail, addname, updateEmailPasswordUser, updateGoogleUser, 
-    signout, verifyCode, tryLocalSignin, clearErrorMessage},
-  { token: null, errorMessage: '', isApproved : false, hasName : false }
+  {
+    signup, repeatemail, addname, updateEmailPasswordUser, updateGoogleUser,
+    signout, verifyCode, tryLocalSignin, clearErrorMessage, setError
+  },
+  { token: null, errorMessage: '', isApproved: false, hasName: false }
 );

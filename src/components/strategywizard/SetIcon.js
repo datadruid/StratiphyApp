@@ -47,7 +47,7 @@ const SetIcon = ({ navigation, selected, onSelected }) => {
         <Button buttonStyle={styles.button}
           onPress={onButtonPress}
           titleStyle={styles.buttontitle}
-          title='Next'
+          title='Save'
           type='solid' />
       </View>
     </>
