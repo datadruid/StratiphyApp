@@ -4,6 +4,8 @@ import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-nati
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { SearchBar } from 'react-native-elements';
 import Instructions from '../components/strategy/Instructions';
+import { colors } from '../components/modules/Colors';
+import { fonts } from '../components/modules/Fonts';
 import { Context as StrategyContext } from '../context/StrategyContext';
 
 const StrategyInstructionsScreen = ({navigation}) => {
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width:215,
-    fontWeight: '700',
+    fontFamily: fonts.GraphikSemibold,
     fontSize: 36,
   },
   content: {
@@ -129,7 +131,8 @@ const styles = StyleSheet.create({
     
   },
   searchbarinput:{
-
+    fontSize: 18,
+    fontFamily: fonts.GraphikRegular,
   }
 });
 

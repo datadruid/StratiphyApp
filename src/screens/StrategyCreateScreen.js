@@ -1,42 +1,57 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Dimensions } from 'react-native'
-import { StatusBar, View, StyleSheet, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import { Context as UpdateContext } from '../context/StrategyUpdateContext';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Spinner from 'react-native-loading-spinner-overlay';
 import { colors } from '../components/modules/Colors';
 
 const windowWidth = Dimensions.get('window').width;
 const StrategyCreateScreen = ({ navigation }) => {
-  const { state, getStrategyTemplate} = useContext(UpdateContext);
+  const { state, getStrategyTemplate } = useContext(UpdateContext);
+  const [spinnerVisible, setSpinnerVisible] = useState(false);
 
-  const onNextButtonPress = (id, title) => {
-    getStrategyTemplate(id);
-    if(id === 0) {
-      navigation.navigate('StrategyWizard', { pageNo: 1, showtotal: true});
+  const onNextButtonPress = async (id, title) => {
+    setSpinnerVisible(true);
+    let timer = setTimeout(() => {
+      Alert.alert('Timed out', 'the create process took too long, please try again.');
+      setSpinnerVisible(false);
+    }, 10000);
+    await getStrategyTemplate(id);
+    clearTimeout(timer);
+    setSpinnerVisible(false);
+    if (id === 0) {
+      navigation.navigate('StrategyWizard', { pageNo: 1, showtotal: true });
     } else {
-      navigation.navigate('StrategyWizard', {pageNo: 7, showtotal: false, title: title});
+      navigation.navigate('StrategyWizard', { pageNo: 7, showtotal: false, title: title });
     }
   };
 
   const renderCard = (id, image, title, description) => {
 
     return (
-    <TouchableOpacity style={styles.cardInfo} onPress={() => onNextButtonPress(id, title)}>
-      <View style={styles.cardItems}>
-        <View style={styles.tipLeftContainer} >
-          <Image source={image} resizeMode='contain' style={styles.tipImage} />
+      <TouchableOpacity style={styles.cardInfo} onPress={() => onNextButtonPress(id, title)}>
+        <View style={styles.cardItems}>
+          <View style={styles.tipLeftContainer} >
+            <Image source={image} resizeMode='contain' style={styles.tipImage} />
+          </View>
+          <View style={styles.icMiddleContainer} >
+            <Text style={styles.infoTitle}> {title}</Text>
+            <Text style={styles.infoDescription}>{description}
+            </Text>
+          </View>
         </View>
-        <View style={styles.icMiddleContainer} >
-          <Text style={styles.infoTitle}> {title}</Text>
-          <Text style={styles.infoDescription}>{description}
-          </Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-    )};
+      </TouchableOpacity>
+    )
+  };
 
   return (
     <View style={styles.mainContainer}>
+      <Spinner
+        visible={spinnerVisible}
+        textContent={'Building Strategy...'}
+        textStyle={styles.spinnerTextStyle}
+      />
       <View style={styles.horizontalTopContainer}>
         <Text style={styles.titleStyle}>Choose your Strategy</Text>
         <FontAwesome style={styles.infoicon} size={20} name='info-circle' />
@@ -125,7 +140,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 15,
   },
-  selectedcardinfo:{
+  selectedcardinfo: {
     borderWidth: 2,
     borderColor: colors.yellowTheme
   },
@@ -163,6 +178,9 @@ const styles = StyleSheet.create({
   },
   buttontitle: {
     fontWeight: 'bold'
+  },
+  spinnerTextStyle: {
+    color: '#FFF'
   },
 });
 

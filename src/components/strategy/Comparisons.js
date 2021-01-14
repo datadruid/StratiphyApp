@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import * as RNLocalize from "react-native-localize";
 import {getAvatarColor, getComparisonButtonLabelForIndex, formatComparisonValue} from '../modules/UiHelper';
 import { LineChart } from 'react-native-chart-kit';
+import { colors } from '../modules/Colors';
+import { fonts } from '../modules/Fonts';
 import moment from 'moment';
 
 const langTag = RNLocalize.getLocales()[0].languageTag;
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
         height: 13
     },
     actiontext: {
-        fontWeight: '400',
+        fontFamily: fonts.GraphikRegular,
         fontSize: 16,
         textAlign:'center',
         textAlignVertical: 'center',
@@ -200,7 +202,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     datetext: {
-        fontWeight: "600",
+        fontFamily: fonts.GraphikSemibold,
         fontSize: 13,
         color: "#8d949d",
         lineHeight:24,
@@ -209,7 +211,7 @@ const styles = StyleSheet.create({
     },
     tickertext: {
         fontSize: 14,
-        fontWeight: 'bold',
+        fontFamily: fonts.GraphikSemibold,
     },
     valuetext: {
         textAlign: 'right'
@@ -219,11 +221,13 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         marginTop: 5,
         fontSize: 13,
-        fontWeight: '400',
+        fontFamily: fonts.GraphikRegular,
         width: 120
     },
     percenttext:{
-        textAlign: 'right'
+        textAlign: 'right',
+        fontSize: 13,
+        fontFamily: fonts.GraphikRegular,
     },
     stackbox: {
         justifyContent: 'space-evenly',

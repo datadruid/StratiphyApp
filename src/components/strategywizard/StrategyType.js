@@ -3,10 +3,11 @@ import { StyleSheet, View, Text, Image, FlatList, StatusBar, TouchableOpacity, A
 import { Button } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../modules/Colors';
-
+import { fonts } from '../modules/Fonts';
+import YellowButton from '../controls/YellowButton';
 
 const StrategyType = ({ navigation, selected, onSelected, nextPage }) => {
- 
+
     const typeSelected = (strategyType) => {
         onSelected(strategyType);
     };
@@ -85,12 +86,8 @@ const StrategyType = ({ navigation, selected, onSelected, nextPage }) => {
                 />
             </View>
 
-            <View style={styles.buttoncontainer}>
-                <Button buttonStyle={styles.button}
-                    onPress={onButtonPress}
-                    titleStyle={styles.buttontitle}
-                    title='Next'
-                    type='solid' />
+            <View style={styles.yellowbutton}>
+                <YellowButton title='Next' onButtonPress={onButtonPress} />
             </View>
 
         </>
@@ -99,9 +96,10 @@ const StrategyType = ({ navigation, selected, onSelected, nextPage }) => {
 
 const styles = StyleSheet.create({
     infoDescription: {
-        color: colors.coolGrey,
+        color: 'black',
         fontSize: 14,
-        marginLeft: (5)
+        marginLeft: (5),
+        fontFamily: fonts.GraphikRegular
     },
     infoicon: {
         color: colors.white,
@@ -128,11 +126,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     titleStyle: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        color: 'black',
         marginStart: 10,
         marginTop: 15,
+        fontSize: 22,
+        color: 'black',
+        fontFamily: fonts.GraphikBold
     },
     secondContainer: {
         flex: 1,
@@ -151,7 +149,8 @@ const styles = StyleSheet.create({
     infoTitle: {
         fontSize: 16,
         fontWeight: 'bold',
-        marginBottom: (5)
+        marginBottom: (5),
+        fontFamily: fonts.GraphikSemibold
     },
     listItem: {
         height: (220),
@@ -234,15 +233,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         alignSelf: 'flex-end'
     },
-    infoDescription: {
-        color: 'black',
-        fontSize: 13,
-        marginLeft: (5)
-    },
     paragraph: {
         marginHorizontal: (20),
         fontSize: 18,
-        color: 'black'
+        color: 'black',
+        fontFamily: fonts.GraphikRegular
     },
     tipContainer: {
         flex: 1,
@@ -251,19 +246,9 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         marginBottom: 5
     },
-    buttoncontainer: {
-        marginHorizontal: 20,
+    yellowbutton: {
         marginTop: 10,
-        marginBottom: 10
-    },
-    button: {
-        backgroundColor: colors.yellowTheme,
-        borderRadius: 12,
-        height: 60
-    },
-    buttontitle: {
-        fontWeight: 'bold'
-    },
+    }
 });
 
 const data = [

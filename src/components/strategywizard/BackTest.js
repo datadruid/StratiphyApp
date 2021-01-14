@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { Text, View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button, } from 'react-native-elements';
 import { colors } from '../modules/Colors';
+import { fonts } from '../modules/Fonts';
 import SelectPicker from 'react-native-form-select-picker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
+import YellowButton from '../controls/YellowButton'
 
 
 const BackTest = ({ navigation, options, selected, onSelected }) => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const [benchmark, setBenchmark] = useState(selected.benchmarkName);
+    const [benchmark, setBenchmark] = useState(selected.benchmarkName.toUpperCase());
     const [date, setDate] = useState(moment(selected.backtestingStart, 'DD/MM/YYYY'))
 
     const showDatePicker = () => {
@@ -44,57 +46,54 @@ const BackTest = ({ navigation, options, selected, onSelected }) => {
                 date={date.toDate()}
             />
 
-                <View style={styles.scrollcontainer}>
+            <View style={styles.scrollcontainer}>
+                <View style={[styles.horizontalTopContainer, { paddingHorizontal: 19 }]}>
+                    <Text style={styles.titleStyle}>{'How far back should we test this strategy?'}</Text>
+                </View>
+
+
+                <View style={styles.formContainer}>
+                    <View style={[styles.mainView, styles.input]}>
+                        <TouchableOpacity style={styles.datepickercontainer} onPress={showDatePicker}>
+                            <Text
+                                onPress={showDatePicker}
+                                style={styles.datepicker}
+                            >{date.format('DD/MM/YYYY')}</Text>
+                        </TouchableOpacity>
+                        <View style={styles.rightContainer}>
+                            <Text numberOfLines={1} style={styles.titleShow}>Select date</Text>
+                        </View>
+                    </View>
+
                     <View style={styles.horizontalTopContainer}>
-                        <Text style={styles.titleStyle}>{'How far back should we test this strategy?'}</Text>
+                        <Text style={styles.titleStyle}>{'Choose a benchmark:'}</Text>
                     </View>
+                    <View style={[styles.mainView, styles.input]}>
+                        <SelectPicker
+                            doneButtonText='Done '
+                            style={styles.selector}
+                            onSelectedStyle={styles.selector}
+                            onValueChange={(value) => {
+                                setBenchmark(value);
+                            }}
+                            selected={benchmark}>
 
+                            {options.map((benchmark) => (
+                                <SelectPicker.Item label={benchmark.preset} value={benchmark.preset} key={benchmark.id} />
+                            ))}
 
-                    <View style={styles.formContainer}>
-                        <View style={[styles.mainView, styles.input]}>
-                            <TouchableOpacity style={styles.datepickercontainer} onPress={showDatePicker}>
-                                <Text
-                                    onPress={showDatePicker}
-                                    style={styles.datepicker}
-                                >{date.format('DD/MM/YYYY')}</Text>
-                            </TouchableOpacity>
-                            <View style={styles.rightContainer}>
-                                <Text numberOfLines={1} style={styles.titleShow}>Select date</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.horizontalTopContainer}>
-                            <Text style={styles.titleStyle}>{'Choose a benchmark:'}</Text>
-                        </View>
-                        <View style={[styles.mainView, styles.input]}>
-                            <SelectPicker
-                            doneButtonText = 'Done '
-                                style={styles.selector}
-                                onValueChange={(value) => {
-                                    setBenchmark(value);
-                                }}
-                                selected={benchmark}>
-
-                                {options.map((benchmark) => (
-                                    <SelectPicker.Item label={benchmark.preset} value={benchmark.preset} index={benchmark.id} />
-                                ))}
-
-                            </SelectPicker>
-                            <View style={styles.rightContainer}>
-                                <Text numberOfLines={1} style={styles.titleShow}>Select benchmark</Text>
-                            </View>
+                        </SelectPicker>
+                        <View style={styles.rightContainer}>
+                            <Text numberOfLines={1} style={styles.titleShow}>Select benchmark</Text>
                         </View>
                     </View>
-                    </View>
-                    <View style={styles.buttoncontainer}>
-                        <Button buttonStyle={styles.button}
-                            onPress={onButtonPress}
-                            titleStyle={styles.buttontitle}
-                            title='Next'
-                            type='solid' />
-                    </View>
-                
-            
+                </View>
+            </View>
+            <View style={styles.yellowbutton}>
+                <YellowButton title='Next' onButtonPress={onButtonPress} />
+            </View>
+
+
         </>
     )
 };
@@ -121,29 +120,32 @@ const styles = StyleSheet.create({
     },
     datepicker: {
         width: '50%',
-        fontSize: 16
+        fontSize: 18,
+        fontFamily: fonts.GraphikRegular
     },
     selector: {
         width: '60%',
-        fontSize: 18
+        fontSize: 18,
+        fontFamily: fonts.GraphikRegular
     },
     titleShow: {
         // ...Fonts.style(Fonts.type.base, 12, 'normal'),
         color: colors.coolGrey,
         marginRight: 10,
         alignSelf: 'flex-end',
+        fontFamily: fonts.GraphikRegular,
+        fontSize: 16
     },
     horizontalTopContainer: {
         flexDirection: 'row',
         width: '100%',
-        paddingHorizontal: (19),
         marginTop: (20),
         marginBottom: (1),
     },
     titleStyle: {
         fontSize: 22,
-        fontWeight: 'bold',
         color: 'black',
+        fontFamily: fonts.GraphikBold
     },
     searchImage: {
         width: (30),
@@ -166,7 +168,7 @@ const styles = StyleSheet.create({
         marginTop: (20),
     },
     scrollcontainer: {
-        flex:1,
+        flex: 1,
     },
     placeholderStyle: {
         color: colors.jeshText
@@ -183,18 +185,9 @@ const styles = StyleSheet.create({
         fontSize: 13, marginTop: 10
 
     },
-    buttoncontainer: {
-        marginHorizontal: 20,
-        marginBottom: 10
-    },
-    button: {
-        backgroundColor: colors.yellowTheme,
-        borderRadius: 12,
-        height: 60
-    },
-    buttontitle: {
-        fontWeight: 'bold'
-    },
+    yellowbutton: {
+        marginTop: 10
+      }
 });
 
 export default BackTest;

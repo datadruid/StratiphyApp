@@ -13,10 +13,12 @@ const StartSigninScreen = ({ navigation }) => {
   const [indicator, setIndicator] = useState(false);
 
   const onButtonPress = async () => {
+    if(email) {
     setIndicator(true);
     await signup(email);
     setIndicator(false);
     navigation.navigate('StartCheckEmail', { email });
+    }
   };
 
   if (state.errorMessage && indicator) {

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, FlatList, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { Button, } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import CheckBox from '@react-native-community/checkbox';
 import { colors } from '../modules/Colors';
+import { fonts } from '../modules/Fonts';
+import YellowButton from '../controls/YellowButton'
 
 const windowWidth = Dimensions.get('window').width;
 const imageMap = {
@@ -80,12 +81,8 @@ const Regions = ({ navigation, onSelected, regionData }) => {
         <Text style={styles.defaultText}>Set as default</Text>
       </View> */}
 
-      <View style={styles.buttoncontainer}>
-        <Button buttonStyle={styles.button}
-          onPress={onButtonPress}
-          titleStyle={styles.buttontitle}
-          title='Next'
-          type='solid' />
+      <View style={styles.yellowbutton}>
+        <YellowButton title='Next' onButtonPress={onButtonPress} />
       </View>
 
     </>
@@ -107,6 +104,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: 'black',
+    fontFamily: fonts.GraphikSemibold
   },
   searchImage: {
     width: (30),
@@ -138,7 +136,9 @@ const styles = StyleSheet.create({
     width: (18)
   },
   paragraph: {
-    marginHorizontal: (20)
+    marginHorizontal: (20),
+    fontSize: 18,
+    fontFamily: fonts.GraphikRegular
   },
   tipLeftContainer: { width: '20%', height: '100%' },
   tipImage: {
@@ -257,9 +257,9 @@ const styles = StyleSheet.create({
     marginLeft: (15),
     marginBottom: (15),
     bottom: 15,
-    fontSize: 15,
+    fontSize: 16,
     color: 'black',
-    fontWeight: 'bold'
+    fontFamily: fonts.GraphikBold
   },
   defaultViewContainer: {
     flexDirection: 'row',
@@ -279,19 +279,9 @@ const styles = StyleSheet.create({
     height: (24),
     width: (24)
   },
-  buttoncontainer: {
-    marginHorizontal: 20,
-    marginBottom: 10
-  },
-  button: {
-    backgroundColor: colors.yellowTheme,
-    borderRadius: 12,
-    height: 60
-  },
-  buttontitle: {
-    fontWeight: 'bold'
-  },
-
+  yellowbutton: {
+    marginTop: 10
+  }
 });
 
 export default Regions;

@@ -6,6 +6,8 @@ import { Context as StrategyContext } from '../../context/StrategyContext';
 import Comparisons from './Comparisons';
 import ComparisonTicker from './ComparisonTicker';
 import {getComparisonButtonLabels} from '../modules/UiHelper'
+import { colors } from '../modules/Colors';
+import { fonts } from '../modules/Fonts';
 
 const AnalysisTab = ({ navigation, strategy }) => {
   const buttons = getComparisonButtonLabels();
@@ -50,7 +52,7 @@ const AnalysisTab = ({ navigation, strategy }) => {
 const styles = StyleSheet.create({
   titletext: {
     fontSize: 20,
-    fontWeight: 'bold'
+    fontFamily: fonts.GraphikSemibold
   },
   comparisoncontainer: {
 marginTop: 19
@@ -64,7 +66,7 @@ marginTop: 19
     backgroundColor:'white',
     color:'black',
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: fonts.GraphikBold,
     borderRadius:10
   },
   innerborderstyle:{
@@ -73,7 +75,7 @@ marginTop: 19
   textstyle: {
     color:'#8D949D',
     fontSize: 14,
-    fontWeight: '400',
+    fontFamily: fonts.GraphikRegular,
     borderRadius:10
   },
   titleiconcontainer: {
@@ -88,15 +90,15 @@ marginTop: 19
   infoicon: {
     marginLeft: 7,
     justifyContent: 'center',
-    color: '#FFC234',
+    color: colors.yellowTheme,
     alignSelf: 'center'
   },
   linktext: {
     width: 120,
     textAlign:'right',
     fontSize: 18,
-    fontWeight: '400',
-    color: '#FFC234',
+    fontFamily: fonts.GraphikRegular,
+    color: colors.yellowTheme,
 },
 titleiconcontainerright:{
     width: 150,

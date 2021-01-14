@@ -3,6 +3,7 @@ import { SafeAreaView, Text, View, TouchableOpacity, StyleSheet } from 'react-na
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { colors } from '../modules/Colors';
 import { fonts } from '../modules/Fonts';
+import YellowButton from '../controls/YellowButton'
 
 const HeaderBack = ({ text, navigation, showtotal, onLeftPress, onRightPress, rightText }) => {
     return (
@@ -14,22 +15,22 @@ const HeaderBack = ({ text, navigation, showtotal, onLeftPress, onRightPress, ri
                     </View>
                 </TouchableOpacity>
                 <View style={styles.textcontainer}>
-                    { showtotal &&
-                    <Text style={[styles.text]}>
-                        {text}
-                    </Text>
+                    {showtotal &&
+                        <Text style={[styles.text]}>
+                            {text}
+                        </Text>
                     }
                 </View>
-                
+
             </View>
             {(rightText) &&
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignContent: 'center' }}>
-            <TouchableOpacity onPress={() => onRightPress()}>
-                    <View style={styles.textcontainer}>
-                        <Text style={[styles.text, styles.link]}>{rightText}</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>}
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignContent: 'center' }}>
+                    <TouchableOpacity onPress={() => onRightPress()}>
+                        <View style={styles.textcontainer}>
+                            <Text style={[styles.text, styles.link]}>{rightText}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>}
         </SafeAreaView>
     );
 };
@@ -56,10 +57,10 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
-fontFamily: fonts.GraphikSemibold
+        fontFamily: fonts.GraphikSemibold
     },
     link: {
-        color:  colors.yellowTheme
+        color: colors.yellowTheme
     }
 });
 

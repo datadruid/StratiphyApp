@@ -3,6 +3,8 @@ import { SafeAreaView } from 'react-navigation';
 import { StyleSheet, Image, View, FlatList, Text, RefreshControl } from 'react-native';
 import { Context as StrategyContext } from '../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import { colors } from '../components/modules/Colors';
+import { fonts } from '../components/modules/Fonts';
 import StrategyListItem from '../components/strategylist/StrategyListItem';
 
 const StrategyListScreen = ({ navigation }) => {
@@ -19,7 +21,7 @@ const StrategyListScreen = ({ navigation }) => {
       return;
     }
     setRefreshing(true);
-    await listStrategies();
+    await listStrategies(false);
     setRefreshing(false);
   }, []);
 
@@ -59,7 +61,8 @@ const styles = StyleSheet.create({
   header: {
     fontWeight: '700',
     fontSize: 36,
-    width:'100%'
+    width:'100%',
+    fontFamily: fonts.InterExtraBold
   },
   content: {
     flex: 1,
@@ -67,10 +70,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     justifyContent: 'center',
-    backgroundColor: '#F3F4F5',
+    backgroundColor: colors.paleGrey,
     height: 75,
     padding: 20,
-    top: -20
+    marginTop: -20
   },
   titleiconcontainer: {
     flexDirection: 'row',

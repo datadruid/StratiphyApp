@@ -6,6 +6,8 @@ import { SearchBar } from 'react-native-elements';
 import Stocks from '../components/strategy/Stocks';
 import { Context as StrategyContext } from '../context/StrategyContext';
 import {getChartStartDate, getChartEndDate} from '../components/modules/UiHelper';
+import { colors } from '../components/modules/Colors';
+import { fonts } from '../components/modules/Fonts';
 
 const StrategyCompareScreen = ({ navigation }) => {
   const [search, setSearch] = useState('');
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width:170,
-    fontWeight: '700',
+    fontFamily: fonts.GraphikBold,
     fontSize: 36,
     alignSelf: 'stretch',
     textAlign: 'left',
@@ -140,7 +142,8 @@ const styles = StyleSheet.create({
 
   },
   searchbarinput: {
-
+    fontSize: 18,
+    fontFamily: fonts.GraphikRegular,
   }
 });
 

@@ -5,6 +5,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CheckBox from '@react-native-community/checkbox';
 import TextFieldWithText from './TextFieldWithText';
 import { colors } from '../modules/Colors';
+import { fonts } from '../modules/Fonts';
+import YellowButton from '../controls/YellowButton'
 
 const LookBackPeriod = ({ navigation, options, selected, onSelected, nextPage }) => {
   const [lookback, setLookback] = useState();
@@ -20,7 +22,7 @@ const LookBackPeriod = ({ navigation, options, selected, onSelected, nextPage })
   }
 
   const onButtonPress = () => {
-    if ((selected >= 0 && selected < 3 ) || (selected == 3 && lookback)) {
+    if ((selected >= 0 && selected < 3) || (selected == 3 && lookback)) {
       nextPage();
     }
     else {
@@ -49,8 +51,7 @@ const LookBackPeriod = ({ navigation, options, selected, onSelected, nextPage })
     }
   }
 
-  if(selected == 3 && !lookback)
-  {
+  if (selected == 3 && !lookback) {
     let lbp = options.find(x => x.id === Number(3));
     setLookback(lbp.periods.toString());
   }
@@ -133,15 +134,10 @@ const LookBackPeriod = ({ navigation, options, selected, onSelected, nextPage })
           />
         </View>
         {this.renderGraphCard(itemCard)}
-        </ScrollView>
-        <View style={styles.buttoncontainer}>
-          <Button buttonStyle={styles.button}
-            onPress={onButtonPress}
-            titleStyle={styles.buttontitle}
-            title='Next'
-            type='solid' />
-        </View>
-      
+      </ScrollView>
+      <View style={styles.yellowbutton}>
+        <YellowButton title='Next' onButtonPress={onButtonPress} />
+      </View>
 
     </KeyboardAvoidingView>
   )
@@ -165,6 +161,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: 'black',
+    fontFamily: fonts.GraphikSemibold
   },
   infoicon: {
     color: colors.white,
@@ -180,9 +177,10 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     marginHorizontal: (22),
-    fontSize: 16,
+    fontSize: 18,
     color: 'black',
-    marginTop: (14)
+    marginTop: (14),
+    fontFamily: fonts.GraphikRegular
   },
   horizontalView: {
     flexDirection: 'row',
@@ -201,7 +199,8 @@ const styles = StyleSheet.create({
   },
   defaultText: {
     fontSize: 18,
-    color: 'black'
+    color: 'black',
+    fontFamily: fonts.GraphikRegular
   },
   listItem: {
     height: (200),
@@ -262,7 +261,8 @@ const styles = StyleSheet.create({
   orText: {
     textAlign: 'center',
     color: colors.coolGrey,
-    marginTop: (10)
+    marginTop: (10),
+    fontFamily: fonts.GraphikSemibold
   },
   description: {
     color: 'white',
@@ -276,21 +276,9 @@ const styles = StyleSheet.create({
     width: '105%',
     marginLeft: -4
   },
-  buttoncontainer: {
-    alignSelf: 'flex-end',
-    marginHorizontal: 20,
-    marginTop: 30,
-    marginBottom: 10,
-    width: '90%'
-  },
-  button: {
-    backgroundColor: colors.yellowTheme,
-    borderRadius: 12,
-    height: 60
-  },
-  buttontitle: {
-    fontWeight: 'bold'
-  },
+  yellowbutton: {
+    marginTop: 10
+  }
 });
 
 const itemCard = [

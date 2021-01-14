@@ -6,6 +6,8 @@ import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { LineChart } from 'react-native-chart-kit';
 import {getAvatarColor, getChartValueFilter} from '../modules/UiHelper';
+import { colors } from '../modules/Colors';
+import { fonts } from '../modules/Fonts';
 import moment from 'moment';
 
 const langTag = RNLocalize.getLocales()[0].languageTag;
@@ -203,19 +205,22 @@ const styles = StyleSheet.create({
     },
     tickertext: {
         fontSize: 14,
-        fontWeight: 'bold',
+        fontFamily: fonts.GraphikSemibold,
     },
     valuetext: {
         textAlign: 'right'
+        
     },
     nametext: {
         marginTop: 5,
         fontSize: 13,
-        fontWeight: '400',
+        fontFamily: fonts.GraphikRegular,
     },
     percenttext:{
         textAlign: 'right',
-        marginTop:10
+        marginTop:10,
+        fontSize: 13,
+        fontFamily: fonts.GraphikRegular,
     },
     stackbox: {
         justifyContent: 'space-evenly',

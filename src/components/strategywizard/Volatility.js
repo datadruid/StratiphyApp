@@ -3,9 +3,10 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Button, } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import CheckBox from '@react-native-community/checkbox';
 import TextFieldWithText from './TextFieldWithText';
 import { colors } from '../modules/Colors';
+import { fonts } from '../modules/Fonts';
+import YellowButton from '../controls/YellowButton'
 
 const imageMap = {
   'icLowRisk.png' : require('../../img/icons/icLowRisk.png'),
@@ -89,13 +90,9 @@ const Volatility = ({ navigation, options, onSelected }) => {
         </View>
         
       </KeyboardAwareScrollView>
-      <View style={styles.buttoncontainer}>
-          <Button buttonStyle={styles.button}
-            onPress={onButtonPress}
-            titleStyle={styles.buttontitle}
-            title='Next'
-            type='solid' />
-        </View>
+      <View style={styles.yellowbutton}>
+        <YellowButton title='Next' onButtonPress={onButtonPress} />
+      </View>
     </>
   )
 };
@@ -140,7 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: 'black',
-    marginStart: 3
+    fontFamily: fonts.GraphikSemibold
   },
   tipLeftContainer: { width: '20%', height: '100%' },
   tipImage: {
@@ -186,10 +183,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   paragraph: {
-
     marginHorizontal: (22),
-    fontSize: 16,
-    color: 'black'
+    fontSize: 18,
+    color: 'black',
+    marginTop: (14),
+    fontFamily: fonts.GraphikRegular
   },
   firstCard: {
     marginTop: (30)
@@ -197,10 +195,8 @@ const styles = StyleSheet.create({
   orText: {
     textAlign: 'center',
     color: colors.coolGrey,
+    fontFamily: fonts.GraphikSemibold,
     marginBottom: (10)
-  },
-  buttoncontainer: {
-    marginHorizontal: 20
   },
   button: {
     backgroundColor: colors.yellowTheme,
@@ -210,19 +206,9 @@ const styles = StyleSheet.create({
   buttontitle: {
     fontWeight: 'bold'
   },
-  buttoncontainer: {
-    marginHorizontal: 20,
-    margin: 20,
-    marginBottom:10
-  },
-  button: {
-    backgroundColor: colors.yellowTheme,
-    borderRadius: 12,
-    height:60
-  },
-  buttontitle: {
-    fontWeight: 'bold'
-  },
+  yellowbutton: {
+    marginTop: 10
+  }
 });
 
 export default Volatility;

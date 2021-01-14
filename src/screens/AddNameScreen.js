@@ -13,7 +13,7 @@ const AddNameScreen = ({ navigation }) => {
 
   const saveName = () => {
     setIndicator(!indicator);
-    addname({ firstName, lastName })
+    addname({ firstName, lastName, userId: state.userId })
   }
   return (
     <KeyboardAvoidingView

@@ -50,13 +50,13 @@ const clearErrorMessage = dispatch => () => {
   dispatch({ type: 'clear_error_message' });
 };
 
-const listStrategies = dispatch => async () => {
+const listStrategies = dispatch => async (clearCache) => {
   const token = await getToken();
   if (token) {
     try {
       let config = {
         headers: { Authorization: `Bearer ${token}` },
-        clearCacheEntry: true
+        clearCacheEntry: clearCache
       };
       let response = await authApi.get(`/strategies`, config);
       if(response.data.length == 0) {

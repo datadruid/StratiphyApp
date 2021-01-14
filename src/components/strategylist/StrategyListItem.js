@@ -10,6 +10,7 @@ import { icondata } from '../modules/StrategyIcons';
 import { Context as StrategyContext } from '../../context/StrategyContext';
 import * as Progress from 'react-native-progress';
 import { colors } from '../modules/Colors';
+import { fonts } from '../modules/Fonts';
 
 const screenwidth = Dimensions.get("window").width;
 
@@ -79,11 +80,11 @@ const StrategyListItem = ({ navigation, item, index, list }) => {
     <View style={styles.card}>
       <View style={styles.box1}>
         {!item.iconid &&
-          <Icon style={styles.icon} size={18} name='superpowers' />}
+          <Icon style={styles.icon} size={20} name='superpowers' />}
         {item.iconid &&
           <Image source={icondata[item.iconid].image} resizeMode='contain' style={styles.icon} />
         }
-        <Text style={styles.text} category='s1' status='default'>{item.strategyName}</Text>
+        <Text style={styles.text} >{item.strategyName}</Text>
         <ItemOverlayMenu navigation={navigation} item={item} />
       </View>
       <TouchableOpacity onPress={() => openDetail(item)}>
@@ -122,12 +123,12 @@ const StrategyListItem = ({ navigation, item, index, list }) => {
             <View style={styles.box1}>
               <View style={styles.box2}>
                 <Text style={styles.bold}>{formattedStratValue}</Text>
-                <Text>Value</Text>
+                <Text style={styles.smalltext}>Value</Text>
               </View>
               <IconStack actions={item.latestActions.actions} borderColor='white' size={24} />
               <View style={styles.box4}>
                 <Text style={[styles.textrightbold, { color: linecolour }]}>{plusminus}{item.performancePct}%</Text>
-                <Text style={styles.textright}>Performance</Text>
+                <Text style={styles.smalltext, styles.textright}>Performance</Text>
               </View>
             </View>
           }
@@ -145,6 +146,14 @@ const StrategyListItem = ({ navigation, item, index, list }) => {
 const styles = StyleSheet.create({
   layoutcontainer: {
     height: '100%'
+  },
+  text: {
+    fontFamily: fonts.GraphikSemibold
+  },
+  smalltext: {
+    fontFamily: fonts.GraphikRegular,
+    fontSize: 16,
+    color: colors.coolGrey
   },
   card: {
     flex: 1,
@@ -182,11 +191,15 @@ const styles = StyleSheet.create({
   textright: {
     justifyContent: 'flex-end',
     textAlign: 'right',
+    fontFamily: fonts.GraphikRegular,
+    fontSize: 16,
+    color: colors.coolGrey
   },
   textrightbold: {
     justifyContent: 'flex-end',
     textAlign: 'right',
-    fontWeight: 'bold'
+    fontSize: 16,
+    fontFamily: fonts.GraphikSemibold,
   },
   footerContainer: {
     flex: 1,
@@ -197,11 +210,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
   },
   bold: {
-    fontWeight: 'bold'
+    fontSize: 16,
+    fontFamily: fonts.GraphikSemibold
   },
   icon: {
-    width: 25,
-    height: 25
+    width: 34,
+    height: 34,
+    marginLeft: -5
   }
 
 });

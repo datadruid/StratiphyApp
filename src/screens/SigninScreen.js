@@ -7,6 +7,7 @@ import { Context as AuthContext } from '../context/AuthContext';
 import { colors } from '../components/modules/Colors';
 import { fonts } from '../components/modules/Fonts';
 import YellowButton from '../components/controls/YellowButton';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 GoogleSignin.configure({
   webClientId: '1060831970790-vfh908lm2mvd0hr747qblplq1f8ebj99.apps.googleusercontent.com',
@@ -15,15 +16,21 @@ GoogleSignin.configure({
 });
 
 const SigninScreen = ({ navigation }) => {
-  const hasName = navigation.getParam('hasName');
+  const hasAuthId = navigation.getParam('hasAuthId');
+  const userId = navigation.getParam('userId');
   const { state, updateEmailPasswordUser, updateGoogleUser } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [indicator, setIndicator] = useState(false);
+  const [spinnerVisible, setSpinnerVisible] = useState(false);
 
   const onButtonPress = () => {
-    setIndicator(!indicator);
-    updateEmailPasswordUser(email, password, hasName)
+    try {
+      updateEmailPasswordUser(email, password, hasAuthId);
+      setSpinnerVisible(true);
+    } catch (error) {
+      setSpinnerVisible(false);
+      console.log(error)
+    }
   };
 
   const googleSignIn = async () => {
@@ -33,18 +40,25 @@ const SigninScreen = ({ navigation }) => {
       let firstName = userInfo.user.givenName;
       let lastName = userInfo.user.familyName;
       let googleCode = userInfo.serverAuthCode;
-      updateGoogleUser(googleCode, firstName, lastName);
+      await updateGoogleUser(googleCode, firstName, lastName, userId);
+      setSpinnerVisible(true);
     } catch (error) {
+      setSpinnerVisible(false);
       console.log(error)
     }
   }
 
-  if (state.errorMessage && indicator) {
-    setIndicator(false);
+  if (state.errorMessage && spinnerVisible) {
+    setSpinnerVisible(false);
   }
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container}>
+      <Spinner
+        visible={spinnerVisible}
+        textContent={'Registering...'}
+        textStyle={styles.spinnerTextStyle}
+      />
       <View style={styles.formcontainer}>
         <Text style={styles.title}>Link your web account</Text>
         <Text style={styles.text}>Please link up your Stratiphy web site account.</Text>
@@ -52,7 +66,6 @@ const SigninScreen = ({ navigation }) => {
           <GoogleSocialButton onPress={googleSignIn} />
         </View>
         <Text style={styles.ortext}>--- or ---</Text>
-        <ActivityIndicator size="large" color={colors.yellowTheme} animating={indicator} />
         <Text style={styles.text} >Email</Text>
         <TextInput
           style={styles.input}
@@ -77,10 +90,10 @@ const SigninScreen = ({ navigation }) => {
           <Text style={styles.errorMessage}>{state.errorMessage}</Text>
         ) : null}
 
-      
-      <View style={styles.yellowbutton}>
-        <YellowButton title='Link Account' onButtonPress={onButtonPress} />
-      </View>
+
+        <View style={styles.yellowbutton}>
+          <YellowButton title='Link Account' onButtonPress={onButtonPress} />
+        </View>
       </View>
     </KeyboardAvoidingView>
   );
@@ -150,7 +163,10 @@ const styles = StyleSheet.create({
   },
   yellowbutton: {
     marginVertical: 30
-  }
+  },
+  spinnerTextStyle: {
+    color: '#FFF'
+  },
 });
 
 export default SigninScreen;

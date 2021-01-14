@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
 import {getAvatarColor} from '../modules/UiHelper';
+import { colors } from '../modules/Colors';
+import { fonts } from '../modules/Fonts';
 import moment from 'moment';
 
 const langTag = RNLocalize.getLocales()[0].languageTag;
@@ -34,11 +36,11 @@ const Instructions = ({ actions }) => {
                                         <Text style={styles.stockcircletext}>{item.Ticker}</Text>
                                     </View>
                                     <Text style={styles.actiontext}>
-                                        <Text style={{fontWeight: 'bold'}}>{item.Action} </Text>
-                                        <Text style={{fontWeight: 'bold'}}>{getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}{item.Buy.toFixed(2)} </Text>
+                                        <Text style={{ffontFamily: fonts.GraphikSemibold}}>{item.Action} </Text>
+                                        <Text style={{fontFamily: fonts.GraphikSemibold}}>{getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}{item.Buy.toFixed(2)} </Text>
                                         <Text>{item.Action} </Text>
                                         <Text>of </Text>
-                                        <Text style={{fontWeight: 'bold'}}>{item.Ticker} </Text>
+                                        <Text style={{fontFamily: fonts.GraphikSemibold}}>{item.Ticker} </Text>
                                         <Text>stock</Text>  
                                     </Text>
                                 </View>
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
         height: 13
     },
     actiontext: {
-        fontWeight: '400',
+        fontFamily: fonts.GraphikRegular,
         fontSize: 16,
         textAlign:'center',
         textAlignVertical: 'center',
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     datetext: {
-        fontWeight: "600",
+        fontFamily: fonts.GraphikSemibold,
         fontSize: 13,
         color: "#8d949d",
         lineHeight:24,

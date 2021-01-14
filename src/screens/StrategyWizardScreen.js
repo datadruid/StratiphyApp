@@ -126,11 +126,10 @@ const StrategyWizardScreen = ({ navigation }) => {
     }
   };
 
-  console.log(pageNo);
   return (
     <View style={styles.mainContainer}>
 
-      <View style={{ height: Platform.OS === 'ios' ? 88 : 44 }}>
+      <View style={{ height: Platform.OS === 'ios' ? 88 : 50 }}>
         <HeaderBack text={`${pageNo}/${pageTotal}`} showtotal={showtotal} onLeftPress={() => onBackPress()} navigation={navigation} />
       </View>
       <View style={styles.progressContainer}>

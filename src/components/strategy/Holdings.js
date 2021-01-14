@@ -4,6 +4,8 @@ import { Context as StrategyContext } from '../../context/StrategyContext';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { LineChart } from 'react-native-chart-kit';
+import { colors } from '../modules/Colors';
+import { fonts } from '../modules/Fonts';
 import {getAvatarColor, getChartStartDate, getChartEndDate, getChartValueFilter} from '../modules/UiHelper';
 
 const currencyFormat = {
@@ -163,7 +165,7 @@ const styles = StyleSheet.create({
         height: 50
     },
     linespacer: {
-        backgroundColor: '#DBDEE7',
+        backgroundColor: colors.paleGreyTwo,
         height: 1,
         marginHorizontal: 20
     },
@@ -183,7 +185,7 @@ const styles = StyleSheet.create({
     },
     tickertext: {
         fontSize: 14,
-        fontWeight: 'bold',
+        fontFamily: fonts.GraphikBold,
     },
     valuetext: {
         textAlign: 'right'
@@ -191,7 +193,7 @@ const styles = StyleSheet.create({
     nametext: {
         marginTop: 5,
         fontSize: 13,
-        fontWeight: '400',
+        fontFamily: fonts.GraphikRegular,
     },
     percenttext:{
         textAlign: 'right',

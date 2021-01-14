@@ -1,13 +1,16 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, StatusBar, Image, Text, View, TouchableOpacity, ScrollView, Dimensions, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Button, } from 'react-native-elements';
 import Modal from 'react-native-modal'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Spinner from 'react-native-loading-spinner-overlay';
 import HeaderBack from '../components/strategywizard/HeaderBack';
 import Preview from '../components/strategy/Preview';
 import { colors } from '../components/modules/Colors';
+import { fonts } from '../components/modules/Fonts';
 import { Context as UpdateContext } from '../context/StrategyUpdateContext';
 import { Context as StrategyContext } from '../context/StrategyContext';
-import Spinner from 'react-native-loading-spinner-overlay';
+import YellowButton from '../components/controls/YellowButton'
 
 const StrategySummaryScreen = ({ navigation, index }) => {
   const { state } = useContext(UpdateContext);
@@ -15,17 +18,21 @@ const StrategySummaryScreen = ({ navigation, index }) => {
   const [visible, setVisible] = useState(false);
   const [spinnerVisible, setSpinnerVisible] = useState(false);
 
-  let periodicities =state.strategy.strategyTypes.find(x=> x.setting !== 'none').specifications.periodicities;
-  let periods =state.strategy.strategyTypes.find(x=> x.setting !== 'none').specifications.periods;
-  let weightings =state.strategy.strategyTypes.find(x=> x.setting !== 'none').specifications.weightings;
-  let lookback = state.strategy.options.basicStrategySettingOptions.find(x=> x.periodicities == periodicities && x.periods == periods && x.weightings == weightings).label;
+  let periodicities = state.strategy.strategyTypes.find(x => x.setting !== 'none').specifications.periodicities;
+  let periods = state.strategy.strategyTypes.find(x => x.setting !== 'none').specifications.periods;
+  let weightings = state.strategy.strategyTypes.find(x => x.setting !== 'none').specifications.weightings;
+  let lookback = state.strategy.options.basicStrategySettingOptions.find(x => x.periodicities == periodicities && x.periods == periods && x.weightings == weightings).label;
 
-  let strategyType = state.strategy.strategyTypes.find(x=> x.setting !== 'none').typeName;
-  let sectors = state.strategy.sectors.sectorsInclude.map(x=> x.tag ).join(", ");
-  
+  let strategyType = state.strategy.strategyTypes.find(x => x.setting !== 'none').typeName;
+  let sectors = state.strategy.sectors.sectorsInclude.map(x => x.tag).join(", ");
+
   const openPreview = () => {
     previewStrategy(state.strategy);
     setVisible(true);
+  };
+
+  const goGreenPress = () => {
+    
   };
 
   const closePreview = () => {
@@ -36,34 +43,35 @@ const StrategySummaryScreen = ({ navigation, index }) => {
     setVisible(false);
     setSpinnerVisible(true);
     let timer = setTimeout(() => {
-        setSpinnerVisible(false);
+      setSpinnerVisible(false);
     }, 5000);
     await uploadStrategy(state.strategy);
     navigation.navigate('StrategyCreate');
     navigation.navigate('StrategyList');
-    listStrategies();
+    listStrategies(true);
   };
 
   renderCard = (id, title, description) => {
-  return (
-    <TouchableOpacity style={styles.cardInfo} onPress={() => onCardPress(id)}>
-      <View style={styles.cardItems}>
-        <View style={styles.icMiddleContainer} >
-          <Text style={styles.infoTitle}>{title}</Text>
-          <Text style={styles.infoDescription}>{description}
-          </Text>
+    return (
+      <TouchableOpacity style={styles.cardInfo} onPress={() => onCardPress(id)}>
+        <View style={styles.cardItems}>
+          <View style={styles.icMiddleContainer} >
+            <Text style={styles.infoTitle}>{title}</Text>
+            <Text style={styles.infoDescription}>{description}
+            </Text>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-    )};
+      </TouchableOpacity>
+    )
+  };
 
   return (
     <View style={styles.mainContainer}>
       <Spinner
-                visible={spinnerVisible}
-                textContent={'Saving...'}
-                textStyle={styles.spinnerTextStyle}
-            />
+        visible={spinnerVisible}
+        textContent={'Saving...'}
+        textStyle={styles.spinnerTextStyle}
+      />
       <HeaderBack text={''} navigation={navigation} onLeftPress={() => navigation.goBack()} />
 
       <View style={styles.horizontalTopContainer}>
@@ -71,7 +79,7 @@ const StrategySummaryScreen = ({ navigation, index }) => {
       </View>
 
       <Text style={styles.paragraph} numberOfLines={3}>{'This is a summary of your strategy.'}</Text>
-      
+
       <ScrollView>
         <View style={styles.firstCard}>
           {renderCard(0, 'Strategy type', strategyType)}
@@ -79,21 +87,29 @@ const StrategySummaryScreen = ({ navigation, index }) => {
         {renderCard(1, 'Lookback period', lookback)}
         {renderCard(2, 'Sectors', sectors)}
 
-        
-      </ScrollView>
-      <View style={styles.buttoncontainer}>
-          <Button buttonStyle={styles.button}
-            onPress={openPreview}
-            titleStyle={styles.buttontitle}
-            title='Preview Performance'
-            type='solid' />
+
+        <View style={styles.buttoncontainer}>
+            <Button buttonStyle={styles.button}
+            icon={<View style={styles.greeniconcontainer}>
+            <Image style={styles.greenicon} source={require('../img/marketsectors/icLeaf.png')}/>
+            </View>}
+                onPress={goGreenPress}
+                titleStyle={styles.buttontitle}
+                title='Go Green'
+                type='solid' />
         </View>
 
-        <Modal fullScreen={false}
-          style={styles.overlay} isVisible={visible} onBackdropPress={closePreview}>
-            <Preview strategy={state.strategy} saveStrategy={saveStrategy} closeWindow={closePreview}/>
-            
-          </Modal>
+      </ScrollView>
+
+      <View style={styles.yellowbutton}>
+        <YellowButton title='Preview Performance' onButtonPress={openPreview} />
+      </View>
+
+      <Modal fullScreen={false}
+        style={styles.overlay} isVisible={visible} onBackdropPress={closePreview}>
+        <Preview strategy={state.strategy} saveStrategy={saveStrategy} closeWindow={closePreview} />
+
+      </Modal>
     </View>
 
   );
@@ -116,10 +132,9 @@ const styles = StyleSheet.create({
     marginTop: (10),
     alignSelf: 'center',
     height: 10,
-
   },
   overlay: {
-    marginHorizontal:0,
+    marginHorizontal: 0,
     marginTop: 95,
     marginBottom: 0
   },
@@ -127,7 +142,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     paddingHorizontal: (19),
-    marginTop: (20),
+    marginTop: (30),
     marginBottom: (1),
     alignItems: 'flex-start',
     justifyContent: 'flex-start'
@@ -135,12 +150,12 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     fontSize: 36,
-    fontWeight: 'bold',
+    fontFamily: fonts.GraphikBold,
     color: 'black',
     textAlign: 'center',
     marginTop: (-10),
     marginBottom: 10,
-    textAlign:'left'
+    textAlign: 'left'
   },
   searchImage: {
     width: (30),
@@ -190,6 +205,7 @@ const styles = StyleSheet.create({
   },
   infoDescription: {
     color: 'black',
+    fontFamily: fonts.GraphikRegular,
     fontSize: 20,
     marginTop: (10),
     marginLeft: (5),
@@ -197,7 +213,7 @@ const styles = StyleSheet.create({
   },
   infoTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: fonts.InterExtraBold,
     marginBottom: (5),
     marginStart: 5,
     marginTop: (11)
@@ -258,13 +274,30 @@ const styles = StyleSheet.create({
     marginBottom: 30
   },
   button: {
-    backgroundColor: colors.yellowTheme,
+    backgroundColor: colors.greenishTeal,
     borderRadius: 12,
-height:60
+    height: 70
   },
   buttontitle: {
     fontWeight: 'bold'
   },
+  yellowbutton: {
+    marginTop: 10
+  },
+  greeniconcontainer: {
+    height: 48,
+    width: 48,
+    borderRadius: 24,
+    backgroundColor: 'white',
+    alignContent: 'center',
+    marginRight: 25
+   },
+   greenicon: {
+     top: 12,
+     left: 12,
+    height: 24,
+    width: 24,
+   }
 });
 
 export default StrategySummaryScreen;

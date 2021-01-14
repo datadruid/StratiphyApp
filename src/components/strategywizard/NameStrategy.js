@@ -5,10 +5,12 @@ import { Button, } from 'react-native-elements';
 import TextFieldWithText from './TextFieldWithText';
 import Spacer from '../Spacer';
 import { colors } from '../modules/Colors';
+import { fonts } from '../modules/Fonts';
 import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { icondata } from '../modules/StrategyIcons';
 import { NewName } from '../modules/Names';
+import YellowButton from '../controls/YellowButton'
 
 const currencyFormat = {
   style: "currency",
@@ -30,7 +32,7 @@ const NameStratgey = ({ navigation, investData, strategyType, onSelected, select
   const [name, setName] = useState(investData.name);
   const [errorMessage, setErrorMessage] = useState(undefined);
   const [description, setDescription] = useState(investData.description);
-  
+
   if (!name) {
     setName(titleCase(`${strategyType} ${NewName()}`));
   }
@@ -107,7 +109,8 @@ const NameStratgey = ({ navigation, investData, strategyType, onSelected, select
             <Text style={styles.iconparagraph} numberOfLines={3}>{'Click to change'}</Text>
           </View>
           <TouchableOpacity onPress={openediticon}>
-          <Image source={selectedIcon.image} resizeMode='contain' style={styles.selectedImage}></Image>
+            {selectedIcon.image &&
+              <Image source={selectedIcon.image} resizeMode='contain' style={styles.selectedImage}></Image>}
           </TouchableOpacity>
         </View>
         <View style={styles.horizontalTopContainer}>
@@ -115,10 +118,10 @@ const NameStratgey = ({ navigation, investData, strategyType, onSelected, select
         </View>
 
         <View style={styles.formContainer}>
-          <View style={[styles.mainView, styles.input]}>
+          <View style={[styles.mainView, styles.textInput]}>
             <TextInput
               multiline={true}
-              style={[styles.input, styles.notesInput]}
+              style={[styles.notesInput]}
               placeholder='Want to remember something about this strategy? Keep track by adding notes here.'
               value={description}
               onChangeText={text => setDescription(text)} />
@@ -129,15 +132,11 @@ const NameStratgey = ({ navigation, investData, strategyType, onSelected, select
           <Text style={styles.errorMessage}>{errorMessage}</Text>
         ) : null}
         <Spacer />
-        
+
       </KeyboardAwareScrollView>
-      <View style={styles.buttoncontainer}>
-          <Button buttonStyle={styles.button}
-            onPress={onButtonPress}
-            titleStyle={styles.buttontitle}
-            title='Next'
-            type='solid' />
-        </View>
+      <View style={styles.yellowbutton}>
+        <YellowButton title='Next' onButtonPress={onButtonPress} />
+      </View>
     </View>
   )
 };
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
   mainView: {
     flexDirection: 'row',
     borderWidth: 1,
-    borderColor: colors.paleGreyTwo,
+    borderColor: colors.coolGrey,
     width: '100%',
     borderRadius: 8,
     marginTop: (10),
@@ -165,8 +164,8 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     fontSize: 22,
-    fontWeight: 'bold',
     color: 'black',
+    fontFamily: fonts.GraphikBold
   },
   searchImage: {
     width: (30),
@@ -185,12 +184,14 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginHorizontal: 20,
     fontSize: 16,
-    color: 'black'
+    color: 'black',
+    fontFamily: fonts.GraphikRegular
   },
   iconparagraph: {
     marginTop: 5,
     fontSize: 16,
-    color: 'black'
+    color: 'black',
+    fontFamily: fonts.GraphikRegular
   },
   selectedImage: {
     height: (60),
@@ -223,33 +224,32 @@ const styles = StyleSheet.create({
     width: '100%',
     overflow: 'hidden',
     borderColor: colors.coolGrey,
-    marginVertical: 15
+    marginVertical: 15,
+    fontFamily: fonts.GraphikRegular,
+    fontSize: 18
   },
   textInput: {
     paddingLeft: 20
   },
   notesInput: {
     height: 150,
-    textAlignVertical: 'top'
+    textAlignVertical: 'top',
+    width: '100%',
+    overflow: 'hidden',
+    borderColor: colors.coolGrey,
+    fontFamily: fonts.GraphikRegular,
+    fontSize: 16,
+    marginVertical: 15,
+    paddingRight: 15
   },
   description: {
     color: 'white',
     width: '110%',
     fontSize: 13, marginTop: 10
-
   },
-  buttoncontainer: {
-    marginHorizontal: 20,
-    marginBottom: 10,
-  },
-  button: {
-    backgroundColor: colors.yellowTheme,
-    borderRadius: 12,
-    height: 60
-  },
-  buttontitle: {
-    fontWeight: 'bold'
-  },
+  yellowbutton: {
+    marginTop: 10
+  }
 });
 
 export default NameStratgey;

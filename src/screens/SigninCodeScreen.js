@@ -14,7 +14,7 @@ const SigninCodeScreen = ({ navigation }) => {
   const { state, verifyCode, repeatemail, clearErrorMessage, setError } = useContext(AuthContext);
 
   const verify = () => {
-    verifyCode({ code, email, auth_id: state.auth_id, isApproved: state.isApproved, hasName:state.hasName });
+    verifyCode({ code, email, auth_id: state.auth_id, isApproved: state.isApproved, hasAuthId: state.hasAuthId, userId: state.userId });
   };
 
   const onButtonPress = () => {

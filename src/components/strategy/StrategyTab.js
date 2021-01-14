@@ -4,6 +4,8 @@ import { Context as StrategyContext } from '../../context/StrategyContext';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Instructions from './Instructions';
 import Holdings from './Holdings';
+import { colors } from '../modules/Colors';
+import { fonts } from '../modules/Fonts';
 
 const StrategyTab = ({ navigation, strategy }) => {
     const { state, getTickerData, clearErrorMessage } = useContext(StrategyContext);
@@ -57,7 +59,7 @@ const StrategyTab = ({ navigation, strategy }) => {
 const styles = StyleSheet.create({
     titletext: {
         fontSize: 20,
-        fontWeight: 'bold'
+        fontFamily: fonts.GraphikSemibold
     },
     titleiconcontainer: {
         flexDirection: 'row',
@@ -71,15 +73,15 @@ const styles = StyleSheet.create({
     infoicon: {
         marginLeft: 7,
         justifyContent: 'center',
-        color: '#FFC234',
+        color: colors.yellowTheme,
         alignSelf: 'center'
     },
     linktext: {
         width: 120,
         textAlign:'right',
         fontSize: 18,
-        fontWeight: '400',
-        color: '#FFC234',
+        fontFamily: fonts.GraphikRegular,
+        color: colors.yellowTheme,
     },
     titleiconcontainerright:{
         width: 150,

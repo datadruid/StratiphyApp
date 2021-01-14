@@ -6,6 +6,8 @@ import AIcon from 'react-native-vector-icons/dist/FontAwesome';
 import MIcon from 'react-native-vector-icons/dist/MaterialIcons';
 import PreviewLineChart from './PreviewLineChart';
 import {getDateFilterButtonLabels} from '../modules/UiHelper';
+import { colors } from '../modules/Colors'
+import { fonts } from '../modules/Fonts';
 
 const mastercolour = '#4CD697';
 let linecolour = '#FFFFFF';
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
         color:'white',
         opacity:1,
         fontSize: 14,
-        fontWeight: 'bold',
+        fontFamily: fonts.GraphikBold,
         borderRadius:10
       },
       innerborderstyle:{
@@ -138,7 +140,7 @@ const styles = StyleSheet.create({
         color:'white',
         opacity: 0.4,
         fontSize: 14,
-        fontWeight: '400',
+        fontFamily: fonts.GraphikRegular,
         borderRadius:10
       },
     content: {
@@ -153,13 +155,14 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 26,
-        fontWeight: 'bold',
+        fontFamily: fonts.GraphikBold,
         color: 'white',
         marginLeft:20
     },
     keytext:{
         fontSize: 12,
         color: 'white',
+        fontFamily: fonts.GraphikRegular,
         marginLeft:5,
         textAlignVertical : 'center'
     },
@@ -181,7 +184,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         color: '#FFC234',
         fontWeight: 'bold',
-        fontSize: 20
+        fontSize: 20,
+        fontFamily: fonts.InterExtraBold,
     },
     buttoncontainer: {
         flexDirection: 'row',
@@ -217,12 +221,14 @@ const styles = StyleSheet.create({
     },
     percent: {
         fontSize: 22,
-        fontWeight: 'bold',
-        color: 'white'
+        fontFamily: fonts.GraphikSemibold,
+        color: 'white',
+        marginBottom: 3,
     },
     subtitle: {
         fontSize:16,
         color: 'white',
+        fontFamily: fonts.GraphikRegular,
     }
 });
 

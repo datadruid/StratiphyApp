@@ -159,7 +159,7 @@ export default class App extends Component {
   }
 
   onIds(device) {
-    console.log('Device info: ', device);
+    //console.log('Device info: ', device);
   }
 
 

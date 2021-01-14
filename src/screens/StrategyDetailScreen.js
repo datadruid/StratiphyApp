@@ -10,7 +10,10 @@ import IconStack from '../components/strategy/IconStack';
 import StrategyTab from '../components/strategy/StrategyTab';
 import AnalysisTab from '../components/strategy/AnalysisTab';
 import StrategyDetailChart from '../components/strategy/StrategyDetailChart';
-import {getChartAxisLabels, getDateFilterButtonLabels} from '../components/modules/UiHelper'
+import { getChartAxisLabels, getDateFilterButtonLabels } from '../components/modules/UiHelper'
+import { icondata } from '../components/modules/StrategyIcons';
+import { colors } from '../components/modules/Colors';
+import { fonts } from '../components/modules/Fonts';
 
 const mastercolour = '#4CD697';
 
@@ -27,17 +30,17 @@ const StrategySettingScreen = ({ navigation }) => {
   const { state, getStrategy, getTickerData, getComparisonChartData, setTimePeriod, getComparisonTickerData, clearErrorMessage } = useContext(StrategyContext);
 
   useEffect(() => {
-     getStrategy(item._id, state.timePeriod);
+    getStrategy(item._id, state.timePeriod);
   }, []);
 
-  const changeTimePeriod = async (index) =>{
+  const changeTimePeriod = async (index) => {
     await setTimePeriod(index);
     getStrategy(item._id, index);
     getComparisonChartData(item._id, state.compTickerList.join(','), index);
-    let tickers = state.strategy?.latestActions?.actions.filter(x => x.Action === 'Hold').map(function(elem){
+    let tickers = state.strategy?.latestActions?.actions.filter(x => x.Action === 'Hold').map(function (elem) {
       return elem.Ticker;
     }).join(",");
-    if(tickers){
+    if (tickers) {
       getTickerData(item._id, tickers, index);
       getComparisonTickerData(state.strategy._id, state.compTickerList.join(','), state.timePeriod);
     }
@@ -85,33 +88,37 @@ const StrategySettingScreen = ({ navigation }) => {
               <Icon style={styles.backiocn} size={40} name='long-arrow-left' />
             </TouchableOpacity>
             <View style={styles.box1}>
-              <Icon style={styles.topicon} size={25} name='superpowers' />
+              {!item.iconid &&
+                <Icon style={styles.icon} size={25} name='superpowers' />}
+              {item.iconid &&
+                <Image source={icondata[item.iconid].image} resizeMode='contain' style={styles.icon} />
+              }
               <Text style={styles.toptitletext} >{state.strategy?.strategyName}</Text>
               <Icon style={styles.topicon} size={20} name='star' />
 
             </View>
-            <StrategyDetailChart mastercolour={mastercolour} datasets={state.strategy.analytics} linecolour={linecolour} isAnalysisTab={isAnalysisTab}/>
+            <StrategyDetailChart mastercolour={mastercolour} datasets={state.strategy.analytics} linecolour={linecolour} isAnalysisTab={isAnalysisTab} />
             <View style={styles.box1}>
               <View style={styles.box2}>
                 <Text style={styles.numbertitletext}>{formattedStratValue}</Text>
                 <Text style={styles.subtitletext}>Value</Text>
               </View>
               <IconStack actions={state.strategy?.latestActions?.actions} borderColor={mastercolour} size={28} />
-                <View style={styles.box2}>
-                  <Text style={[styles.numbertitletext, { color: linecolour, textAlign:'right' }]}>{plusminus}{percent}%</Text>
-                  <Text style={[styles.subtitletext, { textAlign:'right' }]}>Performance</Text>
-                </View>
+              <View style={styles.box2}>
+                <Text style={[styles.numbertitletext, { color: linecolour, textAlign: 'right' }]}>{plusminus}{percent}%</Text>
+                <Text style={[styles.subtitletext, { textAlign: 'right' }]}>Performance</Text>
+              </View>
             </View>
             <ButtonGroup
-        onPress={index => changeTimePeriod(index)}
-        selectedIndex={state.timePeriod}
-        buttons={buttons}
-        containerStyle={styles.buttongroupcontainer}
-        selectedButtonStyle={styles.selectedbuttonstyle}
-        selectedTextStyle={styles.selectedbuttonstyle}
-        innerBorderStyle={styles.innerborderstyle}
-        textStyle={styles.textstyle}
-      />
+              onPress={index => changeTimePeriod(index)}
+              selectedIndex={state.timePeriod}
+              buttons={buttons}
+              containerStyle={styles.buttongroupcontainer}
+              selectedButtonStyle={styles.selectedbuttonstyle}
+              selectedTextStyle={styles.selectedbuttonstyle}
+              innerBorderStyle={styles.innerborderstyle}
+              textStyle={styles.textstyle}
+            />
           </View>
           <View style={styles.content} >
             <View style={styles.switchpanel} >
@@ -165,8 +172,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   box2: {
-    flex:3,
-    justifyContent:'flex-start'
+    flex: 3,
+    justifyContent: 'flex-start'
   },
   content: {
     flex: 1,
@@ -183,30 +190,32 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#D8DADB',
+    backgroundColor: colors.silver,
     padding: 2.5,
     height: 40,
     width: 340
   },
   button: {
-    backgroundColor: '#D8DADB',
+    backgroundColor: colors.silver,
     width: 166,
     borderRadius: 8,
+    height: '100%'
   },
   buttontitle: {
     color: 'white',
-    fontSize: 13,
-    fontWeight: 'bold'
+    fontSize: 14,
+    fontFamily: fonts.GraphikSemibold,
   },
   buttonselected: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'white',
     width: 166,
     borderRadius: 8,
+    height: '100%'
   },
   buttontitleselected: {
     color: 'black',
     fontSize: 13,
-    fontWeight: 'bold'
+    fontFamily: fonts.GraphikSemibold,
   },
   centerspacer: {
     width: 4,
@@ -229,8 +238,9 @@ const styles = StyleSheet.create({
   },
   subtitletext: {
     fontSize: 16,
-    fontWeight: '400',
-    color: 'white'
+    fontFamily: fonts.GraphikRegular,
+    color: 'white',
+    marginTop: 4
   },
   roundimage: {
     width: 30,
@@ -250,14 +260,14 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     textAlign: 'center',
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: fonts.GraphikSemibold,
     color: 'white',
   },
   numbertitletext: {
     alignSelf: 'stretch',
     textAlign: 'left',
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: fonts.GraphikSemibold,
     color: 'white',
   },
   topicon: {
@@ -272,30 +282,36 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },
-  buttongroupcontainer : {
+  buttongroupcontainer: {
     top: -15,
     height: 36,
-    borderColor:'transparent',
-    backgroundColor:'transparent',
+    borderColor: 'transparent',
+    backgroundColor: 'transparent',
   },
-  selectedbuttonstyle :{
-    backgroundColor:'transparent',
-    color:'white',
-    opacity:1,
+  selectedbuttonstyle: {
+    backgroundColor: 'transparent',
+    color: 'white',
+    opacity: 1,
     fontSize: 14,
-    fontWeight: 'bold',
-    borderRadius:10
+    fontFamily: fonts.GraphikBold,
+    borderRadius: 10
   },
-  innerborderstyle:{
-    color:'transparent'
+  innerborderstyle: {
+    color: 'transparent'
   },
   textstyle: {
-    color:'white',
+    color: 'white',
     opacity: 0.4,
     fontSize: 14,
-    fontWeight: '400',
-    borderRadius:10
+    fontFamily: fonts.GraphikRegular,
+    borderRadius: 10
   },
+  icon: {
+    width: 34,
+    height: 34,
+    marginLeft: -5,
+    marginTop: -5
+  }
 });
 
 export default StrategySettingScreen;

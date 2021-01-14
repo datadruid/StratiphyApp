@@ -4,6 +4,7 @@ import { Button, } from 'react-native-elements';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { colors } from '../modules/Colors';
 import { icondata } from '../modules/StrategyIcons';
+import YellowButton from '../controls/YellowButton'
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -43,12 +44,8 @@ const SetIcon = ({ navigation, selected, onSelected }) => {
         keyExtractor={item => item.id}
       />
 
-      <View style={styles.buttoncontainer}>
-        <Button buttonStyle={styles.button}
-          onPress={onButtonPress}
-          titleStyle={styles.buttontitle}
-          title='Save'
-          type='solid' />
+      <View style={styles.yellowbutton}>
+        <YellowButton title='Save' onButtonPress={onButtonPress} />
       </View>
     </>
   )
@@ -118,18 +115,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     marginRight: (20)
   },
-  buttoncontainer: {
-    marginHorizontal: 20,
-    marginBottom: 30
-  },
-  button: {
-    backgroundColor: colors.yellowTheme,
-    borderRadius: 12,
-    height: 60
-  },
-  buttontitle: {
-    fontWeight: 'bold'
-  },
+  yellowbutton: {
+    marginTop: 10
+  }
 });
 
 export default SetIcon;
