@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, FlatList, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Text, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
 import { Button, } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../modules/Colors';
 import { fonts } from '../modules/Fonts';
-import YellowButton from '../controls/YellowButton'
+import YellowButton from '../controls/YellowButton';
+import Toast from 'react-native-simple-toast';
 
 const windowWidth = Dimensions.get('window').width;
 const imageMap = {
@@ -36,7 +37,7 @@ const Regions = ({ navigation, onSelected, regionData }) => {
     if (sectors.filter(x => x.selected).length > 0) {
       onSelected(sectors);
     } else {
-      Alert.alert('Regions', 'you need to select at least one region');
+      Toast.showWithGravity('You need to select at least one region', Toast.LONG, Toast.TOP);
     }
 
   };

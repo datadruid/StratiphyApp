@@ -34,7 +34,7 @@ const Preview = ({ strategy, saveStrategy, closeWindow }) => {
         plusminus = '+';
     }
     return (
-        <ScrollView>
+        <ScrollView style={styles.scrollview}>
         <View style={styles.overlaycontent}>
             <View style={styles.content}>
                 <View style={styles.iconcontainer}>
@@ -111,10 +111,13 @@ const Preview = ({ strategy, saveStrategy, closeWindow }) => {
 };
 
 const styles = StyleSheet.create({
+    scrollview:{
+        height: '100%',
+    },
     overlaycontent: {
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
-        backgroundColor: '#4CD697',
+        backgroundColor: colors.greenishTeal,
         margin: 0,
         padding: 0,
         height: '100%',
@@ -167,7 +170,7 @@ const styles = StyleSheet.create({
         textAlignVertical : 'center'
     },
     button: {
-        backgroundColor: '#FFC234',
+        backgroundColor: colors.yellowTheme,
         borderRadius: 12,
         margin: 5
     },

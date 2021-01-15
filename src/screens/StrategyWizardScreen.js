@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View, Text, Image, FlatList, StatusBar, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, FlatList, StatusBar, TouchableOpacity, Alert } from 'react-native';
 import { Dimensions, Platform } from 'react-native';
 import HeaderBack from '../components/strategywizard/HeaderBack';
 import * as Progress from 'react-native-progress';
@@ -30,7 +30,7 @@ const StrategyWizardScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');
   const [pageTotal, setPageTotal] = useState(7);
   let iconShowTotal = false;
-
+  
   if (navigation.getParam('title') && !title) {
     setTitle(navigation.getParam('title'));
   }
@@ -102,6 +102,7 @@ const StrategyWizardScreen = ({ navigation }) => {
   };
 
   const nameInvestSelected = (data) => {
+    updateIcon(selectedIcon);
     setNameInvest(data);
     updateInvestment(data.amounts);
     updateName(data.name);
@@ -118,13 +119,32 @@ const StrategyWizardScreen = ({ navigation }) => {
         setPageNo(pageNo - 1);
       }
       else {
-        navigation.goBack();
+        areYouSure();
       }
     }
     else {
-      navigation.goBack();
+      areYouSure();
     }
   };
+
+  const areYouSure = () =>
+    Alert.alert(
+      "Create strategy",
+      "Your settings will be lost, are you sure you want to exit this strategy?",
+      [
+          {
+              text: "Cancel",
+              style: "cancel"
+          },
+          {
+              text: "OK", onPress: async () => {
+                navigation.goBack();
+              }
+          }
+      ],
+      { cancelable: false }
+    
+    );
 
   return (
     <View style={styles.mainContainer}>

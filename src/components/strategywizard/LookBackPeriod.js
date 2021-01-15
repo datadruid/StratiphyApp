@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, ScrollView, Alert, KeyboardAvoidingView } from 'react-native';
-import { Button } from 'react-native-elements';
+import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, ScrollView, KeyboardAvoidingView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CheckBox from '@react-native-community/checkbox';
 import TextFieldWithText from './TextFieldWithText';
 import { colors } from '../modules/Colors';
 import { fonts } from '../modules/Fonts';
-import YellowButton from '../controls/YellowButton'
+import YellowButton from '../controls/YellowButton';
+import Toast from 'react-native-simple-toast';
 
 const LookBackPeriod = ({ navigation, options, selected, onSelected, nextPage }) => {
   const [lookback, setLookback] = useState();
@@ -26,7 +26,7 @@ const LookBackPeriod = ({ navigation, options, selected, onSelected, nextPage })
       nextPage();
     }
     else {
-      Alert.alert('Lookback', 'you need to select a lookback period');
+      Toast.showWithGravity('You need to select a lookback period', Toast.LONG, Toast.TOP);
     }
   };
 

@@ -4,6 +4,7 @@ import { Button, MenuItem, OverflowMenu } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { Context as StrategyContext } from '../../context/StrategyContext';
 import Spinner from 'react-native-loading-spinner-overlay';
+import Toast from 'react-native-simple-toast';
 
 const ItemOverlayMenu = ({ navigation, item }) => {
     const { deleteStrategy, listStrategies } = useContext(StrategyContext);
@@ -24,12 +25,12 @@ const ItemOverlayMenu = ({ navigation, item }) => {
                     text: "OK", onPress: async () => {
                         setSpinnerVisible(true);
                         let timer = setTimeout(() => {
-                            Alert.alert('Timed out', 'the delete action took to long, please try again.');
+                            Toast.showWithGravity('The delete action took to long, please try again.', Toast.LONG, Toast.TOP);
                             setSpinnerVisible(false);
                         }, 10000);
 
                         await deleteStrategy(item._id);
-                        await listStrategies(false);
+                        await listStrategies(true);
                         clearTimeout(timer);
                         setSpinnerVisible(false);
                     }

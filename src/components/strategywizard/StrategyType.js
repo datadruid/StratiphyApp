@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, FlatList, StatusBar, TouchableOpacity, Alert } from 'react-native';
-import { Button } from 'react-native-elements';
+import { StyleSheet, View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../modules/Colors';
 import { fonts } from '../modules/Fonts';
 import YellowButton from '../controls/YellowButton';
+import Toast from 'react-native-simple-toast';
 
 const StrategyType = ({ navigation, selected, onSelected, nextPage }) => {
 
@@ -16,7 +16,7 @@ const StrategyType = ({ navigation, selected, onSelected, nextPage }) => {
         if (selected?.filter(x => x.setting !== 'none').length > 0) {
             nextPage();
         } else {
-            Alert.alert('Strategy type', 'you need to select a strategy type');
+            Toast.showWithGravity('You need to select a strategy type', Toast.LONG, Toast.TOP);
         }
     };
 

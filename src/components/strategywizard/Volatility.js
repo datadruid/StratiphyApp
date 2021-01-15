@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Button, } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import TextFieldWithText from './TextFieldWithText';
 import { colors } from '../modules/Colors';
 import { fonts } from '../modules/Fonts';
-import YellowButton from '../controls/YellowButton'
+import YellowButton from '../controls/YellowButton';
 
 const imageMap = {
   'icLowRisk.png' : require('../../img/icons/icLowRisk.png'),

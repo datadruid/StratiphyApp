@@ -1,17 +1,18 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { AppState, StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { AppState, StyleSheet, View, Text, Image, ActivityIndicator, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import { Context as AuthContext } from '../context/AuthContext';
 import { colors } from '../components/modules/Colors';
 import { fonts } from '../components/modules/Fonts';
 import YellowButton from '../components/controls/YellowButton';
 import HeaderBack from '../components/strategywizard/HeaderBack';
-import { openInbox } from 'react-native-email-link'
+import { openInbox } from 'react-native-email-link';
+import Toast from 'react-native-simple-toast';
 
 const StartCheckEmailScreen = ({ navigation }) => {
     const email = navigation.getParam('email');
     const { state, repeatemail, clearErrorMessage } = useContext(AuthContext);
-    const [indicator, setIndicator] = useState(true);
+    const [indicator, setIndicator] = useState(false);
     const appState = useRef(AppState.currentState);
 
     useEffect(() => {
@@ -41,8 +42,13 @@ const StartCheckEmailScreen = ({ navigation }) => {
         navigation.goBack();
     };
 
-    const resendlink = () => {
-        repeatemail(email);
+    const resendlink = async () => {
+        if (!indicator) {
+            setIndicator(true);
+            await repeatemail(email);
+            setIndicator(false);
+            Toast.showWithGravity('New email sent', Toast.LONG, Toast.TOP);
+        }
     };
 
     if (state.errorMessage && indicator) {
@@ -68,7 +74,7 @@ const StartCheckEmailScreen = ({ navigation }) => {
                     <Image resizeMode='contain' style={styles.peekingimg} source={require('../img/emailsent.png')} />
                 </View>
             </View>
-
+            <ActivityIndicator style={styles.indicator} size="large" color={colors.yellowTheme} animating={indicator} />
             <View style={styles.yellowbutton}>
                 <YellowButton title='Open mail app' onButtonPress={onButtonPress} />
 

@@ -3,7 +3,6 @@ import { SafeAreaView, Text, View, TouchableOpacity, StyleSheet } from 'react-na
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { colors } from '../modules/Colors';
 import { fonts } from '../modules/Fonts';
-import YellowButton from '../controls/YellowButton'
 
 const HeaderBack = ({ text, navigation, showtotal, onLeftPress, onRightPress, rightText }) => {
     return (

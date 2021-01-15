@@ -1,20 +1,26 @@
 import React, { useContext, useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, TouchableOpacity, Text, TextInput } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, ActivityIndicator, TouchableOpacity, Text, TextInput } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import { Context as AuthContext } from '../context/AuthContext';
 import { colors } from '../components/modules/Colors';
 import { fonts } from '../components/modules/Fonts';
 import YellowButton from '../components/controls/YellowButton';
 import HeaderBack from '../components/strategywizard/HeaderBack';
+import Toast from 'react-native-simple-toast';
 
 const SigninCodeScreen = ({ navigation }) => {
   const email = navigation.getParam('email');
   const [code, setCode] = useState('');
+  const [indicator, setIndicator] = useState(false);
 
   const { state, verifyCode, repeatemail, clearErrorMessage, setError } = useContext(AuthContext);
 
-  const verify = () => {
-    verifyCode({ code, email, auth_id: state.auth_id, isApproved: state.isApproved, hasAuthId: state.hasAuthId, userId: state.userId });
+  const verify = async () => {
+    if (!indicator) {
+      setIndicator(true);
+      await verifyCode({ code, email, auth_id: state.auth_id, isApproved: state.isApproved, hasAuthId: state.hasAuthId, userId: state.userId });
+      setIndicator(false);
+    }
   };
 
   const onButtonPress = () => {
@@ -23,8 +29,13 @@ const SigninCodeScreen = ({ navigation }) => {
     }
   };
 
-  const resendlink = () => {
-    repeatemail(email);
+  const resendlink = async () => {
+    if (!indicator) {
+      setIndicator(true);
+      await repeatemail(email);
+      setIndicator(false);
+      Toast.showWithGravity('New email sent', Toast.LONG, Toast.TOP);
+    }
   };
 
   const checkcode = (codeinput) => {
@@ -40,38 +51,43 @@ const SigninCodeScreen = ({ navigation }) => {
     navigation.goBack();
   };
 
+  if(state.errorMessage && indicator)
+  {
+    setIndicator(false);
+  }
+
   return (
     <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container}>
-        <NavigationEvents onWillFocus={clearErrorMessage} />
-        <View style={{ height: 88 }}>
-          <HeaderBack text='' showtotal={false} onLeftPress={() => onBackPress()} navigation={navigation} />
-        </View>
-        <View style={styles.formcontainer}>
-          <Text style={styles.title}>6-digit code</Text>
-          <Text style={styles.text}>Please enter the code send to {email}.</Text>
-          <TextInput
-            style={styles.input}
-            value={code}
-            onChangeText={(value) => { checkcode(value) }}
-            autoCapitalize="none"
-            autoCorrect={false}
-            selectionColor={colors.yellowTheme}
-            keyboardType='decimal-pad'
-          />
-          {state.errorMessage ? (
-            <Text style={styles.errorMessage}>{state.errorMessage}</Text>
-          ) : null}
+      <NavigationEvents onWillFocus={clearErrorMessage} />
+      <View style={{ height: 88 }}>
+        <HeaderBack text='' showtotal={false} onLeftPress={() => onBackPress()} navigation={navigation} />
+      </View>
+      <View style={styles.formcontainer}>
+        <Text style={styles.title}>6-digit code</Text>
+        <Text style={styles.text}>Please enter the code send to {email}.</Text>
+        <TextInput
+          style={styles.input}
+          value={code}
+          onChangeText={(value) => { checkcode(value) }}
+          autoCapitalize="none"
+          autoCorrect={false}
+          selectionColor={colors.yellowTheme}
+          keyboardType='decimal-pad'
+        />
+        {state.errorMessage ? (
+          <Text style={styles.errorMessage}>{state.errorMessage}</Text>
+        ) : null}
+        <ActivityIndicator style={styles.indicator} size="large" color={colors.yellowTheme} animating={indicator} />
+      </View>
+      <View style={styles.yellowbutton}>
+        <YellowButton title='Submit' onButtonPress={onButtonPress} />
 
-        </View>
-        <View style={styles.yellowbutton}>
-          <YellowButton title='Submit' onButtonPress={onButtonPress} />
-
-          <TouchableOpacity onPress={resendlink}>
-            <View style={styles.resendlink}>
-              <Text style={styles.resendtext}>Resend email</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={resendlink}>
+          <View style={styles.resendlink}>
+            <Text style={styles.resendtext}>Resend email</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
 
     </KeyboardAvoidingView>
   );
@@ -89,6 +105,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingVertical: 20,
     backgroundColor: colors.white
+  },
+  indicator: {
+    marginTop: 60
   },
   formcontainer: {
     marginTop: 60,

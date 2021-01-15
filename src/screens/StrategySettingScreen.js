@@ -32,8 +32,8 @@ const chartConfig = {
 const StrategySettingScreen = ({ navigation }) => {
   const item = navigation.getParam('item');
   const [visible, setVisible] = useState(false);
-  const { state, setStrategy, updateName, updateDescription, updateDateModified } = useContext(UpdateContext);
-  const { previewStrategy, uploadStrategy } = useContext(StrategyContext);
+  const { state, setStrategy, updateName, updateDescription } = useContext(UpdateContext);
+  const { previewStrategy, uploadStrategy, listStrategies } = useContext(StrategyContext);
     useEffect(() => {
       setStrategy(item);
   }, []); 
@@ -52,10 +52,10 @@ const StrategySettingScreen = ({ navigation }) => {
   };
 
   const saveStrategy = () => {
-    //updateDateModified(moment());
     uploadStrategy(state.strategy);
     setVisible(false);
     navigation.navigate('StrategyList');
+    listStrategies(true);
   };
 
   if(state.strategy.UserID)

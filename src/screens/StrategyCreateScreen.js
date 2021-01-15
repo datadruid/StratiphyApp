@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Dimensions } from 'react-native'
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Context as UpdateContext } from '../context/StrategyUpdateContext';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { colors } from '../components/modules/Colors';
+import Toast from 'react-native-simple-toast';
 
 const windowWidth = Dimensions.get('window').width;
 const StrategyCreateScreen = ({ navigation }) => {
@@ -14,7 +15,7 @@ const StrategyCreateScreen = ({ navigation }) => {
   const onNextButtonPress = async (id, title) => {
     setSpinnerVisible(true);
     let timer = setTimeout(() => {
-      Alert.alert('Timed out', 'the create process took too long, please try again.');
+      Toast.showWithGravity('The create process took too long, please try again.', Toast.LONG, Toast.TOP);
       setSpinnerVisible(false);
     }, 10000);
     await getStrategyTemplate(id);

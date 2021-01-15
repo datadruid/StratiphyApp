@@ -40,7 +40,7 @@ const StrategySummaryScreen = ({ navigation, index }) => {
   };
 
   const saveStrategy = async () => {
-    setVisible(false);
+    await setVisible(false);
     setSpinnerVisible(true);
     let timer = setTimeout(() => {
       setSpinnerVisible(false);

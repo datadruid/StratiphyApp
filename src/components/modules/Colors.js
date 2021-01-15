@@ -70,7 +70,6 @@ export const colors = {
 	lightPurple: '#c670f5',
 	redPink: '#fa325a',
 	lightPurple: '#c770f5',
-	greenishTeal: '#4cd697',
 	paleGrey: '#f3f4f5',
 	brownishGrey: '#666666',
 	dark: '#120f20',

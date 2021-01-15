@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Button, } from 'react-native-elements';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import TextFieldWithText from './TextFieldWithText';
 import Spacer from '../Spacer';
 import { colors } from '../modules/Colors';
@@ -10,7 +9,7 @@ import * as RNLocalize from "react-native-localize";
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { icondata } from '../modules/StrategyIcons';
 import { NewName } from '../modules/Names';
-import YellowButton from '../controls/YellowButton'
+import YellowButton from '../controls/YellowButton';
 
 const currencyFormat = {
   style: "currency",
@@ -34,7 +33,7 @@ const NameStratgey = ({ navigation, investData, strategyType, onSelected, select
   const [description, setDescription] = useState(investData.description);
 
   if (!name) {
-    setName(titleCase(`${strategyType} ${NewName()}`));
+    setName(titleCase(`${NewName()} ${strategyType}`));
   }
 
   const onButtonPress = () => {
