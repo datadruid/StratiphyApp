@@ -118,7 +118,6 @@ export const icondata = [
     {
       id: 29,
       image: require('../../img/strategyicons/circle-money-tree.png'),
-  
     },
     {
       id: 30,
@@ -150,7 +149,6 @@ export const icondata = [
     },
     {
       id: 37,
-      title: 'icCircleAnalysis',
       image: require('../../img/strategyicons/circle-analysis.png'),
     },
     {
@@ -182,15 +180,15 @@ export const icondata = [
       image: require('../../img/strategyicons/circle-rainy-day-savings.png'),
     },
     {
-      id: 48,
+      id: 45,
       image: require('../../img/strategyicons/circle-calendar.png'),
     },
     {
-      id: 49,
+      id: 46,
       image: require('../../img/strategyicons/circle-analyse-chart.png'),
     },
     {
-      id: 50,
+      id: 47,
       image: require('../../img/strategyicons/circle-analysis.png'),
     },
   ];

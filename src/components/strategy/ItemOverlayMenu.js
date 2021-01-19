@@ -1,13 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
-import { Button, MenuItem, OverflowMenu } from '@ui-kitten/components';
+import { MenuItem, OverflowMenu } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { Context as StrategyContext } from '../../context/StrategyContext';
-import Spinner from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-simple-toast';
 
 const ItemOverlayMenu = ({ navigation, item }) => {
-    const { deleteStrategy, listStrategies } = useContext(StrategyContext);
+    const { state, deleteStrategy, listStrategies } = useContext(StrategyContext);
     const [spinnerVisible, setSpinnerVisible] = useState(false);
     const [visible, setVisible] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(null);
@@ -23,16 +22,13 @@ const ItemOverlayMenu = ({ navigation, item }) => {
                 },
                 {
                     text: "OK", onPress: async () => {
-                        setSpinnerVisible(true);
                         let timer = setTimeout(() => {
                             Toast.showWithGravity('The delete action took to long, please try again.', Toast.LONG, Toast.TOP);
-                            setSpinnerVisible(false);
                         }, 10000);
 
-                        await deleteStrategy(item._id);
-                        await listStrategies(true);
+                        await deleteStrategy(item._id, state.strategies);
+                        //await listStrategies(true);
                         clearTimeout(timer);
-                        setSpinnerVisible(false);
                     }
                 }
             ],
@@ -82,11 +78,6 @@ const ItemOverlayMenu = ({ navigation, item }) => {
 
     return (
         <View style={styles.container} level='1'>
-            <Spinner
-                visible={spinnerVisible}
-                textContent={'Deleting...'}
-                textStyle={styles.spinnerTextStyle}
-            />
             <OverflowMenu
                 style={styles.overflowmenu}
                 anchor={renderToggleButton}

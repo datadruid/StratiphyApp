@@ -39,12 +39,12 @@ const strategyReducer = (state, action) => {
       return { ...state, errorMessage: '', timePeriod: action.payload };
     case 'preview_strategy':
       return { ...state, errorMessage: '', previewData: action.payload };
-    case 'set_processing_status':
-      return { ...state, errorMessage: '', processingStatus: action.payload };
     default:
       return state;
   }
 };
+
+const delay = ms => new Promise(res => setTimeout(res, ms));
 
 const clearErrorMessage = dispatch => () => {
   dispatch({ type: 'clear_error_message' });
@@ -59,7 +59,7 @@ const listStrategies = dispatch => async (clearCache) => {
         clearCacheEntry: clearCache
       };
       let response = await authApi.get(`/strategies`, config);
-      if(response.data.length == 0) {
+      if (response.data.length == 0) {
         navigate('StrategyCreate');
       }
       dispatch({ type: 'list_strategies', payload: response.data });
@@ -71,7 +71,7 @@ const listStrategies = dispatch => async (clearCache) => {
   }
 };
 
-const loadStrategyData = dispatch => async (index, strategyID, timePeriod, strategies) => {
+const loadStrategyData = dispatch => async (strategies) => {
   const token = await getToken();
   if (token) {
     try {
@@ -79,12 +79,16 @@ const loadStrategyData = dispatch => async (index, strategyID, timePeriod, strat
         headers: { Authorization: `Bearer ${token}` },
         clearCacheEntry: true
       };
-
-      let response = await authApi.get(`/strategy/${strategyID}/${timePeriod}`, config);
-      let newStrategies = strategies;
-      newStrategies[index] = response.data;
-
-      dispatch({ type: 'list_strategies', payload: newStrategies });
+      const strategyIDs = strategies.map(x => x._id);
+      if (strategyIDs.length > 0) {
+        const response = await authApi.get(`/strategy/${strategyIDs}`, config);
+        let newStrategies = strategies;
+        response.data.forEach(record => {
+          const index = newStrategies.findIndex(x => x._id == record.strategyID);
+          newStrategies[index]['analytics'] = record;
+        });
+        dispatch({ type: 'list_strategies', payload: newStrategies });
+      }
     } catch (err) {
       dispatch({ type: 'add_error', payload: err.data.error });
     }
@@ -150,7 +154,8 @@ const uploadStrategy = dispatch => async (strategy) => {
   if (token) {
     try {
       let config = {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        clearCacheEntry: true
       };
 
       let response = await authApi.post(`/uploadstrategy/`, { strategy }, config);
@@ -164,16 +169,37 @@ const uploadStrategy = dispatch => async (strategy) => {
   }
 };
 
-const runStrategy = dispatch => async (strategyid) => {
+const runStrategy = dispatch => async (strategyid, strategies) => {
   const token = await getToken();
   if (token) {
     try {
       let config = {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        clearCacheEntry: true
       };
-
-      let response = await authApi.get(`/runstrategy/${strategyid}`, config);
-
+      const initialStatus = await authApi.get(`/strategystatus/${strategyid}`, config);
+      if (initialStatus.data[0].status.includes('added')) {
+        const response = await authApi.get(`/runstrategy/${strategyid}`, config);
+      }
+      let id = 0;
+      while (id < 90) {
+        await delay(2000);
+        const stratStatus = await authApi.get(`/strategystatus/${strategyid}`, config);
+        if (strategies.length > 0) {
+          let newStrategies = strategies;
+          const index = newStrategies.findIndex(x => x._id == strategyid);
+          if (index > -1) {
+            newStrategies[index]['status'] = stratStatus.data[0].status;
+            newStrategies[index]['stage'] = stratStatus.data[0].stage;
+            dispatch({ type: 'list_strategies', payload: newStrategies });
+          }
+        }
+        id++;
+        if (stratStatus.data[0].stage === 1) {
+          id = 90;
+        }
+      }
+      return;
     } catch (err) {
       console.log(err.data.error);
       dispatch({ type: 'add_error', payload: err.data.error });
@@ -184,7 +210,7 @@ const runStrategy = dispatch => async (strategyid) => {
 };
 
 
-const getStrategyStatus = dispatch => async (strategyid) => {
+const deleteStrategy = dispatch => async (strategyid, strategies) => {
   const token = await getToken();
   if (token) {
     try {
@@ -192,42 +218,10 @@ const getStrategyStatus = dispatch => async (strategyid) => {
         headers: { Authorization: `Bearer ${token}` },
         clearCacheEntry: true
       };
-
-      let updatedPercent = 0;
-      for (let i = 1; i < 91; i++) {
-        setTimeout(async function timer() {
-          if (updatedPercent >= 1)
-            return;
-          let response = await authApi.get(`/strategystatus/${strategyid}`, config);
-
-          let result = response.data[0].status;
-          if (result.includes('run start')) {
-            updatedPercent = 0.1;
-          }
-          else if (result.includes(':')) {
-            const updateProgress = result?.split(":")[1]?.split("/");
-            if (updateProgress && updateProgress.length === 2) {
-              updatedPercent = updateProgress[0] / updateProgress[1];
-            }
-          }
-          dispatch({ type: 'set_processing_status', payload: updatedPercent });
-        }, i * 1500);
-      }
-    } catch (err) {
-      dispatch({ type: 'add_error', payload: err.data.error });
-    }
-  } else {
-    dispatch({ type: 'add_error', payload: 'No data acess token available' });
-  }
-};
-
-const deleteStrategy = dispatch => async (strategyid) => {
-  const token = await getToken();
-  if (token) {
-    try {
-      let config = {
-        headers: { Authorization: `Bearer ${token}` }
-      };
+      const index = strategies.findIndex(x => x._id == strategyid);
+      const newStrageies = strategies;
+      newStrageies.splice(index, 1);
+      dispatch({ type: 'list_strategies', payload: newStrageies });
       let response = await authApi.delete(`/strategy/${strategyid}`, config);
       if (!response.data.$undefined) {
         dispatch({ type: 'add_error', payload: 'Delete strategy failed.' });
@@ -240,7 +234,7 @@ const deleteStrategy = dispatch => async (strategyid) => {
   }
 };
 
-const getInstructionList = dispatch => async (strategyID) => {
+const getInstructionList = dispatch => async (strategyID, instructions) => {
   const token = await getToken();
   if (token) {
     try {
@@ -248,8 +242,17 @@ const getInstructionList = dispatch => async (strategyID) => {
         headers: { Authorization: `Bearer ${token}` }
       };
       let response = await authApi.get(`/strategyinstructionlist/${strategyID}`, config);
+      const index = instructions.findIndex(x => x._id == strategyID);
+      let newInstructions = instructions;
+      const newInstruction = { _id: strategyID, instructions: response.data };
+      if (index < 0) {
+        newInstructions.push(newInstruction);
+      }
+      else {
+        newInstructions.splice(index, 1, newInstruction);
+      }
 
-      dispatch({ type: 'get_instructionlist', payload: response.data });
+      dispatch({ type: 'get_instructionlist', payload: newInstructions });
     } catch (err) {
       dispatch({ type: 'add_error', payload: err.data.error });
     }
@@ -383,13 +386,12 @@ export const { Context, Provider } = createDataContext(
     listStrategies, getStrategy, getInstructionList, getInstructionDetail, getTickerData,
     getComparisonTickerData, getComparisonData, getComparisonChartData, toggleCompTickerList,
     setHighightedItem, clearErrorMessage, setTimePeriod, previewStrategy, uploadStrategy,
-    deleteStrategy, loadStrategyData, runStrategy, getStrategyStatus
+    deleteStrategy, loadStrategyData, runStrategy
   },
   {
     strategies: [], strategy: { analytics: [] }, strategyTemplate: { analytics: [] }, tickerData: [], comparisonTickerData: [],
     comparisonTabData: { Volatility: {}, SharpeRatio: {}, VAR: {}, PNL: {}, Yield: {} },
     comparisonData: [], comparisonChartData: [], compTickerList: [], instructions: [],
-    instructionDetail: [], previewData: [], highightedItem: '', errorMessage: '', timePeriod: 2,
-    processingStatus: 0
+    instructionDetail: [], previewData: [], highightedItem: '', errorMessage: '', timePeriod: 2
   }
 );

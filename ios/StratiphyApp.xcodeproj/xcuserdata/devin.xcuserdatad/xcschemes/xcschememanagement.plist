@@ -7,17 +7,17 @@
 		<key>OneSignalNotificationServiceExtension.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>70</integer>
+			<integer>72</integer>
 		</dict>
 		<key>StratiphyApp-tvOS.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>69</integer>
+			<integer>1</integer>
 		</dict>
 		<key>StratiphyApp.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>68</integer>
+			<integer>0</integer>
 		</dict>
 	</dict>
 </dict>

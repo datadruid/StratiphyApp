@@ -18,7 +18,7 @@ const PreviewLineChart = ({ datasets, index, mastercolour, linecolour }) => {
                   progress = 1;
                 }
                 setProcessIndicator(progress);
-              }, 350);
+              }, 425);
           };
         animate();
       }, []);

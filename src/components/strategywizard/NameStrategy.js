@@ -33,7 +33,11 @@ const NameStratgey = ({ navigation, investData, strategyType, onSelected, select
   const [description, setDescription] = useState(investData.description);
 
   if (!name) {
-    setName(titleCase(`${NewName()} ${strategyType}`));
+    setName(titleCase(`${NewName()}`));
+  }
+
+  if (!description) {
+    setDescription(titleCase(`${strategyType} strategy`));
   }
 
   const onButtonPress = () => {
@@ -108,7 +112,7 @@ const NameStratgey = ({ navigation, investData, strategyType, onSelected, select
             <Text style={styles.iconparagraph} numberOfLines={3}>{'Click to change'}</Text>
           </View>
           <TouchableOpacity onPress={openediticon}>
-            {selectedIcon.image &&
+            {selectedIcon?.image &&
               <Image source={selectedIcon.image} resizeMode='contain' style={styles.selectedImage}></Image>}
           </TouchableOpacity>
         </View>

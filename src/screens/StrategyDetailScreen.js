@@ -10,7 +10,7 @@ import IconStack from '../components/strategy/IconStack';
 import StrategyTab from '../components/strategy/StrategyTab';
 import AnalysisTab from '../components/strategy/AnalysisTab';
 import StrategyDetailChart from '../components/strategy/StrategyDetailChart';
-import { getChartAxisLabels, getDateFilterButtonLabels } from '../components/modules/UiHelper'
+import { getChartAxisLabels, getChartKeys, getDateFilterButtonLabels } from '../components/modules/UiHelper'
 import { icondata } from '../components/modules/StrategyIcons';
 import { colors } from '../components/modules/Colors';
 import { fonts } from '../components/modules/Fonts';
@@ -28,29 +28,28 @@ const StrategySettingScreen = ({ navigation }) => {
   const [isStartegyTab, setIsStartegyTab] = useState(true);
   const [isAnalysisTab, setIsAnalysisTab] = useState(false);
   const { state, getStrategy, getTickerData, getComparisonChartData, setTimePeriod, getComparisonTickerData, clearErrorMessage } = useContext(StrategyContext);
-
-  useEffect(() => {
-    getStrategy(item._id, state.timePeriod);
-  }, []);
+  const instructions = (state.instructions.find(x=> x._id == item._id)) ? state.instructions.find(x=> x._id == item._id).instructions : [];
 
   const changeTimePeriod = async (index) => {
     await setTimePeriod(index);
-    getStrategy(item._id, index);
-    getComparisonChartData(item._id, state.compTickerList.join(','), index);
-    let tickers = state.strategy?.latestActions?.actions.filter(x => x.Action === 'Hold').map(function (elem) {
-      return elem.Ticker;
-    }).join(",");
-    if (tickers) {
-      getTickerData(item._id, tickers, index);
-      getComparisonTickerData(state.strategy._id, state.compTickerList.join(','), state.timePeriod);
-    }
+   
+    // getStrategy(item._id, index);
+    // getComparisonChartData(item._id, state.compTickerList.join(','), index);
+    // let tickers = state.strategy?.latestActions?.actions.filter(x => x.Action === 'Hold').map(function (elem) {
+    //   return elem.Ticker;
+    // }).join(",");
+    // if (tickers) {
+    //   getTickerData(item._id, tickers, index);
+    //   getComparisonTickerData(state.strategy._id, state.compTickerList.join(','), state.timePeriod);
+    // }
   };
+  const endValue = (Math.round((item.analytics[`series${getChartKeys(state.timePeriod)}`][(item.analytics[`series${getChartKeys(state.timePeriod)}`].length -1)].value +  Number.EPSILON) * 100) / 100).toString();
   let formattedStratValue = 0;
-  if (state.strategy?.endValue) {
-    formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${state.strategy?.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
+  if (endValue) {
+    formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
   }
 
-  var percent = state.strategy?.performancePct;
+  var percent = item.analytics[`performance${getChartKeys(state.timePeriod)}`];
 
   let linecolour = '#FFFFFF';
   let plusminus = '';
@@ -93,17 +92,17 @@ const StrategySettingScreen = ({ navigation }) => {
               {item.iconid &&
                 <Image source={icondata[item.iconid].image} resizeMode='contain' style={styles.icon} />
               }
-              <Text style={styles.toptitletext} >{state.strategy?.strategyName}</Text>
+              <Text style={styles.toptitletext} >{item.strategyName}</Text>
               <Icon style={styles.topicon} size={20} name='star' />
 
             </View>
-            <StrategyDetailChart mastercolour={mastercolour} datasets={state.strategy.analytics} linecolour={linecolour} isAnalysisTab={isAnalysisTab} />
+            <StrategyDetailChart mastercolour={mastercolour} datasets={item.analytics[`series${getChartKeys(state.timePeriod)}`]} linecolour={linecolour} isAnalysisTab={isAnalysisTab} />
             <View style={styles.box1}>
               <View style={styles.box2}>
                 <Text style={styles.numbertitletext}>{formattedStratValue}</Text>
                 <Text style={styles.subtitletext}>Value</Text>
               </View>
-              <IconStack actions={state.strategy?.latestActions?.actions} borderColor={mastercolour} size={28} />
+              <IconStack actions={instructions} borderColor={mastercolour} size={28} />
               <View style={styles.box2}>
                 <Text style={[styles.numbertitletext, { color: linecolour, textAlign: 'right' }]}>{plusminus}{percent}%</Text>
                 <Text style={[styles.subtitletext, { textAlign: 'right' }]}>Performance</Text>
@@ -138,8 +137,8 @@ const StrategySettingScreen = ({ navigation }) => {
             </View>
           </View>
           <View style={styles.childrencontainer}>
-            {isStartegyTab && <StrategyTab strategy={state.strategy} navigation={navigation} />}
-            {isAnalysisTab && <AnalysisTab strategy={state.strategy} navigation={navigation} />}
+            {isStartegyTab && <StrategyTab strategy={item} navigation={navigation} />}
+            {isAnalysisTab && <AnalysisTab strategy={item} navigation={navigation} />}
           </View>
         </View>
       </ScrollView>

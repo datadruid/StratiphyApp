@@ -8,9 +8,16 @@ import { fonts } from '../components/modules/Fonts';
 import StrategyListItem from '../components/strategylist/StrategyListItem';
 
 const StrategyListScreen = ({ navigation }) => {
-  const { state, listStrategies, clearErrorMessage } = useContext(StrategyContext);
+  const { state, listStrategies, loadStrategyData, getInstructionList, clearErrorMessage } = useContext(StrategyContext);
   const [refreshing, setRefreshing] = useState(false);
   const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+      loadStrategyData(state.strategies);
+      state.strategies.forEach(item => {
+        getInstructionList(item._id, state.instructions);
+    });
+  }, [state.strategies]);
 
   useEffect(() => {
     onRefresh();
@@ -21,7 +28,7 @@ const StrategyListScreen = ({ navigation }) => {
       return;
     }
     setRefreshing(true);
-    await listStrategies(false);
+    await listStrategies(true);
     setRefreshing(false);
   }, []);
 
@@ -39,7 +46,7 @@ const StrategyListScreen = ({ navigation }) => {
             data={state.strategies}
             extraData={refresh}
             keyExtractor={(item, index) => item._id}
-            renderItem={({ item, index }) => <StrategyListItem item={item} navigation={navigation} index={index} list={state.strategies} />}
+            renderItem={({ item, index }) => <StrategyListItem item={item} navigation={navigation} />}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           />
         </View>

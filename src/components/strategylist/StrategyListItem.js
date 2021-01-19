@@ -19,34 +19,46 @@ const currencyFormat = {
   currency: RNLocalize.getLocales()[0].languageTag
 };
 
-const StrategyListItem = ({ navigation, item, index, list }) => {
-  const { state, loadStrategyData, runStrategy, getStrategyStatus } = useContext(StrategyContext);
-  const [isLoaded, setIsloaded] = useState(false);
-  let slimList = item.analytics[0].data.map(a => a.value);
-  let updatedPercent = state.processingStatus;
-  if (!isLoaded && slimList.length === 0 && updatedPercent === 1) {
-    loadStrategyData(index, item._id, 4, list);
-    setIsloaded(true);
-  }
-  useEffect(() => {
-    // console.log(item._id);
-    loadStrategyData(index, item._id, 4, list);
-    if (item?.status?.includes('added')) {
-      runStrategy(item._id);
-      getStrategyStatus(item._id);
-    } else if (item?.status?.includes('run start')) {
-      getStrategyStatus(item._id);
-    }
+const StrategyListItem = ({ navigation, item }) => {
+  const { state, loadStrategyData, runStrategy } = useContext(StrategyContext);
+  const [refreshing, setRefreshing] = useState(false);
+  let slimList = [];
+  let updatedPercent = item.stage;
+  let endValue = '0';
+  const instructions = (state.instructions.find(x=> x._id == item._id)) ? state.instructions.find(x=> x._id == item._id).instructions : [];
 
-  }, [list]);
+  useEffect(() => {
+    reload();
+  }, [item]);
+
+  const reload = React.useCallback(async () => {
+    if (refreshing) {
+      return;
+    }
+    setRefreshing(true);
+    if (item.status.includes('added')) {
+      await runStrategy(item._id, state.strategies);
+      await loadStrategyData(state.strategies);
+    } 
+    setRefreshing(false);
+  }, []);
+
+  if (item.analytics && item.analytics.series_all) {
+    endValue = (Math.round((item.analytics.series_all[item.analytics.series_all.length - 1].value + Number.EPSILON) * 100) / 100).toString();
+    const maxVal = 80;
+    const delta = Math.floor(item.analytics.series_all.length / maxVal);
+    for (i = 0; i < item.analytics.series_all.length; i = i + delta) {
+      slimList.push(item.analytics.series_all[i].value);
+    }
+  }
 
   const openDetail = (item) => {
     navigation.navigate('StrategyDetail', { item: item });
   };
 
   let formattedStratValue = 0;
-  if (item.endValue) {
-    formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${item.endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
+  if (endValue > 0) {
+    formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
   }
   let shownumbers = true;
   let linecolour = 'rgb(227, 63, 100)';
@@ -57,7 +69,7 @@ const StrategyListItem = ({ navigation, item, index, list }) => {
     plusminus = '';
     shownumbers = false;
   }
-  else if (item.performancePct > 0) {
+  else if (item.analytics.performance_all > 0) {
     linecolour = 'rgb(74, 250, 154)';
     plusminus = '+';
   }
@@ -125,9 +137,9 @@ const StrategyListItem = ({ navigation, item, index, list }) => {
                 <Text style={styles.bold}>{formattedStratValue}</Text>
                 <Text style={styles.smalltext}>Value</Text>
               </View>
-              <IconStack actions={item.latestActions.actions} borderColor='white' size={24} />
+              <IconStack actions={instructions} borderColor='white' size={24} />
               <View style={styles.box4}>
-                <Text style={[styles.textrightbold, { color: linecolour }]}>{plusminus}{item.performancePct}%</Text>
+                <Text style={[styles.textrightbold, { color: linecolour }]}>{plusminus}{item.analytics.performance_all}%</Text>
                 <Text style={styles.smalltext, styles.textright}>Performance</Text>
               </View>
             </View>

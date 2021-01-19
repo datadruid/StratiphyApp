@@ -74,6 +74,22 @@ export function getChartStartDate(periodIndex) {
     }
 }
 
+export function getChartKeys(periodIndex) {
+
+    switch (periodIndex) {
+        case 0: //1M
+            return '_1m';
+        case 1: //3M
+            return '_3m';
+        case 2: //6M
+            return '_6m';
+        case 3: //1Y
+            return '_1y';
+        case 4: //All
+            return '_all';
+    }
+}
+
 export function getChartAxisLabels(periodIndex, arraylength) {
     let baseDate = moment();
     let interval = 0;
@@ -135,10 +151,10 @@ export function getChartValueFilter(periodIndex) {
         case 1: //1W
             return 1;
         case 2: //6M
-            return 7;
+            return 9;
         case 3: //1Y
-            return 14;
+            return 9;
         case 4: //All
-            return 28;
+            return 18;
     }
 }

@@ -3,16 +3,17 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import {getAvatarColor} from '../modules/UiHelper';
 
 const IconStack = ({ actions, borderColor, size }) => {
+    let maxDate = (actions.map(e => e.Date)).sort().reverse()[0];
     const borderRadii = size/2;
     if (actions?.some(x => x.Action !== 'Hold')) {
-        let totalTickers = actions.filter(x => x.Action === 'Hold').length;
+        let totalTickers = actions.filter(x => x.Date === maxDate && x.Action === 'Hold').length;
         let leftby = size/1.2;
         let counter = -1;
         let rightby = (totalTickers * leftby)/2.5;
         return (
             <View style={[styles.imagebox, {left : rightby}]}>
                 {
-                    actions.filter(x => x.Action === 'Hold').map(item => {
+                    actions.filter(x => x.Date === maxDate && x.Action === 'Hold').map(item => {
                         key = item.Ticker;
                         let circlecolour = getAvatarColor(item.Ticker);
                         counter ++;
@@ -24,7 +25,7 @@ const IconStack = ({ actions, borderColor, size }) => {
                             </View>
                         )
                     })
-                    }
+                    } 
             </View>
         )
     }

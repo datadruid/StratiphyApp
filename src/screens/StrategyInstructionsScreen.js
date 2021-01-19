@@ -15,18 +15,16 @@ const StrategyInstructionsScreen = ({navigation}) => {
   
   const { state, getInstructionList, clearErrorMessage } = useContext(StrategyContext);
 
-  useEffect( () => {
-     getInstructionList(item._id);
-  }, []);
+  const stratinstructions = (state.instructions.find(x=> x._id == item._id)) ? state.instructions.find(x=> x._id == item._id).instructions : [];
 
-  if(instructions?.length === 0 && state.instructions.length > 0 && search.length === 0)
+  if(stratinstructions?.length === 0 && stratinstructions.length > 0 && search.length === 0)
   {
-    setInstructions(state.instructions.filter(x=> x.Action !== 'Hold'));
+    setInstructions(stratinstructions.filter(x=> x.Action !== 'Hold'));
   }
 
   const filterResults = (text) => {
     setSearch(text);
-    setInstructions(state.instructions.filter(x=> x.Action !== 'Hold' && x.Ticker.includes(text)))
+    setInstructions(stratinstructions.filter(x=> x.Action !== 'Hold' && x.Ticker.includes(text)))
   };
 
   
