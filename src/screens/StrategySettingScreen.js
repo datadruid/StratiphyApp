@@ -38,6 +38,7 @@ const StrategySettingScreen = ({ navigation }) => {
       setStrategy(item);
   }, []); 
 
+  console.log(state.strategy.tickers);
   const closeWindow = () => {
     navigation.goBack();
   };
@@ -58,7 +59,7 @@ const StrategySettingScreen = ({ navigation }) => {
     listStrategies(true);
   };
 
-  if(state.strategy.UserID)
+  if(state.strategy.userID)
   {
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>
@@ -90,7 +91,7 @@ const StrategySettingScreen = ({ navigation }) => {
           <Divider style={styles.shortdivider} />
           <Spacer />
  
-          <StrategyType strategy={state.strategy}/>
+          {/* <StrategyType strategy={state.strategy}/> */}
 
         <Spacer />
           <View style={styles.settingheadercontainer}>
@@ -101,25 +102,25 @@ const StrategySettingScreen = ({ navigation }) => {
           <Divider style={styles.shortdivider} />
           <Spacer />
 
-          <TimeHorizon strategy={state.strategy}/>
+          {/* <TimeHorizon strategy={state.strategy}/> */}
            
-          <DateType globalSpecifications={state.strategy.globalSpecifications} backtestingStart={state.strategy.globalSpecifications.backtestingStart}/>
+          {/* <DateType globalSpecifications={state.strategy.globalSpecifications} backtestingStart={state.strategy.globalSpecifications.backtestingStart}/> */}
 
           <Divider style={styles.shortdivider} />
 
-          <EmailUpdates strategy={state.strategy}/>
+          {/* <EmailUpdates strategy={state.strategy}/> */}
 
-          <Regions strategy={state.strategy}/> 
+          {/* <Regions strategy={state.strategy}/>  */}
 
-          <Sectors strategy={state.strategy}/> 
+          {/* <Sectors strategy={state.strategy}/>  */}
 
-          <Classes strategy={state.strategy}/> 
+          {/* <Classes strategy={state.strategy}/>  */}
        
-          <MarketCaps strategy={state.strategy}/>  
+          {/* <MarketCaps strategy={state.strategy}/>   */}
           
-          <Sectors strategy={state.strategy}/> 
+          {/* <Sectors strategy={state.strategy}/>  */}
 
-          <Tickers strategy={state.strategy}/> 
+          {/* <Tickers strategy={state.strategy}/>  */}
         
           <Modal fullScreen={false}
           style={styles.overlay} isVisible={visible} onBackdropPress={closePreview}>

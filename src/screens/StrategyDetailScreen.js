@@ -28,20 +28,20 @@ const StrategySettingScreen = ({ navigation }) => {
   const [isStartegyTab, setIsStartegyTab] = useState(true);
   const [isAnalysisTab, setIsAnalysisTab] = useState(false);
   const { state, getStrategy, getTickerData, getComparisonChartData, setTimePeriod, getComparisonTickerData, clearErrorMessage } = useContext(StrategyContext);
-  const instructions = (state.instructions.find(x=> x._id == item._id)) ? state.instructions.find(x=> x._id == item._id).instructions : [];
+  const iconinstructions = item.holdings ? item.holdings : [];
 
   const changeTimePeriod = async (index) => {
     await setTimePeriod(index);
-   
+  
     // getStrategy(item._id, index);
-    // getComparisonChartData(item._id, state.compTickerList.join(','), index);
-    // let tickers = state.strategy?.latestActions?.actions.filter(x => x.Action === 'Hold').map(function (elem) {
-    //   return elem.Ticker;
-    // }).join(",");
-    // if (tickers) {
-    //   getTickerData(item._id, tickers, index);
-    //   getComparisonTickerData(state.strategy._id, state.compTickerList.join(','), state.timePeriod);
-    // }
+    getComparisonChartData(item._id, state.compTickerList.join(','), index);
+    let tickers = state.strategy?.latestActions?.actions.filter(x => x.Action === 'Hold').map(function (elem) {
+      return elem.Ticker;
+    }).join(",");
+    if (tickers) {
+      getTickerData(item._id, tickers, index);
+      getComparisonTickerData(state.strategy._id, state.compTickerList.join(','), state.timePeriod);
+    }
   };
   const endValue = (Math.round((item.analytics[`series${getChartKeys(state.timePeriod)}`][(item.analytics[`series${getChartKeys(state.timePeriod)}`].length -1)].value +  Number.EPSILON) * 100) / 100).toString();
   let formattedStratValue = 0;
@@ -49,7 +49,7 @@ const StrategySettingScreen = ({ navigation }) => {
     formattedStratValue = `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${endValue.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
   }
 
-  var percent = item.analytics[`performance${getChartKeys(state.timePeriod)}`];
+  let percent = item.analytics[`performance${getChartKeys(state.timePeriod)}`];
 
   let linecolour = '#FFFFFF';
   let plusminus = '';
@@ -102,7 +102,7 @@ const StrategySettingScreen = ({ navigation }) => {
                 <Text style={styles.numbertitletext}>{formattedStratValue}</Text>
                 <Text style={styles.subtitletext}>Value</Text>
               </View>
-              <IconStack actions={instructions} borderColor={mastercolour} size={28} />
+              <IconStack actions={iconinstructions} borderColor={mastercolour} size={28} />
               <View style={styles.box2}>
                 <Text style={[styles.numbertitletext, { color: linecolour, textAlign: 'right' }]}>{plusminus}{percent}%</Text>
                 <Text style={[styles.subtitletext, { textAlign: 'right' }]}>Performance</Text>
@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   box2: {
+    marginTop: 30,
     flex: 3,
     justifyContent: 'flex-start'
   },

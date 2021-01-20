@@ -133,6 +133,7 @@ const strategyUpdateReducer = (state, action) => {
 };
 
 const setStrategy =  dispatch => async (strategy) => {
+    delete strategy.analytics;
     dispatch({ type: 'set_strategy', payload: strategy });
 };
 

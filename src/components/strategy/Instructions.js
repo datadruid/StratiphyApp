@@ -19,7 +19,7 @@ const Instructions = ({ actions }) => {
     let counter = 0;
     let lastDate = '';
     if (actions?.some(x => x.Action !== 'Hold')) {
-            
+            let id = 0;
         return (
             <>
                 {
@@ -27,7 +27,8 @@ const Instructions = ({ actions }) => {
                         let circlecolour = getAvatarColor(item.Ticker);
                         let showDate = (item.Date !== lastDate);
                         lastDate = item.Date;
-                        let index = `${item.Date}${item.Ticker}`
+                        let index = id;
+                        id++;
                         return (
                             <View key={index} >
                             { item.Date && showDate && <Text style={styles.datetext}>{moment(Date.parse(item.Date)).format('D MMMM')}</Text>}
@@ -36,7 +37,7 @@ const Instructions = ({ actions }) => {
                                         <Text style={styles.stockcircletext}>{item.Ticker}</Text>
                                     </View>
                                     <Text style={styles.actiontext}>
-                                        <Text style={{ffontFamily: fonts.GraphikSemibold}}>{item.Action} </Text>
+                                        <Text style={{fontFamily: fonts.GraphikSemibold}}>{item.Action} </Text>
                                         <Text style={{fontFamily: fonts.GraphikSemibold}}>{getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}{item.Buy.toFixed(2)} </Text>
                                         <Text>{item.Action} </Text>
                                         <Text>of </Text>
@@ -47,9 +48,11 @@ const Instructions = ({ actions }) => {
                                 <View style={styles.spacerContainer} />
                             </View>
                         );
-                    })}
+                    }
+                    )}
 
             </>
+            
         )
     }
     else {

@@ -11,10 +11,14 @@ const StrategyDetailChart = ({ datasets, mastercolour, linecolour, isAnalysisTab
 
   let chartset = [];
   let slimList = [];
+
+  let initialValue = datasets[0].value
+  
   const delta = getChartValueFilter(state.timePeriod);
   for (i = 0; i < datasets.length; i = i + delta) {
-    slimList.push(datasets[i].value);
+    slimList.push(datasets[i].value/initialValue *100);
   }
+
   if (slimList.length > 0) {
     let dataset = {
       data: slimList,

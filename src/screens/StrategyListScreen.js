@@ -14,9 +14,6 @@ const StrategyListScreen = ({ navigation }) => {
 
   useEffect(() => {
       loadStrategyData(state.strategies);
-      state.strategies.forEach(item => {
-        getInstructionList(item._id, state.instructions);
-    });
   }, [state.strategies]);
 
   useEffect(() => {

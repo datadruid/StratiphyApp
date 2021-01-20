@@ -10,6 +10,7 @@ import { colors } from '../components/modules/Colors';
 import { fonts } from '../components/modules/Fonts';
 
 const StrategyCompareScreen = ({ navigation }) => {
+  const item = navigation.getParam('item');
   const [search, setSearch] = useState('');
   const [comparisonList, setComparisonList] = useState([]);
 
@@ -33,8 +34,8 @@ const StrategyCompareScreen = ({ navigation }) => {
     const dt = new Date();
     const chartDate = getChartEndDate();
 
-    getComparisonTickerData(state.strategy._id, state.compTickerList.join(','), state.timePeriod);
-    getComparisonChartData(state.strategy._id, state.compTickerList.join(','), state.timePeriod);
+    getComparisonTickerData(item._id, state.compTickerList.join(','), state.timePeriod);
+    getComparisonChartData(item._id, state.compTickerList.join(','), state.timePeriod);
     navigation.goBack();
   };
 

@@ -18,7 +18,7 @@ const StartScreen = ({ navigation }) => {
     return (
         <View style={styles.outercontainer}>
             <View style={styles.topontainer}>
-                <Text style={styles.stratiphytext}>Stratiphy.</Text>
+                <Image resizeMode='contain' source={require('../img/loginimage.png')} style={styles.loginimage}/>
                 <View style={styles.imagecontainer}>
                     <Image resizeMode='contain' style={styles.peekingimg} source={require('../img/apppeeking.png')} />
                 </View>
@@ -51,6 +51,10 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         backgroundColor: colors.yellowTheme,
 
+    },
+    loginimage:{
+alignSelf:'center',
+marginBottom: 50
     },
     imagecontainer: {
         height: 202

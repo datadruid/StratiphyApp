@@ -158,7 +158,8 @@ const uploadStrategy = dispatch => async (strategy) => {
         clearCacheEntry: true
       };
 
-      let response = await authApi.post(`/uploadstrategy/`, { strategy }, config);
+      strategy['version'] = 2;
+      let response = await authApi.post(`/uploadstrategy/`,  strategy , config);
 
       dispatch({ type: 'set_upload_result', payload: response.data });
     } catch (err) {
@@ -307,11 +308,13 @@ const getComparisonTickerData = dispatch => async (strategyId, tickers, timePeri
       };
       if (tickers.length > 0) {
 
-        let response = await authApi.get(`/tickerchartdata/${strategyId}/${tickers}/${timePeriod}`, config);
+        console.log(`/tickerchartdata/${strategyId}/${tickers}/${timePeriod}`);
+        const response = await authApi.get(`/tickerchartdata/${strategyId}/${tickers}/${timePeriod}`, config);
         dispatch({ type: 'get_comptickerdata', payload: response.data });
 
-        response = await authApi.get(`/tickercomparisondata/${strategyId}/${tickers}/${timePeriod}`, config);
-        dispatch({ type: 'get_comptabdata', payload: response.data });
+        console.log(`/tickercomparisondata/${strategyId}/${tickers}/${timePeriod}`);
+        const response1 = await authApi.get(`/tickercomparisondata/${strategyId}/${tickers}/${timePeriod}`, config);
+        dispatch({ type: 'get_comptabdata', payload: response1.data });
       } else {
         dispatch({ type: 'get_comptickerdata', payload: [] });
         dispatch({ type: 'get_comptabdata', payload: { Volatility: {}, SharpeRatio: {}, VAR: {}, PNL: {}, Yield: {} } });

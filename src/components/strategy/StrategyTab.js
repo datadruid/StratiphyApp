@@ -6,9 +6,18 @@ import Instructions from './Instructions';
 import Holdings from './Holdings';
 import { colors } from '../modules/Colors';
 import { fonts } from '../modules/Fonts';
+import moment from 'moment';
 
 const StrategyTab = ({ navigation, strategy }) => {
-    const { state, getTickerData, clearErrorMessage } = useContext(StrategyContext);
+    const { state, getTickerData, clearErrorMessage, getInstructionList } = useContext(StrategyContext);
+
+    useEffect(() => {
+        getInstructionList(strategy._id, state.instructions);
+  }, []);
+  
+    let instructions = state.instructions.find(x=> x._id == strategy._id) ? state.instructions.find(x=> x._id == strategy._id).instructions : [];
+    let maxDate = moment().format("YYYY-MM-DDT00:00:00");
+    let latestInstructions = instructions.filter(x => x.Date === maxDate && x.Action !== 'Hold');
 
     const renderHoldings = (actions, id) => {
         if(actions)
@@ -46,10 +55,10 @@ const StrategyTab = ({ navigation, strategy }) => {
                 </TouchableOpacity>
             </View>
             <View style={styles.instructioncontainer}>
-                <Instructions actions={strategy?.latestActions?.actions} />
+                <Instructions actions={latestInstructions} />
             </View>
             {
-                renderHoldings(strategy?.latestActions?.actions, strategy._id)
+                renderHoldings(instructions, strategy._id)
             }
             
         </>

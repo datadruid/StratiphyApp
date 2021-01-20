@@ -10,21 +10,14 @@ import { Context as StrategyContext } from '../context/StrategyContext';
 
 const StrategyInstructionsScreen = ({navigation}) => {
   const item = navigation.getParam('item');
+  const { state, clearErrorMessage } = useContext(StrategyContext);
   const [search, setSearch] = useState('');
-  const [instructions, setInstructions] = useState([]);
+  const [instructions, setInstructions] = useState(state.instructions.find(x=> x._id == item._id) ? state.instructions.find(x=> x._id == item._id).instructions : []);
   
-  const { state, getInstructionList, clearErrorMessage } = useContext(StrategyContext);
-
-  const stratinstructions = (state.instructions.find(x=> x._id == item._id)) ? state.instructions.find(x=> x._id == item._id).instructions : [];
-
-  if(stratinstructions?.length === 0 && stratinstructions.length > 0 && search.length === 0)
-  {
-    setInstructions(stratinstructions.filter(x=> x.Action !== 'Hold'));
-  }
 
   const filterResults = (text) => {
     setSearch(text);
-    setInstructions(stratinstructions.filter(x=> x.Action !== 'Hold' && x.Ticker.includes(text)))
+    setInstructions(state.instructions.find(x=> x._id == item._id).instructions.filter(x=> x.Action !== 'Hold' && x.Ticker.includes(text)));
   };
 
   
@@ -51,7 +44,7 @@ const StrategyInstructionsScreen = ({navigation}) => {
         <View style={styles.content} >
         <ScrollView>
           <View style={styles.instructioncontainer}>
-            <Instructions actions={instructions} />
+            <Instructions actions={instructions.filter(x=> x.Action !== 'Hold')} />
           </View>
           </ScrollView>
         </View>

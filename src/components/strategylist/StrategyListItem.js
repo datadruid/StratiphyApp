@@ -25,8 +25,9 @@ const StrategyListItem = ({ navigation, item }) => {
   let slimList = [];
   let updatedPercent = item.stage;
   let endValue = '0';
-  const instructions = (state.instructions.find(x=> x._id == item._id)) ? state.instructions.find(x=> x._id == item._id).instructions : [];
-
+  const instructions = item.holdings ? item.holdings : [];
+const newActions = item.analytics?.last_7d_buy_instructions ? item.analytics.last_7d_buy_instructions : 0
++ item.analytics?.last_7d_sell_instructions ? item.analytics.last_7d_sell_instructions : 0;
   useEffect(() => {
     reload();
   }, [item]);
@@ -91,11 +92,16 @@ const StrategyListItem = ({ navigation, item }) => {
   return (
     <View style={styles.card}>
       <View style={styles.box1}>
+      <TouchableOpacity onPress={() => openDetail(item)}>
         {!item.iconid &&
           <Icon style={styles.icon} size={20} name='superpowers' />}
         {item.iconid &&
           <Image source={icondata[item.iconid].image} resizeMode='contain' style={styles.icon} />
         }
+        {newActions > 0 && 
+        <View style={styles.reddot}/>
+}
+        </TouchableOpacity>
         <Text style={styles.text} >{item.strategyName}</Text>
         <ItemOverlayMenu navigation={navigation} item={item} />
       </View>
@@ -229,8 +235,16 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     marginLeft: -5
+  },
+  reddot: {
+    position: 'absolute',
+    backgroundColor: 'red',
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    top: -3,
+    left: 17,
   }
-
 });
 
 export default StrategyListItem;

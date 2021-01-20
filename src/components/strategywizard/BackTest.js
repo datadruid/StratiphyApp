@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     },
     datepickercontainer: {
         marginLeft: 10,
-        width: '50%',
+        width: '70%',
     },
     datepicker: {
         width: '50%',

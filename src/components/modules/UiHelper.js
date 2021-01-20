@@ -49,12 +49,13 @@ export function getComparisonButtonLabelForIndex(index) {
 }
 
 export function formatComparisonValue(unit, value, currencyFormat) {
-    switch(unit)
-    {
+    switch (unit) {
         case 'ccy':
             return `${getSymbolFromCurrency(RNLocalize.getCurrencies()[0])}${value.toLocaleString(RNLocalize.getLocales()[0].languageTag, currencyFormat)}`;
         case 'percent':
             return `${value}%`;
+        default:
+            return value.toFixed(2);
     }
 }
 

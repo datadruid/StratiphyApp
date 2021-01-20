@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
  
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque">
-  <!-- the background color. it can be a system color or a custom one defined in colors.xml -->
-  <item android:drawable="@color/stratiphydark" />
+  <item android:drawable="@color/stratiphylight" />
  
-  <item android:gravity="center">
-    <!-- the app logo, centered horizontally and vertically -->
-    <bitmap android:src="@mipmap/ic_launcher" />
+  <item 
+    android:layout_width="300dp"
+    android:layout_height="61.3dp"
+    android:gravity="center">
+    <bitmap android:gravity="fill" 
+    android:src="@drawable/splashimage" />
   </item>
 </layer-list>

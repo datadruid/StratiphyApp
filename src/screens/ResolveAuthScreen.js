@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, StatusBar } from 'react-native';
 import { Context as AuthContext } from '../context/AuthContext';
-import YellowButton from '../components/controls/YellowButton';
 
 const ResolveAuthScreen = () => {
   const { tryLocalSignin } = useContext(AuthContext);
@@ -12,7 +11,7 @@ const ResolveAuthScreen = () => {
 
   return (
        <View style={styles.container}>
-         <Image source={require('../img/appicon.png')} resizeMode='contain' />
+         <StatusBar hidden={true} />
        </View>
   );
   return null;
@@ -34,8 +33,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height:'100%',
     alignSelf: 'center',
-    backgroundColor: 'black'
+    backgroundColor: 'white'
   },
+  image:{
+    width:250,
+    height:250
+  }
 });
 
 export default ResolveAuthScreen;
