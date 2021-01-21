@@ -31,7 +31,7 @@ const Instructions = ({ actions }) => {
                         id++;
                         return (
                             <View key={index} >
-                            { item.Date && showDate && <Text style={styles.datetext}>{moment(Date.parse(item.Date)).format('D MMMM')}</Text>}
+                            { item.Date && showDate && <Text style={styles.datetext}>{moment(Date.parse(item.Date)).format('D MMM YYYY')}</Text>}
                                 <View style={styles.instructionitemcontainer}>
                                     <View style={[styles.stockcircle, {backgroundColor: circlecolour}]}> 
                                         <Text style={styles.stockcircletext}>{item.Ticker}</Text>

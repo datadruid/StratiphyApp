@@ -87,10 +87,10 @@ const StrategySettingScreen = ({ navigation }) => {
               <Icon style={styles.backiocn} size={40} name='long-arrow-left' />
             </TouchableOpacity>
             <View style={styles.box1}>
-              {!item.iconid &&
+              {!item.iconId &&
                 <Icon style={styles.icon} size={25} name='superpowers' />}
-              {item.iconid &&
-                <Image source={icondata[item.iconid].image} resizeMode='contain' style={styles.icon} />
+              {item.iconId &&
+                <Image source={icondata[item.iconId].image} resizeMode='contain' style={styles.icon} />
               }
               <Text style={styles.toptitletext} >{item.strategyName}</Text>
               <Icon style={styles.topicon} size={20} name='star' />

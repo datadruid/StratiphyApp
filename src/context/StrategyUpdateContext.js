@@ -16,7 +16,7 @@ const strategyUpdateReducer = (state, action) => {
             return { ...state, 
                 strategy: {
                     ...state.strategy,
-                    iconid: action.payload }
+                    iconId: action.payload }
                 };
         case 'set_description':
             return { ...state, 
@@ -161,8 +161,8 @@ const updateName = dispatch => async (name) => {
     dispatch({ type: 'set_name', payload: name });
 }
 
-const updateIcon = dispatch => async (iconid) => {
-    dispatch({ type: 'set_icon', payload: iconid });
+const updateIcon = dispatch => async (iconId) => {
+    dispatch({ type: 'set_icon', payload: iconId });
 }
 
 const updateDescription = dispatch => async (description) => {

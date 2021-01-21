@@ -8,6 +8,7 @@ import { getAvatarColor, getComparisonButtonLabelForIndex, formatComparisonValue
 import { LineChart } from 'react-native-chart-kit';
 import moment from 'moment';
 import { Image } from 'react-native';
+import { colors } from 'react-native-elements';
 
 const langTag = RNLocalize.getLocales()[0].languageTag;
 const currencyFormat = {
@@ -16,11 +17,22 @@ const currencyFormat = {
 };
 
 const ComparisonTicker = ({ navigation, selectedIndex }) => {
-    const { state, setHighightedItem, clearErrorMessage } = useContext(StrategyContext);
+    const { state, setHighightedItem, setComparisonTickerData, setComparisonChartData, toggleCompTickerList, clearErrorMessage } = useContext(StrategyContext);
     const displayComparison = getComparisonButtonLabelForIndex(selectedIndex);
 
     const onPress = async (item) => {
         setHighightedItem(item);
+    };
+
+    const removeTicker = async (item) => {
+        toggleCompTickerList(item.ticker);
+        let chart = state.comparisonChartData.find(x=> x.ticker == item.ticker);
+        let chartIndex = state.comparisonChartData.indexOf(chart);
+        state.comparisonChartData.splice(chartIndex, 1);
+        setComparisonChartData(state.comparisonChartData);
+        let index = state.comparisonTickerData.indexOf(item);
+        state.comparisonTickerData.splice(index, 1);
+        setComparisonTickerData(state.comparisonTickerData);
     };
 
     let counter = 0;
@@ -65,69 +77,78 @@ const ComparisonTicker = ({ navigation, selectedIndex }) => {
                         let circlecolour = getAvatarColor(item.ticker);
                         counter++;
                         return (
-                            <TouchableOpacity key={counter} 
-                                onPress={() => { onPress(item.ticker) }}
-                            >
-                                <View style={[styles.itemcontainer, isSelected && styles.selectedcontainer]}>
-                                    <View style={[styles.stockcircle, { backgroundColor: circlecolour }]}>
-                                        <Text style={styles.stockcircletext}>{item.ticker}</Text>
-                                    </View>
+                            <View key={counter}>
+                                <TouchableOpacity
+                                    onPress={() => { onPress(item.ticker) }}
+                                >
+                                    <View style={[styles.itemcontainer, isSelected && styles.selectedcontainer]}>
+                                        <View style={[styles.stockcircle, { backgroundColor: circlecolour }]}>
+                                            <Text style={styles.stockcircletext}>{item.ticker}</Text>
+                                        </View>
 
 
-                                    <View style={styles.holdingitemcontainer}>
-                                        <View style={styles.stackbox}>
-                                            <Text style={styles.tickertext}>
-                                                {item.ticker}
-                                            </Text>
-                                            <Text style={styles.nametext}>
-                                                Name
+                                        <View style={styles.holdingitemcontainer}>
+                                            <View style={styles.stackbox}>
+                                                <Text style={styles.tickertext}>
+                                                    {item.ticker}
+                                                </Text>
+                                                <Text style={styles.nametext}>
+                                                    Name
                                         </Text>
-                                        </View>
-                                        <View style={styles.chartcontainer}>
-                                            <LineChart
-                                                data={{
-                                                    labels: [""],
-                                                    datasets: [
-                                                        {
-                                                            data: slimList,
-                                                            color: () => linecolour
-                                                            , strokeWidth: "2"
-                                                        }
-                                                    ]
-                                                }}
-                                                fromZero={true}
-                                                drawBorders={false}
-                                                withDots={false}
-                                                withShadow={false}
-                                                withOuterLines={false}
-                                                withInnerLines={false}
-                                                withHorizontalLabels={false}
-                                                width={75.5} // from react-native
-                                                height={45}
-                                                yAxisInterval={1} // optional, defaults to 1
-                                                chartConfig={chartConfig}
-                                                bezier
-                                                style={{
-                                                    marginVertical: 0,
-                                                    borderRadius: 0,
-                                                    marginRight: 10,
-                                                    paddingRight: 0,
-                                                    top: 0,
-                                                }}
-                                            />
-                                        </View>
-                                        <View style={styles.stackbox}>
-                                            <Text style={[styles.tickertext, styles.valuetext]}>
-                                                {formattedStratValue.replace('NaN','')}
-                                            </Text>
-                                            {/* <Text style={[styles.nametext, styles.percenttext], {color: linecolour }}>
+                                            </View>
+                                            <View style={styles.chartcontainer}>
+                                                <LineChart
+                                                    data={{
+                                                        labels: [""],
+                                                        datasets: [
+                                                            {
+                                                                data: slimList,
+                                                                color: () => linecolour
+                                                                , strokeWidth: "2"
+                                                            }
+                                                        ]
+                                                    }}
+                                                    fromZero={true}
+                                                    drawBorders={false}
+                                                    withDots={false}
+                                                    withShadow={false}
+                                                    withOuterLines={false}
+                                                    withInnerLines={false}
+                                                    withHorizontalLabels={false}
+                                                    width={75.5} // from react-native
+                                                    height={45}
+                                                    yAxisInterval={1} // optional, defaults to 1
+                                                    chartConfig={chartConfig}
+                                                    bezier
+                                                    style={{
+                                                        marginVertical: 0,
+                                                        borderRadius: 0,
+                                                        marginRight: 10,
+                                                        paddingRight: 0,
+                                                        top: 0,
+                                                    }}
+                                                />
+                                            </View>
+                                            <View style={styles.stackbox}>
+                                                <Text style={[styles.tickertext, styles.valuetext]}>
+                                                    {formattedStratValue.replace('NaN', '')}
+                                                </Text>
+                                                {/* <Text style={[styles.nametext, styles.percenttext], {color: linecolour }}>
                                          {item.performancePct}%
                                         </Text> */}
+                                            </View>
                                         </View>
                                     </View>
+                                    <View style={styles.spacerContainer} />
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.closeConatiner}
+                                    onPress={() => { removeTicker(item) }}
+                                >
+                                <View>
+                                    <Icon style={styles.closeIcon} size={16} name='close' />
                                 </View>
-                                <View style={styles.spacerContainer} />
-                            </TouchableOpacity>
+                                </TouchableOpacity>
+                            </View>
                         );
                     })}
 
@@ -178,6 +199,17 @@ const styles = StyleSheet.create({
     spacerContainer: {
         height: 13
     },
+    closeConatiner: {
+        position: 'absolute',
+        height: 20,
+        width: 20,
+        borderRadius: 10,
+        borderColor: '#8d949d',
+        borderWidth: 1,
+        backgroundColor: 'white',
+        top: -6,
+        right: -6
+    },
     actiontext: {
         fontWeight: '400',
         fontSize: 16,
@@ -226,6 +258,11 @@ const styles = StyleSheet.create({
     stackbox: {
         justifyContent: 'space-evenly',
         height: 40
+    },
+    closeIcon: {
+        textAlign: 'center',
+        color: '#8d949d',
+        marginLeft: 1
     }
 });
 

@@ -299,6 +299,14 @@ const getTickerData = dispatch => async (strategyId, startegies, timePeriod) => 
   }
 };
 
+const setComparisonTickerData = dispatch => async (newArray) => {
+  dispatch({ type: 'get_comptickerdata', payload: newArray });
+}
+
+const setComparisonChartData = dispatch => async (newArray) => {
+  dispatch({ type: 'get_compchartdata', payload: newArray });
+}
+
 const getComparisonTickerData = dispatch => async (strategyId, tickers, timePeriod) => {
   const token = await getToken();
   if (token) {
@@ -308,11 +316,9 @@ const getComparisonTickerData = dispatch => async (strategyId, tickers, timePeri
       };
       if (tickers.length > 0) {
 
-        console.log(`/tickerchartdata/${strategyId}/${tickers}/${timePeriod}`);
         const response = await authApi.get(`/tickerchartdata/${strategyId}/${tickers}/${timePeriod}`, config);
         dispatch({ type: 'get_comptickerdata', payload: response.data });
 
-        console.log(`/tickercomparisondata/${strategyId}/${tickers}/${timePeriod}`);
         const response1 = await authApi.get(`/tickercomparisondata/${strategyId}/${tickers}/${timePeriod}`, config);
         dispatch({ type: 'get_comptabdata', payload: response1.data });
       } else {
@@ -389,7 +395,7 @@ export const { Context, Provider } = createDataContext(
     listStrategies, getStrategy, getInstructionList, getInstructionDetail, getTickerData,
     getComparisonTickerData, getComparisonData, getComparisonChartData, toggleCompTickerList,
     setHighightedItem, clearErrorMessage, setTimePeriod, previewStrategy, uploadStrategy,
-    deleteStrategy, loadStrategyData, runStrategy
+    deleteStrategy, loadStrategyData, runStrategy, setComparisonTickerData, setComparisonChartData
   },
   {
     strategies: [], strategy: { analytics: [] }, strategyTemplate: { analytics: [] }, tickerData: [], comparisonTickerData: [],

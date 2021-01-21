@@ -95,8 +95,8 @@ const StrategyWizardScreen = ({ navigation }) => {
   };
 
   const iconSelected = (icon) => {
-    setSelectedIcon(icon.iconid);
-    updateIcon(icon.iconid);
+    setSelectedIcon(icon.iconId);
+    updateIcon(icon.iconId);
     setShowtotal(iconShowTotal);
     setPageNo(pageNo-1);
   };

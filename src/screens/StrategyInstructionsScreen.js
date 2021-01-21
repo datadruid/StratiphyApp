@@ -12,14 +12,15 @@ const StrategyInstructionsScreen = ({navigation}) => {
   const item = navigation.getParam('item');
   const { state, clearErrorMessage } = useContext(StrategyContext);
   const [search, setSearch] = useState('');
-  const [instructions, setInstructions] = useState(state.instructions.find(x=> x._id == item._id) ? state.instructions.find(x=> x._id == item._id).instructions : []);
+  const [instructions, setInstructions] = useState(state.instructions.find(x=> x._id == item._id) ? state.instructions.find(x=> x._id == item._id).instructions.sort(s=> s.Date).reverse() : []);
   
 
   const filterResults = (text) => {
     setSearch(text);
-    setInstructions(state.instructions.find(x=> x._id == item._id).instructions.filter(x=> x.Action !== 'Hold' && x.Ticker.includes(text)));
+    setInstructions(state.instructions.find(x=> x._id == item._id).instructions.filter(x=> x.Action !== 'Hold' && x.Ticker.includes(text)).sort(s=> s.Date).reverse());
   };
 
+  console.log(instructions);
   
   return (
     <SafeAreaView forceInset={{ top: 'always' }}>

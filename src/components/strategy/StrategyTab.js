@@ -16,8 +16,10 @@ const StrategyTab = ({ navigation, strategy }) => {
   }, []);
   
     let instructions = state.instructions.find(x=> x._id == strategy._id) ? state.instructions.find(x=> x._id == strategy._id).instructions : [];
-    let maxDate = moment().format("YYYY-MM-DDT00:00:00");
-    let latestInstructions = instructions.filter(x => x.Date === maxDate && x.Action !== 'Hold');
+    let maxDate = (instructions.length > 0) ? moment(instructions.filter(x => x.Action !== 'Hold').sort(s=> s.Date).reverse()[0].Date).format("YYYY-MM-DDT00:00:00") : moment().format("YYYY-MM-DDT00:00:00");
+    let latestInstructions = (instructions.length > 0) ? instructions.filter(x => x.Date === maxDate && x.Action !== 'Hold'): [];
+    let maxHoldDate = (instructions.length > 0) ? moment(instructions.filter(x => x.Action == 'Hold').sort(s=> s.Date).reverse()[0].Date).format("YYYY-MM-DDT00:00:00") : moment().format("YYYY-MM-DDT00:00:00");
+    let latestHoldings = (instructions.length > 0) ? instructions.filter(x => x.Date === maxHoldDate && x.Action == 'Hold') : [];
 
     const renderHoldings = (actions, id) => {
         if(actions)
@@ -58,7 +60,7 @@ const StrategyTab = ({ navigation, strategy }) => {
                 <Instructions actions={latestInstructions} />
             </View>
             {
-                renderHoldings(instructions, strategy._id)
+                renderHoldings(latestHoldings, strategy._id)
             }
             
         </>

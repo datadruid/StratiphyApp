@@ -92,15 +92,18 @@ const strategyFlow = createStackNavigator({
 
 strategyFlow.navigationOptions = {
   title: 'Create',
-  tabBarIcon: <FontAwesome name="user" size={24} />
+  tabBarIcon: <FontAwesome name="plus-circle" size={36} />
 
 };
 
 const tab = createBottomTabNavigator({
-  homeFlow,
-  discoverFlow,
-  strategyFlow,
+  // homeFlow,
+  // discoverFlow,
+  // strategyFlow,
+  // strategyListFlow,
+  // accountFlow,
   strategyListFlow,
+  strategyFlow,
   accountFlow,
 });
 

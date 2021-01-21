@@ -25,7 +25,7 @@ const Holdings = ({ id, actions }) => {
     }, [state.timePeriod]);
 
     let counter = 0;
-    if (actions?.some(x => x.Action !== 'Hold')) {
+    if (actions?.some(x => x.Action == 'Hold')) {
         return (
             <View style={styles.holdingcontainer}>
                 {

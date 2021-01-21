@@ -63,11 +63,10 @@ const newActions = item.analytics?.last_7d_buy_instructions ? item.analytics.las
   }
   let shownumbers = true;
   let linecolour = 'rgb(227, 63, 100)';
-  let plusminus = '-'
+  let plusminus = '';
   if (slimList.length === 0) {
     slimList = [100, 98, 97, 92, 98, 108, 106, 103, 103, 98, 98, 101, 99, 99, 104, 113, 113, 119, 120, 123, 129, 127, 134, 131, 135, 131, 141, 137, 135, 126, 133, 146, 145, 154, 159, 161, 158, 148, 154, 170];
     linecolour = 'rgba(133, 130, 131, 0.15)';
-    plusminus = '';
     shownumbers = false;
   }
   else if (item.analytics.performance_all > 0) {
@@ -93,10 +92,10 @@ const newActions = item.analytics?.last_7d_buy_instructions ? item.analytics.las
     <View style={styles.card}>
       <View style={styles.box1}>
       <TouchableOpacity onPress={() => openDetail(item)}>
-        {!item.iconid &&
+        {!item.iconId &&
           <Icon style={styles.icon} size={20} name='superpowers' />}
-        {item.iconid &&
-          <Image source={icondata[item.iconid].image} resizeMode='contain' style={styles.icon} />
+        {item.iconId &&
+          <Image source={icondata[item.iconId].image} resizeMode='contain' style={styles.icon} />
         }
         {newActions > 0 && 
         <View style={styles.reddot}/>
